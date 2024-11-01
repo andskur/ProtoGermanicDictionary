@@ -11,7 +11,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
 
-    func fetchFirst100Words(completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+    func fetchWords(cmcontinue: String? = nil, completion: @escaping (Result<([WordData], String?), Error>) -> Void) {
         let apiEndpoint = "https://en.wiktionary.org/w/api.php"
         var urlComponents = URLComponents(string: apiEndpoint)!
         urlComponents.queryItems = [
@@ -21,6 +21,13 @@ class NetworkManager {
             URLQueryItem(name: "cmlimit", value: "100"),
             URLQueryItem(name: "format", value: "json")
         ]
+        
+        if let cmcontinue = cmcontinue {
+            print("Using cmcontinue: \(cmcontinue)")
+            urlComponents.queryItems?.append(URLQueryItem(name: "cmcontinue", value: cmcontinue))
+        } else {
+            print("No cmcontinue provided, starting from the beginning.")
+        }
 
         let request = URLRequest(url: urlComponents.url!)
 
@@ -43,8 +50,17 @@ class NetworkManager {
                 let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
                 if let query = json["query"] as? [String: Any],
                    let categoryMembers = query["categorymembers"] as? [[String: Any]] {
+                    // Parse the words
+                    let wordsData = categoryMembers.compactMap { WordData(json: $0) }
+
+                    // Get the continuation token
+                    let continueDict = json["continue"] as? [String: Any]
+                    let nextCmcontinue = continueDict?["cmcontinue"] as? String
+                    print("Received next cmcontinue: \(nextCmcontinue ?? "nil")")
+
+
                     DispatchQueue.main.async {
-                        completion(.success(categoryMembers))
+                        completion(.success((wordsData, nextCmcontinue)))
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -59,5 +75,20 @@ class NetworkManager {
         }
 
         task.resume()
+    }
+}
+
+// Helper struct to parse word data
+struct WordData {
+    let pageid: Int64
+    let title: String
+
+    init?(json: [String: Any]) {
+        guard let pageid = json["pageid"] as? Int64,
+              let title = json["title"] as? String else {
+            return nil
+        }
+        self.pageid = pageid
+        self.title = title
     }
 }

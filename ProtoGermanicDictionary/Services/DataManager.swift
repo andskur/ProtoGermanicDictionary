@@ -45,27 +45,32 @@ class DataManager {
         }
     }
 
-    func importWords(_ wordsData: [[String: Any]], completion: @escaping (Error?) -> Void) {
+    func importWords(_ wordsData: [WordData], completion: @escaping (Error?) -> Void) {
         context.perform {
             for wordData in wordsData {
-                guard let fullTitle = wordData["title"] as? String else { continue }
-                
+                let fullTitle = wordData.title
+
                 // Remove the "Reconstruction:Proto-Germanic/" prefix
                 let prefix = "Reconstruction:Proto-Germanic/"
                 var title = fullTitle
                 if fullTitle.hasPrefix(prefix) {
                     title = String(fullTitle.dropFirst(prefix.count))
                 }
-                
+
+                // Normalize the title for sorting
+                let sortTitle = title.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+
                 // Check if the word already exists
                 let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
                 fetchRequest.predicate = NSPredicate(format: "title == %@", title)
-                
+
                 do {
                     let existing = try self.context.fetch(fetchRequest)
                     if existing.isEmpty {
                         let wordEntry = Word(context: self.context)
                         wordEntry.title = title
+                        wordEntry.fullTitle = fullTitle
+                        wordEntry.sortTitle = sortTitle
                         wordEntry.id = UUID()
                     }
                 } catch {
@@ -75,7 +80,7 @@ class DataManager {
                     return
                 }
             }
-            
+
             do {
                 try self.context.save()
                 DispatchQueue.main.async {
