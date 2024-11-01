@@ -19,6 +19,8 @@ struct WordDetailView: View {
         }
         .padding()
         .navigationTitle(word.title ?? "Word")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
