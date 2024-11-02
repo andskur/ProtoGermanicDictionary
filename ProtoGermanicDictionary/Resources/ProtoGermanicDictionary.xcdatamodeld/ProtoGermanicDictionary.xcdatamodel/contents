@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24B83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Translation" representedClassName="Translation" syncable="YES">
+        <attribute name="text" attributeType="String"/>
+        <relationship name="word" maxCount="1" deletionRule="Nullify" destinationEntity="Word" inverseName="translations" inverseEntity="Word"/>
+    </entity>
     <entity name="Word" representedClassName="Word" syncable="YES">
         <attribute name="fullTitle" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sortTitle" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
+        <attribute name="wordType" optional="YES" attributeType="String"/>
+        <relationship name="translations" toMany="YES" deletionRule="Nullify" destinationEntity="Translation" inverseName="word" inverseEntity="Translation"/>
     </entity>
 </model>

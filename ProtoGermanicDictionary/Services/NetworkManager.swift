@@ -76,6 +76,56 @@ class NetworkManager {
 
         task.resume()
     }
+    
+    func fetchWordDetails(title: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let apiEndpoint = "https://en.wiktionary.org/w/api.php"
+        var urlComponents = URLComponents(string: apiEndpoint)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "action", value: "query"),
+            URLQueryItem(name: "prop", value: "revisions"),
+            URLQueryItem(name: "rvprop", value: "content"),
+            URLQueryItem(name: "rvslots", value: "main"),
+            URLQueryItem(name: "titles", value: title),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "redirects", value: "1")
+        ]
+
+        let request = URLRequest(url: urlComponents.url!)
+        
+        print(request)
+
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "NoData", code: 1, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+                if let query = json["query"] as? [String: Any],
+                   let pages = query["pages"] as? [String: Any],
+                   let page = pages.values.first as? [String: Any],
+                   let revisions = page["revisions"] as? [[String: Any]],
+                   let content = revisions.first?["slots"] as? [String: Any],
+                   let mainSlot = content["main"] as? [String: Any],
+                   let contentString = mainSlot["*"] as? String {
+                    completion(.success(contentString))
+                } else {
+                    completion(.failure(NSError(domain: "InvalidData", code: 1, userInfo: nil)))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+
 }
 
 // Helper struct to parse word data
