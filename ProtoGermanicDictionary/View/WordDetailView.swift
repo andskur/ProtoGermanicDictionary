@@ -15,34 +15,48 @@ struct WordDetailView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(viewModel.word.title ?? "Unknown")
-                .font(.largeTitle)
-                .bold()
-            
-            if viewModel.isLoading {
-                ProgressView("Loading details...")
-            } else {
-                if viewModel.wordType != .unknown {
-                    Text("Type: \(viewModel.wordType.rawValue)")
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(viewModel.word.title ?? "Unknown")
+                    .font(.largeTitle)
+                    .bold()
+                
+                if viewModel.isLoading {
+                    ProgressView("Loading details...")
+                        .padding(.top, 20)
                 } else {
-                    Text("Type: Unknown")
-                }
-                if !viewModel.translations.isEmpty {
-                    Text("Translations:")
-                        .font(.headline)
-                    ForEach(viewModel.translations, id: \.self) { translation in
-                        Text("• \(translation.text ?? "")")
-                            .padding(.leading, 10)
+                    if viewModel.wordType != .unknown {
+                        Text("Type: \(viewModel.wordType.rawValue)")
+                            .font(.headline)
+                    } else {
+                        Text("Type: Unknown")
+                            .font(.headline)
                     }
-                } else {
-                    Text("No translations available.")
+                    
+                    if !viewModel.translations.isEmpty {
+                        Text("Translations:")
+                            .font(.headline)
+                            .padding(.top, 10)
+                        
+                        ForEach(viewModel.translations, id: \.self) { translation in
+                            if let text = translation.text, !text.isEmpty {
+                                Text("• \(text)")
+                                    .padding(.leading, 10)
+                            } else {
+                                Text("• (No translation)")
+                                    .padding(.leading, 10)
+                            }
+                        }
+                    } else {
+                        Text("No translations available.")
+                            .italic()
+                    }
                 }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding()
         }
-        .padding()
         .navigationTitle(viewModel.word.title ?? "Word")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)

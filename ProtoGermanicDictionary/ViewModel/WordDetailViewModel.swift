@@ -40,14 +40,13 @@ class WordDetailViewModel: ObservableObject {
         isLoading = true
         
         NetworkManager.shared.fetchWordDetails(title: fullTitle) { [weak self] result in
-            guard let self = self else { return }
             DispatchQueue.main.async {
-                self.isLoading = false
+                self?.isLoading = false
                 switch result {
                 case .success(let content):
                     let parsedData = WiktionaryParser.parse(content: content)
-                    self.wordType = parsedData.wordType
-                    self.updateWordInCoreData(with: parsedData.translations)
+                    self?.wordType = parsedData.wordType
+                    self?.updateWordInCoreData(with: parsedData.translations)
                 case .failure(let error):
                     print("Error fetching details: \(error)")
                 }
@@ -70,7 +69,7 @@ class WordDetailViewModel: ObservableObject {
             translation.word = word
         }
         
-        // Save wordType as rawValue of enum
+        // Assign wordType
         word.wordType = wordType.rawValue
         
         do {
