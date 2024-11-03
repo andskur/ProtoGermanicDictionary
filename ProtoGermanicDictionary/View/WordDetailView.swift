@@ -51,6 +51,15 @@ struct WordDetailView: View {
                         Text("No translations available.")
                             .italic()
                     }
+                    
+                    if let url = viewModel.word.wiktionaryURL {
+                        Link("View on Wiktionary", destination: url)
+                            .foregroundColor(.blue)
+                            .underline()
+                    } else {
+                        Text("Wiktionary URL not available.")
+                            .foregroundColor(.gray)
+                    }
                 }
                 
                 Spacer()
