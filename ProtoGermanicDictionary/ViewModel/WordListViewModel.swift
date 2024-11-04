@@ -17,6 +17,7 @@ class WordListViewModel: ObservableObject {
             UserDefaults.standard.set(hasMoreData, forKey: "hasMoreData")
         }
     }
+    @Published var filterWordType: WordType? = nil // Property to hold the selected filter type
 
     private var context: NSManagedObjectContext
     private var cmcontinue: String? {
@@ -45,6 +46,11 @@ class WordListViewModel: ObservableObject {
 
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
+        
+        // Apply wordType filter if specified
+        if let filter = filterWordType?.rawValue {
+            fetchRequest.predicate = NSPredicate(format: "wordType == %@", filter)
+        }
 
         do {
             words = try context.fetch(fetchRequest)
@@ -62,6 +68,11 @@ class WordListViewModel: ObservableObject {
         }
     }
 
+    // Call this function when the filter changes
+    func applyFilter(wordType: WordType?) {
+        filterWordType = wordType
+        fetchWords() // Re-fetch words based on the new filter
+    }
 
     func loadMoreWords() {
         if !hasMoreData || isLoadingMore {
