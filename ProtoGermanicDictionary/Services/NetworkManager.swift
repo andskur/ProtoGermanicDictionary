@@ -101,7 +101,14 @@ class NetworkManager {
                 completion(.failure(NSError(domain: "NoData", code: 1, userInfo: nil)))
                 return
             }
-            
+
+            // Check if data starts with "{" to confirm it’s JSON
+            guard let dataString = String(data: data, encoding: .utf8), dataString.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("{") else {
+                print("Non-JSON response for title: \(title). Response: \(String(describing: String(data: data, encoding: .utf8)))")
+                completion(.failure(NSError(domain: "NonJSONResponse", code: 1, userInfo: [NSLocalizedDescriptionKey: "Non-JSON response received."])))
+                return
+            }
+
             do {
                 let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
                 if let query = json["query"] as? [String: Any],
@@ -117,6 +124,7 @@ class NetworkManager {
                     completion(.failure(NSError(domain: "InvalidData", code: 1, userInfo: nil)))
                 }
             } catch {
+                print("JSON Parsing error for title: \(title). Response: \(dataString)")
                 completion(.failure(error))
             }
         }
@@ -125,10 +133,13 @@ class NetworkManager {
     }
 
 
+
     
     func fetchAllWordsWithDetails(completion: @escaping (Result<[WordData], Error>) -> Void) {
         var allWordsData = [WordData]()
-        let dispatchGroup = DispatchGroup() // To manage concurrent detail fetches
+        let dispatchGroup = DispatchGroup()
+        let batchSize = 10  // Adjust batch size based on rate limits
+        let delayBetweenBatches = 1.0  // Seconds between batches
 
         // Recursive function to fetch all data in batches
         func fetchNextBatch(cmcontinue: String?) {
@@ -136,35 +147,39 @@ class NetworkManager {
                 switch result {
                 case .success(let (wordsData, nextCmcontinue)):
                     allWordsData.append(contentsOf: wordsData)
-                    
-                    // For each word, enter the dispatch group to fetch details concurrently
-                    for wordData in wordsData {
+
+                    // Fetch details in batches
+                    let batches = wordsData.chunked(into: batchSize)
+                    for batch in batches {
                         dispatchGroup.enter()
-                        self.fetchWordDetails(title: wordData.title) { detailResult in
-                            switch detailResult {
-                            case .success(let detailedContent): // Now detailedContent is a String
-                                let parsedData = WiktionaryParser.parse(content: detailedContent)
-                                if let index = allWordsData.firstIndex(where: { $0.pageid == wordData.pageid }) {
-                                    // Update with parsed details
-                                    allWordsData[index].wordType = parsedData.wordType
-                                    allWordsData[index].translations = parsedData.translations
+                        DispatchQueue.global().asyncAfter(deadline: .now() + delayBetweenBatches) {
+                            let group = DispatchGroup()
+                            for wordData in batch {
+                                group.enter()
+                                self.fetchWordDetailsWithRetry(title: wordData.title) { detailResult in
+                                    switch detailResult {
+                                    case .success(let detailedContent):
+                                        let parsedData = WiktionaryParser.parse(content: detailedContent)
+                                        if let index = allWordsData.firstIndex(where: { $0.pageid == wordData.pageid }) {
+                                            allWordsData[index].wordType = parsedData.wordType
+                                            allWordsData[index].translations = parsedData.translations
+                                        }
+                                    case .failure(let error):
+                                        print("Error fetching details for \(wordData.title): \(error)")
+                                    }
+                                    group.leave()
                                 }
-                            case .failure(let error):
-                                print("Error fetching details for \(wordData.title): \(error)")
                             }
-                            dispatchGroup.leave()
+                            group.notify(queue: .main) {
+                                dispatchGroup.leave()
+                            }
                         }
                     }
 
-                    // Wait for all details to be fetched before continuing with the next batch
                     dispatchGroup.notify(queue: .main) {
                         if let nextCmcontinue = nextCmcontinue {
                             fetchNextBatch(cmcontinue: nextCmcontinue)
                         } else {
-                            // Log total words fetched for verification
-                            print("Total words with details fetched: \(allWordsData.count)")
-                            
-                            // Complete the process
                             DispatchQueue.main.async {
                                 completion(.success(allWordsData))
                             }
@@ -182,6 +197,28 @@ class NetworkManager {
         // Start the recursive fetch process
         fetchNextBatch(cmcontinue: nil)
     }
+    
+    func fetchWordDetailsWithRetry(title: String, retryCount: Int = 0, completion: @escaping (Result<String, Error>) -> Void) {
+        let maxRetryCount = 5
+        let delay = pow(2.0, Double(retryCount))  // Exponential backoff: 1, 2, 4, 8, etc.
+
+        fetchWordDetails(title: title) { result in
+            switch result {
+            case .success(let content):
+                completion(.success(content))
+            case .failure(let error):
+                if retryCount < maxRetryCount {
+                    DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+                        self.fetchWordDetailsWithRetry(title: title, retryCount: retryCount + 1, completion: completion)
+                    }
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+
 
 }
 
@@ -210,5 +247,15 @@ struct WordData {
         self.title = title
         self.wordType = .unknown // Default to unknown; will populate later
         self.translations = [] // Initialize empty, populate with actual translations
+    }
+}
+
+
+extension Array {
+    /// Splits an array into chunks of a given size.
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
     }
 }

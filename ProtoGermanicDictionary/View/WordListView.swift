@@ -38,7 +38,18 @@ struct WordListView: View {
             } else {
                 List(viewModel.words, id: \.id) { word in
                     NavigationLink(destination: WordDetailView(word: word)) {
-                        Text(word.title ?? "Unknown")
+                        VStack(alignment: .leading) {
+                            Text(word.title ?? "Unknown")
+                                .font(.headline)
+                            
+                            // Display translations below the title
+                            if let translations = word.translations as? Set<Translation> {
+                                Text(translations.map { $0.text ?? "" }.joined(separator: ", "))
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1) // Limit to one line for readability
+                            }
+                        }
                     }
                 }
                 .navigationTitle("Proto-Germanic Words")
