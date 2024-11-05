@@ -5,33 +5,40 @@ struct WordListView: View {
 
     var body: some View {
         VStack {
-            TextField("Search words...", text: $viewModel.searchText)
-                .padding(8)
-                #if os(iOS)
-                .background(Color(UIColor.systemGray6))
-                .autocorrectionDisabled(true)
-                #endif
-                .cornerRadius(8)
-                .padding(.horizontal)
-            
-            Menu {
-                Button("All", action: { viewModel.applyFilter(wordType: nil) })
-                ForEach(WordType.allCases, id: \.self) { type in
-                    Button(type.rawValue) {
-                        viewModel.applyFilter(wordType: type)
+            // Search and Filter Row
+            HStack(spacing: 12) {
+                // Search TextField
+                TextField("Search words...", text: $viewModel.searchText)
+                    .padding(10)
+                    .background(Color(UIColor.systemGray6))
+                    .cornerRadius(8)
+                    .autocorrectionDisabled(true)
+                    .padding(.horizontal)
+                
+                // Filter Menu Button
+                Menu {
+                    Button("All", action: { viewModel.applyFilter(wordType: nil) })
+                    ForEach(WordType.allCases, id: \.self) { type in
+                        Button(type.rawValue) {
+                            viewModel.applyFilter(wordType: type)
+                        }
+                    }
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(UIColor.systemGray6))
+                            .frame(width: 44, height: 44)
+                            .shadow(radius: 2)
+                        
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundColor(.blue)
                     }
                 }
-            } label: {
-                Label(viewModel.filterWordType?.rawValue ?? "Filter by Type", systemImage: "line.3.horizontal.decrease.circle")
-                    .font(.headline)
-                    .padding()
-                    #if os(iOS)
-                    .background(Color(UIColor.systemGray6))
-                    #endif
-                    .cornerRadius(8)
             }
-            .padding()
-
+            .padding(.vertical, 10)
+            
+            // Loading Indicator
             if viewModel.isLoading {
                 VStack {
                     ProgressView("Loading all words...")
@@ -40,9 +47,10 @@ struct WordListView: View {
                         .foregroundColor(.gray)
                 }
             } else {
+                // List of Words
                 List(viewModel.words, id: \.id) { word in
                     NavigationLink(destination: WordDetailView(word: word)) {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(word.title ?? "Unknown")
                                 .font(.headline)
                                 .lineLimit(1)
@@ -60,10 +68,13 @@ struct WordListView: View {
                                 }
                             }
                         }
+                        .padding(.vertical, 4)
                     }
                 }
+                .listStyle(PlainListStyle())
                 .navigationTitle("Proto-Germanic Words")
             }
         }
+        .background(Color(.systemBackground)) // Adds a unified background color for the view
     }
 }
