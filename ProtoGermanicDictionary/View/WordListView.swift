@@ -9,6 +9,7 @@ struct WordListView: View {
                 .padding(8)
                 #if os(iOS)
                 .background(Color(UIColor.systemGray6))
+                .autocorrectionDisabled(true)
                 #endif
                 .cornerRadius(8)
                 .padding(.horizontal)

@@ -33,10 +33,10 @@ class WordListViewModel: ObservableObject {
 
     // Fetch all words from the database after loading
     func fetchWordsFromDatabase() {
-        isLoading = true
+//        isLoading = true
         words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType, searchText: searchText)
         sanitizeDataForDisplay()
-        isLoading = false
+//        isLoading = false
     }
 
     // Preload all words and details on the first launch
@@ -78,13 +78,25 @@ class WordListViewModel: ObservableObject {
     
     private func sanitizeDataForDisplay() {
         words = words.map { word in
-            word.title = word.title?.precomposedStringWithCanonicalMapping ?? "Unknown"
-            if let translations = word.translations as? Set<Translation> {
-                translations.forEach { translation in
-                    translation.text = translation.text?.precomposedStringWithCanonicalMapping.trimmingCharacters(in: .whitespacesAndNewlines)
+            let sanitizedWord = word
+            sanitizedWord.title = word.title?.precomposedStringWithCanonicalMapping ?? "Unknown"
+            
+            if let translations = sanitizedWord.translations as? Set<Translation> {
+                let sanitizedTranslations = translations.map { translation in
+                    let sanitizedTranslation = translation
+                    sanitizedTranslation.text = translation.text?
+                        .precomposedStringWithCanonicalMapping
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                    return sanitizedTranslation
                 }
+                
+                // Convert sanitizedTranslations (array) back into NSSet for CoreData compatibility
+                sanitizedWord.translations = NSSet(array: sanitizedTranslations)
             }
-            return word
+            
+            return sanitizedWord
         }
     }
+
+
 }
