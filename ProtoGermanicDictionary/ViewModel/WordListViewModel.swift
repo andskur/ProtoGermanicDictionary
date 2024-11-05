@@ -35,7 +35,7 @@ class WordListViewModel: ObservableObject {
     func fetchWordsFromDatabase() {
         isLoading = true
         words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType, searchText: searchText)
-        sanitizeDataForDisplay()sad
+        sanitizeDataForDisplay()
         isLoading = false
     }
 
