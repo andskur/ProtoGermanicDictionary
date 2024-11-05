@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A17F9B1A2CDAC73800FC3337 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A17F9B192CDAC73800FC3337 /* README.md */; };
+		A17F9B1C2CDAC8B700FC3337 /* PrivacyPolicy.md in Resources */ = {isa = PBXBuildFile; fileRef = A17F9B1B2CDAC8B700FC3337 /* PrivacyPolicy.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A12CDCF52CD5801A00EAC681 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		A12CDCDE2CD5801900EAC681 /* ProtoGermanicDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtoGermanicDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A12CDCF42CD5801A00EAC681 /* ProtoGermanicDictionaryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoGermanicDictionaryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A12CDCFE2CD5801A00EAC681 /* ProtoGermanicDictionaryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoGermanicDictionaryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A17F9B192CDAC73800FC3337 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A17F9B1B2CDAC8B700FC3337 /* PrivacyPolicy.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PrivacyPolicy.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +82,8 @@
 		A12CDCD52CD5801900EAC681 = {
 			isa = PBXGroup;
 			children = (
+				A17F9B1B2CDAC8B700FC3337 /* PrivacyPolicy.md */,
+				A17F9B192CDAC73800FC3337 /* README.md */,
 				A12CDCE02CD5801900EAC681 /* ProtoGermanicDictionary */,
 				A12CDCF72CD5801A00EAC681 /* ProtoGermanicDictionaryTests */,
 				A12CDD012CD5801A00EAC681 /* ProtoGermanicDictionaryUITests */,
@@ -212,6 +221,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A17F9B1A2CDAC73800FC3337 /* README.md in Resources */,
+				A17F9B1C2CDAC8B700FC3337 /* PrivacyPolicy.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
