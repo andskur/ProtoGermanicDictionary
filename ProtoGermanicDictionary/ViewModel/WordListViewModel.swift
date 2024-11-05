@@ -35,6 +35,7 @@ class WordListViewModel: ObservableObject {
     func fetchWordsFromDatabase() {
         isLoading = true
         words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType, searchText: searchText)
+        sanitizeDataForDisplay()sad
         isLoading = false
     }
 
@@ -73,5 +74,17 @@ class WordListViewModel: ObservableObject {
     func applyFilter(wordType: WordType?) {
         filterWordType = wordType
         fetchWordsFromDatabase() // Re-fetch words based on the filter
+    }
+    
+    private func sanitizeDataForDisplay() {
+        words = words.map { word in
+            word.title = word.title?.precomposedStringWithCanonicalMapping ?? "Unknown"
+            if let translations = word.translations as? Set<Translation> {
+                translations.forEach { translation in
+                    translation.text = translation.text?.precomposedStringWithCanonicalMapping.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+            }
+            return word
+        }
     }
 }

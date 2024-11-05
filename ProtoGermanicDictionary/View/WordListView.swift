@@ -1,10 +1,3 @@
-//
-//  WordListView.swift
-//  ProtoGermanicDictionary
-//
-//  Created by Andrey Skurlatov on 04/11/2024.
-//
-
 import SwiftUI
 
 struct WordListView: View {
@@ -36,7 +29,7 @@ struct WordListView: View {
 
             if viewModel.isLoading {
                 VStack {
-                    ProgressView("Loading all words...") // Spinner loader
+                    ProgressView("Loading all words...")
                         .padding()
                     Text("Please wait, this may take a while.")
                         .foregroundColor(.gray)
@@ -47,13 +40,19 @@ struct WordListView: View {
                         VStack(alignment: .leading) {
                             Text(word.title ?? "Unknown")
                                 .font(.headline)
+                                .lineLimit(1)
                             
-                            // Display translations below the title
                             if let translations = word.translations as? Set<Translation> {
-                                Text(translations.map { $0.text ?? "" }.joined(separator: ", "))
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(1) // Limit to one line for readability
+                                let filteredTranslations = translations
+                                    .compactMap { $0.text?.trimmingCharacters(in: .whitespacesAndNewlines) }
+                                    .filter { !$0.isEmpty }
+                                
+                                if !filteredTranslations.isEmpty {
+                                    Text(filteredTranslations.joined(separator: ", ").prefix(100))
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(1)
+                                }
                             }
                         }
                     }

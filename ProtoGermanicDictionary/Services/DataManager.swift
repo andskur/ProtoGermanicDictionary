@@ -46,8 +46,15 @@ class DataManager {
         }
         
         if !searchText.isEmpty {
-             let normalizedSearchText = searchText.folding(options: .diacriticInsensitive, locale: .current)
-             predicates.append(NSPredicate(format: "sortTitle CONTAINS[c] %@", normalizedSearchText))
+            let normalizedSearchText = searchText.folding(options: .diacriticInsensitive, locale: .current)
+            
+            // Predicate to match against the word's title or any associated translation's text
+            let titlePredicate = NSPredicate(format: "sortTitle CONTAINS[c] %@", normalizedSearchText)
+            let translationPredicate = NSPredicate(format: "ANY translations.text CONTAINS[c] %@", normalizedSearchText)
+            
+            // Combine both predicates using OR
+            let searchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [titlePredicate, translationPredicate])
+            predicates.append(searchPredicate)
          }
         
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
