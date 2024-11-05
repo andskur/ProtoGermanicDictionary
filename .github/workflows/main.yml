@@ -8,16 +8,21 @@ on:
 
 jobs:
   test:
-     runs-on: macos-13
+    runs-on: macos-13
 
-     steps:
-     - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v3
 
-     - name: Set up Xcode
-       run: sudo xcode-select -switch /Applications/Xcode.app && /usr/bin/xcodebuild -version
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.2'  # or specify the Xcode version you're using locally
 
-     - name: Build and Test
-       run: xcodebuild test -scheme ProtoGermanicDictionary -project ProtoGermanicDictionary.xcodeproj CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+      - name: Clean Build
+        run: xcodebuild clean -scheme ProtoGermanicDictionary -project ProtoGermanicDictionary.xcodeproj
+
+      - name: Build and Test
+        run: xcodebuild test -scheme ProtoGermanicDictionary -project ProtoGermanicDictionary.xcodeproj CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
 
   release:
     needs:
@@ -37,4 +42,3 @@ jobs:
           name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           token: ${{ secrets.RELEASES_ACTION_GITHUB_TOKEN }}
-    
