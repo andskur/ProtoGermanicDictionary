@@ -52,6 +52,11 @@
 			path = ProtoGermanicDictionaryUITests;
 			sourceTree = "<group>";
 		};
+		A17F9B4F2CDAC95100FC3337 /* .github */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = .github;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +87,7 @@
 		A12CDCD52CD5801900EAC681 = {
 			isa = PBXGroup;
 			children = (
+				A17F9B4F2CDAC95100FC3337 /* .github */,
 				A17F9B1B2CDAC8B700FC3337 /* PrivacyPolicy.md */,
 				A17F9B192CDAC73800FC3337 /* README.md */,
 				A12CDCE02CD5801900EAC681 /* ProtoGermanicDictionary */,
@@ -118,6 +124,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A12CDCE02CD5801900EAC681 /* ProtoGermanicDictionary */,
+				A17F9B4F2CDAC95100FC3337 /* .github */,
 			);
 			name = ProtoGermanicDictionary;
 			packageProductDependencies = (
