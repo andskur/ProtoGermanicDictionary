@@ -12,6 +12,12 @@ struct WordListView: View {
 
     var body: some View {
         VStack {
+            TextField("Search words...", text: $viewModel.searchText)
+                .padding(8)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(8)
+                .padding(.horizontal)
+            
             Menu {
                 Button("All", action: { viewModel.applyFilter(wordType: nil) })
                 ForEach(WordType.allCases, id: \.self) { type in

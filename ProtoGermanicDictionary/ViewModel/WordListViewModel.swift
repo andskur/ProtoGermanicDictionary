@@ -12,6 +12,11 @@ class WordListViewModel: ObservableObject {
     @Published var words: [Word] = []
     @Published var isLoading = false
     @Published var filterWordType: WordType? = nil // Holds the selected filter for word type
+    @Published var searchText: String = "" {
+        didSet {
+            fetchWordsFromDatabase()
+        }
+    }
 
     private var context: NSManagedObjectContext
 
@@ -28,7 +33,9 @@ class WordListViewModel: ObservableObject {
 
     // Fetch all words from the database after loading
     func fetchWordsFromDatabase() {
-        words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType)
+        isLoading = true
+        words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType, searchText: searchText)
+        isLoading = false
     }
 
     // Preload all words and details on the first launch

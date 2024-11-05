@@ -29,7 +29,8 @@ class NetworkManager {
             print("No cmcontinue provided, starting from the beginning.")
         }
 
-        let request = URLRequest(url: urlComponents.url!)
+        var request = URLRequest(url: urlComponents.url!)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
@@ -89,7 +90,8 @@ class NetworkManager {
             URLQueryItem(name: "redirects", value: "1")
         ]
 
-        let request = URLRequest(url: urlComponents.url!)
+        var request = URLRequest(url: urlComponents.url!)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {

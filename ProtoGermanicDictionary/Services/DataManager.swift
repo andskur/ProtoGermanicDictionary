@@ -35,13 +35,22 @@ class DataManager {
         }
     }
 
-    func fetchWords(wordTypeFilter: WordType? = nil) -> [Word] {
+    func fetchWords(wordTypeFilter: WordType? = nil, searchText: String = "") -> [Word] {
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
+        
+        var predicates: [NSPredicate] = []
         
         if let filter = wordTypeFilter?.rawValue {
             fetchRequest.predicate = NSPredicate(format: "wordType == %@", filter)
         }
+        
+        if !searchText.isEmpty {
+             let normalizedSearchText = searchText.folding(options: .diacriticInsensitive, locale: .current)
+             predicates.append(NSPredicate(format: "sortTitle CONTAINS[c] %@", normalizedSearchText))
+         }
+        
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         do {
             return try context.fetch(fetchRequest)
