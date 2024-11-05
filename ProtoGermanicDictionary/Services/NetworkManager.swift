@@ -23,7 +23,7 @@ class NetworkManager {
         ]
         
         if let cmcontinue = cmcontinue {
-            print("Using cmcontinue: \(cmcontinue)")
+//            print("Using cmcontinue: \(cmcontinue)")
             urlComponents.queryItems?.append(URLQueryItem(name: "cmcontinue", value: cmcontinue))
         } else {
             print("No cmcontinue provided, starting from the beginning.")
@@ -56,8 +56,7 @@ class NetworkManager {
                     // Get the continuation token
                     let continueDict = json["continue"] as? [String: Any]
                     let nextCmcontinue = continueDict?["cmcontinue"] as? String
-                    print("Received next cmcontinue: \(nextCmcontinue ?? "nil")")
-
+//                    print("Received next cmcontinue: \(nextCmcontinue ?? "nil")")
 
                     DispatchQueue.main.async {
                         completion(.success((wordsData, nextCmcontinue)))
@@ -91,8 +90,6 @@ class NetworkManager {
         ]
 
         let request = URLRequest(url: urlComponents.url!)
-        
-        print(request)
 
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
@@ -114,7 +111,8 @@ class NetworkManager {
                    let content = revisions.first?["slots"] as? [String: Any],
                    let mainSlot = content["main"] as? [String: Any],
                    let contentString = mainSlot["*"] as? String {
-                    completion(.success(contentString))
+                    
+                    completion(.success(contentString)) // Return the content as a String here
                 } else {
                     completion(.failure(NSError(domain: "InvalidData", code: 1, userInfo: nil)))
                 }
@@ -126,13 +124,83 @@ class NetworkManager {
         task.resume()
     }
 
+
+    
+    func fetchAllWordsWithDetails(completion: @escaping (Result<[WordData], Error>) -> Void) {
+        var allWordsData = [WordData]()
+        let dispatchGroup = DispatchGroup() // To manage concurrent detail fetches
+
+        // Recursive function to fetch all data in batches
+        func fetchNextBatch(cmcontinue: String?) {
+            fetchWords(cmcontinue: cmcontinue) { result in
+                switch result {
+                case .success(let (wordsData, nextCmcontinue)):
+                    allWordsData.append(contentsOf: wordsData)
+                    
+                    // For each word, enter the dispatch group to fetch details concurrently
+                    for wordData in wordsData {
+                        dispatchGroup.enter()
+                        self.fetchWordDetails(title: wordData.title) { detailResult in
+                            switch detailResult {
+                            case .success(let detailedContent): // Now detailedContent is a String
+                                let parsedData = WiktionaryParser.parse(content: detailedContent)
+                                if let index = allWordsData.firstIndex(where: { $0.pageid == wordData.pageid }) {
+                                    // Update with parsed details
+                                    allWordsData[index].wordType = parsedData.wordType
+                                    allWordsData[index].translations = parsedData.translations
+                                }
+                            case .failure(let error):
+                                print("Error fetching details for \(wordData.title): \(error)")
+                            }
+                            dispatchGroup.leave()
+                        }
+                    }
+
+                    // Wait for all details to be fetched before continuing with the next batch
+                    dispatchGroup.notify(queue: .main) {
+                        if let nextCmcontinue = nextCmcontinue {
+                            fetchNextBatch(cmcontinue: nextCmcontinue)
+                        } else {
+                            // Log total words fetched for verification
+                            print("Total words with details fetched: \(allWordsData.count)")
+                            
+                            // Complete the process
+                            DispatchQueue.main.async {
+                                completion(.success(allWordsData))
+                            }
+                        }
+                    }
+
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+
+        // Start the recursive fetch process
+        fetchNextBatch(cmcontinue: nil)
+    }
+
 }
+
 
 // Helper struct to parse word data
 struct WordData {
     let pageid: Int64
     let title: String
+    var wordType: WordType
+    var translations: [String] // Stores translations
 
+    init(pageid: Int64, title: String, wordType: WordType, translations: [String]) {
+        self.pageid = pageid
+        self.title = title
+        self.wordType = wordType
+        self.translations = translations
+    }
+    
+    // Optional initializer for JSON parsing
     init?(json: [String: Any]) {
         guard let pageid = json["pageid"] as? Int64,
               let title = json["title"] as? String else {
@@ -140,5 +208,7 @@ struct WordData {
         }
         self.pageid = pageid
         self.title = title
+        self.wordType = .unknown // Default to unknown; will populate later
+        self.translations = [] // Initialize empty, populate with actual translations
     }
 }

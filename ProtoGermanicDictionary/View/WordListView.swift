@@ -12,7 +12,6 @@ struct WordListView: View {
 
     var body: some View {
         VStack {
-            // Filter menu for word type selection
             Menu {
                 Button("All", action: { viewModel.applyFilter(wordType: nil) })
                 ForEach(WordType.allCases, id: \.self) { type in
@@ -29,33 +28,17 @@ struct WordListView: View {
             }
             .padding()
 
-            // List of words with infinite scrolling
-            if viewModel.isLoading && viewModel.words.isEmpty {
-                ProgressView("Loading...")
+            if viewModel.isLoading {
+                VStack {
+                    ProgressView("Loading all words...") // Spinner loader
+                        .padding()
+                    Text("Please wait, this may take a while.")
+                        .foregroundColor(.gray)
+                }
             } else {
-                List {
-                    ForEach(viewModel.words, id: \.id) { word in
-                        NavigationLink(destination: WordDetailView(word: word)) {
-                            Text(word.title ?? "Unknown")
-                        }
-                        .onAppear {
-                            if word == viewModel.words.last {
-                                viewModel.loadMoreWords()
-                            }
-                        }
-                    }
-
-                    // Loading more indicator
-                    if viewModel.isLoadingMore {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
-                    } else if !viewModel.hasMoreData {
-                        Text("All words have been loaded.")
-                            .foregroundColor(.gray)
-                            .padding()
+                List(viewModel.words, id: \.id) { word in
+                    NavigationLink(destination: WordDetailView(word: word)) {
+                        Text(word.title ?? "Unknown")
                     }
                 }
                 .navigationTitle("Proto-Germanic Words")
@@ -63,4 +46,3 @@ struct WordListView: View {
         }
     }
 }
-ok

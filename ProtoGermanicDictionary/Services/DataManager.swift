@@ -35,8 +35,14 @@ class DataManager {
         }
     }
 
-    func fetchWords() -> [Word] {
+    func fetchWords(wordTypeFilter: WordType? = nil) -> [Word] {
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
+        
+        if let filter = wordTypeFilter?.rawValue {
+            fetchRequest.predicate = NSPredicate(format: "wordType == %@", filter)
+        }
+
         do {
             return try context.fetch(fetchRequest)
         } catch {
@@ -48,31 +54,46 @@ class DataManager {
     func importWords(_ wordsData: [WordData], completion: @escaping (Error?) -> Void) {
         context.perform {
             for wordData in wordsData {
-                let fullTitle = wordData.title
-
-                // Remove the "Reconstruction:Proto-Germanic/" prefix
-                let prefix = "Reconstruction:Proto-Germanic/"
-                var title = fullTitle
-                if fullTitle.hasPrefix(prefix) {
-                    title = String(fullTitle.dropFirst(prefix.count))
+                
+                let skipPrefix = "Category:Proto-Germanic"
+                
+                if wordData.title.hasPrefix(skipPrefix) {
+                    continue
                 }
-
-                // Normalize the title for sorting
-                let sortTitle = title.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
-
-                // Check if the word already exists
+                
+//                print(wordData.title)
+                
                 let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
-                fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+                fetchRequest.predicate = NSPredicate(format: "title == %@", wordData.title)
 
                 do {
-                    let existing = try self.context.fetch(fetchRequest)
-                    if existing.isEmpty {
-                        let wordEntry = Word(context: self.context)
-                        wordEntry.title = title
-                        wordEntry.fullTitle = fullTitle
-                        wordEntry.sortTitle = sortTitle
-                        wordEntry.id = UUID()
+                    let existingWords = try self.context.fetch(fetchRequest)
+                    let wordEntry = existingWords.first ?? Word(context: self.context)
+                    
+                    // Update properties for the word entry
+                    let prefix = "Reconstruction:Proto-Germanic/"
+                    if wordData.title.hasPrefix(prefix) {
+                        wordEntry.title = String(wordData.title.dropFirst(prefix.count))
+                    } else {
+                        wordEntry.title = wordData.title
                     }
+                    
+                    wordEntry.fullTitle = wordData.title
+                    wordEntry.sortTitle = wordData.title.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+                    wordEntry.id = wordEntry.id ?? UUID()
+                    wordEntry.wordType = wordData.wordType.rawValue
+
+                    // Update translations
+                    if let translations = wordEntry.translations as? Set<Translation> {
+                        translations.forEach { self.context.delete($0) }
+                    }
+                    wordData.translations.forEach { text in
+                        let translation = Translation(context: self.context)
+                        translation.text = text
+                        translation.word = wordEntry
+                    }
+                    
+
                 } catch {
                     DispatchQueue.main.async {
                         completion(error)
@@ -83,15 +104,10 @@ class DataManager {
 
             do {
                 try self.context.save()
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
+                completion(nil)
             } catch {
-                DispatchQueue.main.async {
-                    completion(error)
-                }
+                completion(error)
             }
         }
     }
-
 }

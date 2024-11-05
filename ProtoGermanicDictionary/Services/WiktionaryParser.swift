@@ -16,7 +16,7 @@ class WiktionaryParser {
     }
     
     static func parse(content: String) -> ParsedData {
-        print(content)
+//        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false

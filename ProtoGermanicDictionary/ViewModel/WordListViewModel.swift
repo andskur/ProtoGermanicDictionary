@@ -11,103 +11,60 @@ import CoreData
 class WordListViewModel: ObservableObject {
     @Published var words: [Word] = []
     @Published var isLoading = false
-    @Published var isLoadingMore = false
-    @Published var hasMoreData: Bool {
-        didSet {
-            UserDefaults.standard.set(hasMoreData, forKey: "hasMoreData")
-        }
-    }
-    @Published var filterWordType: WordType? = nil // Property to hold the selected filter type
+    @Published var filterWordType: WordType? = nil // Holds the selected filter for word type
 
     private var context: NSManagedObjectContext
-    private var cmcontinue: String? {
-        didSet {
-            UserDefaults.standard.set(cmcontinue, forKey: "cmcontinue")
-        }
-    }
 
     init(context: NSManagedObjectContext) {
         self.context = context
 
-        // Restore persisted values
-        self.cmcontinue = UserDefaults.standard.string(forKey: "cmcontinue")
-        self.hasMoreData = UserDefaults.standard.bool(forKey: "hasMoreData")
-
-        // If `hasMoreData` key doesn't exist in UserDefaults, default to `true`
-        if UserDefaults.standard.object(forKey: "hasMoreData") == nil {
-            self.hasMoreData = true
-        }
-
-        fetchWords()
-    }
-
-    func fetchWords() {
-        isLoading = true
-
-        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
-        
-        // Apply wordType filter if specified
-        if let filter = filterWordType?.rawValue {
-            fetchRequest.predicate = NSPredicate(format: "wordType == %@", filter)
-        }
-
-        do {
-            words = try context.fetch(fetchRequest)
-            isLoading = false
-
-            // If no words are found, reset cmcontinue and hasMoreData
-            if words.isEmpty {
-                self.cmcontinue = nil
-                self.hasMoreData = true
-                loadMoreWords()
-            }
-        } catch {
-            print("Fetch error: \(error)")
-            isLoading = false
+        // Check if data has already been loaded
+        if !UserDefaults.standard.bool(forKey: "isDataLoaded") {
+            preloadAllWordsWithDetails()
+        } else {
+            fetchWordsFromDatabase()
         }
     }
 
-    // Call this function when the filter changes
-    func applyFilter(wordType: WordType?) {
-        filterWordType = wordType
-        fetchWords() // Re-fetch words based on the new filter
+    // Fetch all words from the database after loading
+    func fetchWordsFromDatabase() {
+        words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType)
     }
 
-    func loadMoreWords() {
-        if !hasMoreData || isLoadingMore {
-            return
-        }
+    // Preload all words and details on the first launch
+    func preloadAllWordsWithDetails() {
+        isLoading = true // Start the spinner while loading
 
-        isLoadingMore = true
-
-        NetworkManager.shared.fetchWords(cmcontinue: cmcontinue) { [weak self] result in
+        NetworkManager.shared.fetchAllWordsWithDetails { [weak self] result in
             guard let self = self else { return }
-
+            
             switch result {
-            case .success(let (wordsData, nextCmcontinue)):
+            case .success(let wordsData):
                 DataManager.shared.importWords(wordsData) { error in
-                    DispatchQueue.main.async {
-                        self.isLoadingMore = false
-                        if let error = error {
-                            print("Error importing words: \(error)")
-                        } else {
-                            self.fetchWords()
+                    if let error = error {
+                        print("Failed to import words with error: \(error.localizedDescription)")
+                    } else {
+                        print("Words imported successfully")
+//                        try self.context.save()
+                        UserDefaults.standard.set(true, forKey: "isDataLoaded")
+                        self.fetchWordsFromDatabase() // Reload words from the database
+                        DispatchQueue.main.async {
+                            self.isLoading = false // Stop spinner after all data is loaded
                         }
                     }
                 }
-                if let nextCmcontinue = nextCmcontinue {
-                    self.cmcontinue = nextCmcontinue
-                } else {
-                    self.hasMoreData = false
-                    self.cmcontinue = nil
-                }
+                
+//                self.importWords(wordsData)
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.isLoadingMore = false
-                    print("Error fetching words: \(error)")
-                }
+                print("Error fetching words: \(error)")
+                self.isLoading = false // Stop spinner on failure
             }
         }
+    }
+
+    // Method to apply the filter
+    func applyFilter(wordType: WordType?) {
+        filterWordType = wordType
+        fetchWordsFromDatabase() // Re-fetch words based on the filter
     }
 }

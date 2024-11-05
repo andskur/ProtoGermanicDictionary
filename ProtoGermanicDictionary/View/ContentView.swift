@@ -9,21 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var context
-    @StateObject private var viewModel: WordListViewModel
-
-    init() {
-        let viewModel = WordListViewModel(context: DataManager.shared.context)
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
+    @StateObject private var viewModel = WordListViewModel(context: DataManager.shared.context)
 
     var body: some View {
         NavigationView {
             WordListView(viewModel: viewModel)
-        }
-        .onAppear {
-            if viewModel.words.isEmpty {
-                viewModel.loadMoreWords()
-            }
+                .navigationTitle("Proto-Germanic Dictionary")
+                .onAppear {
+                    // Ensure initial data load if necessary
+                    if viewModel.words.isEmpty && !viewModel.isLoading {
+                        viewModel.preloadAllWordsWithDetails()
+                    }
+                }
         }
     }
 }
