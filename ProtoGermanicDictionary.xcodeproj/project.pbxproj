@@ -47,11 +47,6 @@
 			path = ProtoGermanicDictionaryTests;
 			sourceTree = "<group>";
 		};
-		A12CDD012CD5801A00EAC681 /* ProtoGermanicDictionaryUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ProtoGermanicDictionaryUITests;
-			sourceTree = "<group>";
-		};
 		A17F9B4F2CDAC95100FC3337 /* .github */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = .github;
@@ -92,7 +87,6 @@
 				A17F9B192CDAC73800FC3337 /* README.md */,
 				A12CDCE02CD5801900EAC681 /* ProtoGermanicDictionary */,
 				A12CDCF72CD5801A00EAC681 /* ProtoGermanicDictionaryTests */,
-				A12CDD012CD5801A00EAC681 /* ProtoGermanicDictionaryUITests */,
 				A12CDCDF2CD5801900EAC681 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -168,9 +162,6 @@
 			);
 			dependencies = (
 				A12CDD002CD5801A00EAC681 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				A12CDD012CD5801A00EAC681 /* ProtoGermanicDictionaryUITests */,
 			);
 			name = ProtoGermanicDictionaryUITests;
 			packageProductDependencies = (

@@ -7,7 +7,9 @@ struct WordListView: View {
         VStack {
             TextField("Search words...", text: $viewModel.searchText)
                 .padding(8)
+                #if os(iOS)
                 .background(Color(UIColor.systemGray6))
+                #endif
                 .cornerRadius(8)
                 .padding(.horizontal)
             
@@ -22,7 +24,9 @@ struct WordListView: View {
                 Label(viewModel.filterWordType?.rawValue ?? "Filter by Type", systemImage: "line.3.horizontal.decrease.circle")
                     .font(.headline)
                     .padding()
+                    #if os(iOS)
                     .background(Color(UIColor.systemGray6))
+                    #endif
                     .cornerRadius(8)
             }
             .padding()
