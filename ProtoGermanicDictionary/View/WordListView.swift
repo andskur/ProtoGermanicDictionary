@@ -10,7 +10,9 @@ struct WordListView: View {
                 // Search TextField
                 TextField("Search words...", text: $viewModel.searchText)
                     .padding(10)
+                    #if os(iOS)
                     .background(Color(UIColor.systemGray6))
+                    #endif
                     .cornerRadius(8)
                     .autocorrectionDisabled(true)
                     .padding(.horizontal)
@@ -26,7 +28,9 @@ struct WordListView: View {
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 8)
+                            #if os(iOS)
                             .fill(Color(UIColor.systemGray6))
+                            #endif
                             .frame(width: 44, height: 44)
                             .shadow(radius: 2)
                         
@@ -75,6 +79,8 @@ struct WordListView: View {
                 .navigationTitle("Proto-Germanic Words")
             }
         }
-        .background(Color(.systemBackground)) // Adds a unified background color for the view
+        #if os(iOS)
+        .background(Color(.systemBackground))
+        #endif
     }
 }
