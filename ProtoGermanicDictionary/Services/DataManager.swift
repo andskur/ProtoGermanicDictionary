@@ -41,10 +41,13 @@ class DataManager {
         
         var predicates: [NSPredicate] = []
         
+        // Add wordTypeFilter predicate if specified
         if let filter = wordTypeFilter?.rawValue {
-            fetchRequest.predicate = NSPredicate(format: "wordType == %@", filter)
+            let wordTypePredicate = NSPredicate(format: "wordType == %@", filter)
+            predicates.append(wordTypePredicate)
         }
         
+        // Add search text predicate if searchText is not empty
         if !searchText.isEmpty {
             let normalizedSearchText = searchText.folding(options: .diacriticInsensitive, locale: .current)
             
@@ -55,9 +58,12 @@ class DataManager {
             // Combine both predicates using OR
             let searchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [titlePredicate, translationPredicate])
             predicates.append(searchPredicate)
-         }
+        }
         
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        // Set the final compound predicate
+        if !predicates.isEmpty {
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
 
         do {
             return try context.fetch(fetchRequest)
@@ -66,6 +72,7 @@ class DataManager {
             return []
         }
     }
+
 
     func importWords(_ wordsData: [WordData], completion: @escaping (Error?) -> Void) {
         context.perform {
