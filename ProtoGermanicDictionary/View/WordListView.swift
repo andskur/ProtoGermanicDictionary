@@ -1,3 +1,10 @@
+//
+//  WordListViewModel.swift
+//  ProtoGermanicDictionary
+//
+//  Created by Andrey Skurlatov on 01/11/2024.
+//
+
 import SwiftUI
 
 struct WordListView: View {
@@ -54,25 +61,7 @@ struct WordListView: View {
                 // List of Words
                 List(viewModel.words, id: \.id) { word in
                     NavigationLink(destination: WordDetailView(word: word)) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(word.title ?? "Unknown")
-                                .font(.headline)
-                                .lineLimit(1)
-                            
-                            if let translations = word.translations as? Set<Translation> {
-                                let filteredTranslations = translations
-                                    .compactMap { $0.text?.trimmingCharacters(in: .whitespacesAndNewlines) }
-                                    .filter { !$0.isEmpty }
-                                
-                                if !filteredTranslations.isEmpty {
-                                    Text(filteredTranslations.joined(separator: ", ").prefix(100))
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                        .lineLimit(1)
-                                }
-                            }
-                        }
-                        .padding(.vertical, 4)
+                        WordRow(word: word, showWordType: viewModel.filterWordType == nil)
                     }
                 }
                 .listStyle(PlainListStyle())
@@ -82,5 +71,39 @@ struct WordListView: View {
         #if os(iOS)
         .background(Color(.systemBackground))
         #endif
+    }
+}
+
+struct WordRow: View {
+    let word: Word
+    let showWordType: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // Display word title
+            Text(word.title ?? "Unknown")
+                .font(.headline)
+                .lineLimit(1)
+            
+            // Display translations if available
+            if let translations = word.translations as? Set<Translation> {
+                let filteredTranslations = Array(translations.compactMap { $0.text?.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty })
+                
+                if !filteredTranslations.isEmpty {
+                    Text(filteredTranslations.joined(separator: ", ").prefix(100))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            
+            // Display word type if no filter is applied
+            if showWordType, let wordType = word.wordType {
+                Text(wordType)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
