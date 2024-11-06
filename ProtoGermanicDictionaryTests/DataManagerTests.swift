@@ -115,12 +115,13 @@ class DataManagerTests: XCTestCase {
         dataManager.saveContext()
         
         // Update the word with new translations and word type
-        dataManager.updateWord(word, with: ["newTranslation1", "newTranslation2"], wordType: .adjective, nounGender: .neuter)
+        dataManager.updateWord(word, with: ["newTranslation1", "newTranslation2"], wordType: .noun, nounGender: .neuter, nounStem: .aStem)
         
         let updatedWord = dataManager.fetchWordDetails(title: "updateWord")
         XCTAssertEqual(updatedWord?.translations?.count, 2)
         XCTAssertEqual(updatedWord?.wordType, WordType.adjective.rawValue)
         XCTAssertEqual(updatedWord?.nounGender, NounGender.neuter.rawValue)
+        XCTAssertEqual(updatedWord?.nounStem, NounStem.aStem.rawValue)
     }
     
     // Test saving and fetching a word by title
