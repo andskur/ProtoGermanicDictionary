@@ -22,6 +22,7 @@ struct LetterSidebar: View {
     @ObservedObject var viewModel: WordListViewModel
     @Binding var selectedLetter: String?
 
+#if os(iOS)
     private var fontSize: CGFloat {
         let screenWidth = UIScreen.main.bounds.width
         switch screenWidth {
@@ -33,6 +34,9 @@ struct LetterSidebar: View {
             return 16 // Pro Max or larger devices
         }
     }
+#else
+    private var fontSize = 20
+#endif
 
     var body: some View {
         VStack {
