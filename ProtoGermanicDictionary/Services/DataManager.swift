@@ -35,18 +35,13 @@ class DataManager {
         if context.hasChanges {
             do {
                 try context.save()
-                print("Context saved successfully.")
             } catch {
                 print("Save error: \(error)")
             }
         }
     }
 
-    func fetchWords(wordTypeFilter: WordType? = nil, searchText: String = "") -> [Word] {
-        print("popa")
-        
-        print(searchText)
-        
+    func fetchWords(wordTypeFilter: WordType? = nil, searchText: String = "") -> [Word] {        
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
         
