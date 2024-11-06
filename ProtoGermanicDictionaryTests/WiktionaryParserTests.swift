@@ -10,6 +10,79 @@ import XCTest
 
 final class WiktionaryParserTests: XCTestCase {
     
+    
+    func testGenderAndStem() {
+        let content = """
+        {{reconstructed}}
+        ==Proto-Germanic==
+
+        ===Etymology===
+        {{unc|gem-pro}}. Often explained as derived from the {{der|gem-pro|ine-pro|-}} root {{m|ine-pro|*dʰegʷʰ-|t=to burn}}, but the loss of the labialization would be irregular; {{m|gem-pro||*dawaz}} would be expected. Kroonen posits instead a root {{m|ine-pro|*dʰeǵʰ-|t=day}}, from which he says a heteroclitic noun {{m|ine-pro|*dʰṓgʰr̥|*dʰṓǵʰ-r/n-|t=day}} is also derived, the source of {{cog|gem-pro|*dōgera-}}/{{m|gem-pro|*dōgena-}} (see {{m|gem-pro|*dōg-}}) and {{cog|iir-pro|*Háȷ́ʰr̥}} (from which {{cog|sa|अहर्}}) with irregular loss of the initial consonant, possibly in the zero grade.<ref>{{R:gem:EDPG}}</ref> For this root, see also {{m|gem-pro|*gēz}}, {{cog|got|𐌲𐌹𐍃𐍄𐍂𐌰𐌳𐌰𐌲𐌹𐍃}} and {{cog|gmw-pro|*gesteran|t={{l|en|yesterday}}}}, all deriving from {{m+|ine-pro|*dʰǵʰyés}}.
+
+        ===Pronunciation===
+        * {{IPA|gem-pro|/ˈdɑ.ɣɑz/}}
+
+        ===Noun===
+        {{gem-noun|m}}
+
+        # a [[day]], though in contrast to today this word referred to a period beginning at sunset and ending at sunrise as noted by Tacitus
+        #: {{ant|gem-pro|*nahts}}
+        # a [[day]] (24-hour period)
+        # {{rune name|gem-pro|d|ᛞ}}
+
+        ====Inflection====
+        {{gem-decl-noun}}
+
+        ====Derived terms====
+        * {{l|gem-pro|*airidagaz}}, {{l|gem-pro|*jēradagaz}}
+        * {{l|gem-pro|*dagāną}}
+        * {{l|gem-pro|*dagawerką}}
+        * {{l|gem-pro|*dagalangaz}}
+        * {{l|gem-pro|*hinō dagō}}
+        ** {{desc|gmw-pro|*hiu dagu}} {{see desc}}
+        ** {{desc|got|𐌷𐌹𐌼𐌼𐌰 𐌳𐌰𐌲𐌰}}
+
+        ====Related terms====
+        {{rel3
+        |gem-pro|*dagô
+        |*dōg-
+        |*dōgaz
+        }}
+
+        ====Descendants====
+        * {{desctree|gmw-pro|*dag}}
+        * {{desc|gmq-pro|*ᛞᚨᚷᚨᛉ}}
+        ** {{desctree|non|dagr}}
+        * {{desc|gme-cgo|tag}}
+        * {{desc|got|𐌳𐌰𐌲𐍃}}
+        * {{desc|xvn|*dag-}}
+
+        ===References===
+        <references/>
+
+        {{C|gem-pro|Runic letter names|Time}}
+
+        [[fr:Annexe:proto-germanique/*dagaz]]
+        [[nds:Anhang:Proto-Germaansch/dagaz]]
+        [[ru:*dagaz]]
+        """
+        
+        
+        let expectedWordType = WordType.noun
+        
+        let expectedGender =  NounGender.masculine
+        
+        let parsedData = WiktionaryParser.parse(content: content)
+        
+        print(parsedData.gender ?? "jopa")
+        print(parsedData.wordType.rawValue)
+        print(parsedData.stem ?? "konya")
+        
+        XCTAssertEqual(parsedData.wordType, expectedWordType, "Word type should be Noun")
+        XCTAssertEqual(parsedData.gender, expectedGender )
+    }
+    
+    
     // MARK: - Test Single Etymology with One Word Type
     
     func testSingleEtymologySingleWordType() {

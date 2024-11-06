@@ -9,12 +9,14 @@ import Foundation
 
 
 class WiktionaryParser {
-    
+
     struct ParsedData {
         var translations: [String] = []
         var wordType: WordType = .unknown
+        var gender: NounGender? = nil
+        var stem: String? = nil
     }
-    
+
     static func parse(content: String) -> ParsedData {
         print(content)
         
@@ -22,13 +24,13 @@ class WiktionaryParser {
         var inProtoGermanicSection = false
         var inEtymologySection = false
         var inWordTypeSection = false
-        
+
         // Split the content into lines
         let lines = content.components(separatedBy: .newlines)
-        
+
         for (_, line) in lines.enumerated() {
             let trimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            
+
             // Check for language section header (==Proto-Germanic==)
             if isLanguageSectionHeader(line: trimmedLine) {
                 let language = extractLanguage(from: trimmedLine)
@@ -37,7 +39,7 @@ class WiktionaryParser {
                 inWordTypeSection = false
                 continue
             }
-            
+
             if inProtoGermanicSection {
                 // Check for etymology section header (===Etymology=== or ===Etymology 1===)
                 if isEtymologySectionHeader(line: trimmedLine) {
@@ -45,11 +47,11 @@ class WiktionaryParser {
                     inWordTypeSection = false
                     continue
                 }
-                
+
                 // Check for word type section header (===Noun=== or ====Noun====)
                 if inEtymologySection && isWordTypeHeader(line: trimmedLine) {
                     let header = extractWordType(from: trimmedLine)
-                    
+
                     // Attempt to map the extracted header to a WordType
                     if parsedData.wordType == .unknown, let detectedWordType = WordType(rawValue: header) {
                         parsedData.wordType = detectedWordType
@@ -57,7 +59,12 @@ class WiktionaryParser {
                     inWordTypeSection = true
                     continue
                 }
-                
+
+                // Extract gender if available in the line
+                if let gender = extractGender(from: trimmedLine) {
+                    parsedData.gender = gender
+                }
+
                 // Collect translations under word type sections
                 if inEtymologySection && inWordTypeSection && trimmedLine.hasPrefix("#") {
                     var translationLine = trimmedLine
@@ -73,17 +80,28 @@ class WiktionaryParser {
                 }
             }
         }
-        
+
         return parsedData
     }
-    
-    // MARK: - Helper Functions
-    
+
+    static func extractGender(from line: String) -> NounGender? {
+        let pattern = #"\{\{gem-noun\|([mfn])\}\}"#
+        if let genderCode = line.captures(for: pattern).first {
+            switch genderCode {
+            case "m": return NounGender.masculine
+            case "f": return NounGender.femenine
+            case "n": return NounGender.neuter
+            default: return nil
+            }
+        }
+        return nil
+    }
+
     static func isLanguageSectionHeader(line: String) -> Bool {
         let pattern = "^==\\s*[^=]+?\\s*==$"
         return line.range(of: pattern, options: .regularExpression) != nil
     }
-    
+
     static func extractLanguage(from line: String) -> String {
         let pattern = "^==\\s*([^=]+?)\\s*==$"
         if let match = line.captures(for: pattern).first {
@@ -91,47 +109,39 @@ class WiktionaryParser {
         }
         return ""
     }
-    
+
     static func isEtymologySectionHeader(line: String) -> Bool {
-        // Matches lines like ===Etymology=== or ===Etymology 1===
         let pattern = "^===\\s*Etymology(?:\\s*\\d+)?\\s*===$"
         return line.range(of: pattern, options: .regularExpression) != nil
     }
-    
+
     static func isWordTypeHeader(line: String) -> Bool {
-        // Match headers with either 3 or 4 equals
         let pattern = "^={3,4}\\s*[^=]+?\\s*={3,4}$"
         return line.range(of: pattern, options: .regularExpression) != nil
     }
-    
+
     static func extractWordType(from line: String) -> String {
-        // Capture the word type from headers with 3 or 4 equals
         let pattern = "^={3,4}\\s*([^=]+?)\\s*={3,4}$"
         if let match = line.captures(for: pattern).first {
             return match
         }
         return ""
     }
-    
+
     static func removeWikiFormatting(from text: String) -> String {
         var result = text
-        // Remove bold and italics
         result = result.replacingOccurrences(of: "'''", with: "")
         result = result.replacingOccurrences(of: "''", with: "")
-        // Remove links [[...|...]] and [[...]]
         result = result.replacingOccurrences(of: "\\[\\[([^\\]|]+)\\|([^\\]]+)\\]\\]", with: "$2", options: .regularExpression)
         result = result.replacingOccurrences(of: "\\[\\[([^\\]]+)\\]\\]", with: "$1", options: .regularExpression)
-        // Remove templates {{...}}
         result = result.replacingOccurrences(of: "\\{\\{[^}]+\\}\\}", with: "", options: .regularExpression)
-        // Remove references <ref>...</ref>
         result = result.replacingOccurrences(of: "<ref[^>]*>.*?<\\/ref>", with: "", options: .regularExpression)
-        // Remove any remaining brackets and angle brackets
         result = result.replacingOccurrences(of: "[\\[\\]\\{\\}<>&]", with: "", options: .regularExpression)
-        // Trim whitespace
         result = result.trimmingCharacters(in: .whitespacesAndNewlines)
         return result
     }
 }
+
 
 // MARK: - String Extension for Regex Captures
 

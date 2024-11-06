@@ -2,7 +2,7 @@
 //  Word+CoreDataProperties.swift
 //  ProtoGermanicDictionary
 //
-//  Created by Andrey Skurlatov on 02/11/2024.
+//  Created by Andrey Skurlatov on 06/11/2024.
 //
 //
 
@@ -21,6 +21,7 @@ extension Word {
     @NSManaged public var sortTitle: String?
     @NSManaged public var title: String?
     @NSManaged public var wordType: String?
+    @NSManaged public var nounGender: String?
     @NSManaged public var translations: NSSet?
 
 }
