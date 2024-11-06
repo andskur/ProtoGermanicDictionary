@@ -9,68 +9,135 @@ import SwiftUI
 
 struct WordListView: View {
     @ObservedObject var viewModel: WordListViewModel
+    
+    @State private var selectedLetter: String? = nil // Holds the selected letter for scrolling
+
+
+    var body: some View {
+        MainWordList(viewModel: viewModel, selectedLetter: $selectedLetter)
+    }
+}
+
+
+struct LetterSidebar: View {
+    @ObservedObject var viewModel: WordListViewModel
+    @Binding var selectedLetter: String?
+
+    var body: some View {
+        VStack {
+            ForEach(viewModel.letters, id: \.self) { letter in
+                Text(letter)
+                    .font(.system(size: 14, weight: .bold))
+                    .padding(.vertical, 1)
+                    .foregroundColor(letter == selectedLetter ? .blue : .primary)
+                    .onTapGesture {
+                        selectedLetter = letter
+                    }
+            }
+        }
+    }
+}
+
+
+struct MainWordList: View {
+    @ObservedObject var viewModel: WordListViewModel
+    @Binding var selectedLetter: String?
 
     var body: some View {
         VStack {
             // Search and Filter Row
-            HStack(spacing: 12) {
-                // Search TextField
-                TextField("Search words...", text: $viewModel.searchText)
-                    .padding(10)
-                    #if os(iOS)
-                    .background(Color(UIColor.systemGray6))
-                    #endif
-                    .cornerRadius(8)
-                    .autocorrectionDisabled(true)
-                    .padding(.horizontal)
-                
-                // Filter Menu Button
-                Menu {
-                    Button("All", action: { viewModel.applyFilter(wordType: nil) })
-                    ForEach(WordType.allCases, id: \.self) { type in
-                        Button(type.rawValue) {
-                            viewModel.applyFilter(wordType: type)
-                        }
-                    }
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            #if os(iOS)
-                            .fill(Color(UIColor.systemGray6))
-                            #endif
-                            .frame(width: 44, height: 44)
-                            .shadow(radius: 2)
-                        
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .font(.system(size: 20, weight: .medium))
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
-            .padding(.vertical, 10)
+            SearchFilterRow(viewModel: viewModel)
             
-            // Loading Indicator
+            // Loading Indicator or Word List
             if viewModel.isLoading {
-                VStack {
-                    ProgressView("Loading all words...")
-                        .padding()
-                    Text("Please wait, this may take a while.")
-                        .foregroundColor(.gray)
-                }
+                LoadingIndicator()
             } else {
-                // List of Words
-                List(viewModel.words, id: \.id) { word in
-                    NavigationLink(destination: WordDetailView(word: word)) {
-                        WordRow(word: word, showWordType: viewModel.filterWordType == nil)
-                    }
+                HStack {
+                    LetterSidebar(viewModel: viewModel, selectedLetter:  $selectedLetter)
+                    WordListContent(viewModel: viewModel, selectedLetter: $selectedLetter)
+
                 }
-                .listStyle(PlainListStyle())
-                .navigationTitle("Proto-Germanic Words")
             }
         }
         #if os(iOS)
         .background(Color(.systemBackground))
         #endif
+    }
+}
+
+
+struct WordListContent: View {
+    @ObservedObject var viewModel: WordListViewModel
+    @Binding var selectedLetter: String?
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            List(viewModel.words, id: \.id) { word in
+                NavigationLink(destination: WordDetailView(word: word)) {
+                    WordRow(word: word, showWordType: viewModel.filterWordType == nil)
+                }
+                .id(word.title?.prefix(1).uppercased() ?? "")
+            }
+            .listStyle(PlainListStyle())
+            .onChange(of: selectedLetter) {
+                if let selectedLetter = selectedLetter {
+                    proxy.scrollTo(selectedLetter, anchor: .top)
+                }
+            }
+        }
+        .navigationTitle("Proto-Germanic Words")
+    }
+}
+
+struct SearchFilterRow: View {
+    @ObservedObject var viewModel: WordListViewModel
+
+    var body: some View {
+        HStack(spacing: 12) {
+            TextField("Search words...", text: $viewModel.searchText)
+                .padding(10)
+                #if os(iOS)
+                .background(Color(UIColor.systemGray6))
+                #endif
+                .cornerRadius(8)
+                .autocorrectionDisabled(true)
+                .padding(.horizontal)
+            
+            Menu {
+                Button("All", action: { viewModel.applyFilter(wordType: nil) })
+                ForEach(WordType.allCases, id: \.self) { type in
+                    Button(type.rawValue) {
+                        viewModel.applyFilter(wordType: type)
+                    }
+                }
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        #if os(iOS)
+                        .fill(Color(UIColor.systemGray6))
+                        #endif
+                        .frame(width: 44, height: 44)
+                        .shadow(radius: 2)
+                    
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundColor(.blue)
+                }
+            }
+        }
+        .padding(.vertical, 10)
+    }
+}
+
+
+struct LoadingIndicator: View {
+    var body: some View {
+        VStack {
+            ProgressView("Loading all words...")
+                .padding()
+            Text("Please wait, this may take a while.")
+                .foregroundColor(.gray)
+        }
     }
 }
 

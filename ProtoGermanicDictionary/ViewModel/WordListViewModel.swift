@@ -10,16 +10,16 @@ import Foundation
 class WordListViewModel: ObservableObject {
     @Published var words: [Word] = []
     @Published var isLoading = false
-    @Published var filterWordType: WordType? = nil // Holds the selected filter for word type
+    @Published var filterWordType: WordType? = nil
     @Published var searchText: String = "" {
         didSet {
             fetchWordsFromDatabase()
         }
     }
-
+    
+    @Published var letters: [String] = []
 
     init() {
-        // Check if data has already been loaded
         if !UserDefaults.standard.bool(forKey: "isDataLoaded") {
             preloadAllWordsWithDetails()
         } else {
@@ -27,18 +27,22 @@ class WordListViewModel: ObservableObject {
         }
     }
 
-    // Fetch all words from the database after loading
     func fetchWordsFromDatabase() {
-//        isLoading = true
         words = DataManager.shared.fetchWords(wordTypeFilter: filterWordType, searchText: searchText)
         sanitizeDataForDisplay()
-//        isLoading = false
+        loadLetters()
+    }
+    
+    private func loadLetters() {
+        let startingLetters = Set(words.compactMap { word in
+            String(word.title?.prefix(1) ?? "").foldedToBaseUppercase()
+        })
+        letters = Array(startingLetters).sorted()
     }
 
-    // Preload all words and details on the first launch
-    func preloadAllWordsWithDetails() {
-        isLoading = true // Start the spinner while loading
 
+    func preloadAllWordsWithDetails() {
+        isLoading = true
         NetworkManager.shared.fetchAllWordsWithDetails { [weak self] result in
             guard let self = self else { return }
             
@@ -49,27 +53,23 @@ class WordListViewModel: ObservableObject {
                         print("Failed to import words with error: \(error.localizedDescription)")
                     } else {
                         print("Words imported successfully")
-//                        try self.context.save()
                         UserDefaults.standard.set(true, forKey: "isDataLoaded")
-                        self.fetchWordsFromDatabase() // Reload words from the database
+                        self.fetchWordsFromDatabase()
                         DispatchQueue.main.async {
-                            self.isLoading = false // Stop spinner after all data is loaded
+                            self.isLoading = false
                         }
                     }
                 }
-                
-//                self.importWords(wordsData)
             case .failure(let error):
                 print("Error fetching words: \(error)")
-                self.isLoading = false // Stop spinner on failure
+                self.isLoading = false
             }
         }
     }
 
-    // Method to apply the filter
     func applyFilter(wordType: WordType?) {
         filterWordType = wordType
-        fetchWordsFromDatabase() // Re-fetch words based on the filter
+        fetchWordsFromDatabase()
     }
     
     private func sanitizeDataForDisplay() {
@@ -85,14 +85,18 @@ class WordListViewModel: ObservableObject {
                         .trimmingCharacters(in: .whitespacesAndNewlines)
                     return sanitizedTranslation
                 }
-                
-                // Convert sanitizedTranslations (array) back into NSSet for CoreData compatibility
                 sanitizedWord.translations = NSSet(array: sanitizedTranslations)
             }
             
             return sanitizedWord
         }
     }
+}
 
-
+// String extension for normalizing letters to their base forms
+extension String {
+    /// Removes diacritics and converts the first character to uppercase
+    func foldedToBaseUppercase() -> String {
+        return self.folding(options: .diacriticInsensitive, locale: .current).prefix(1).uppercased()
+    }
 }
