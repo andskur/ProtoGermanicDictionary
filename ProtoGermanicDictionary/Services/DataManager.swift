@@ -10,6 +10,13 @@ import CoreData
 
 class DataManager {
     static let shared = DataManager()
+    private let persistentContainer: NSPersistentContainer
+    
+    var context: NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    
+    // Default initializer for production
     private init() {
         persistentContainer = NSPersistentContainer(name: "ProtoGermanicDictionary")
         persistentContainer.loadPersistentStores { _, error in
@@ -18,17 +25,17 @@ class DataManager {
             }
         }
     }
-
-    let persistentContainer: NSPersistentContainer
-
-    var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
+    
+    // Custom initializer for testing
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
     }
 
     func saveContext() {
         if context.hasChanges {
             do {
                 try context.save()
+                print("Context saved successfully.")
             } catch {
                 print("Save error: \(error)")
             }
@@ -36,6 +43,10 @@ class DataManager {
     }
 
     func fetchWords(wordTypeFilter: WordType? = nil, searchText: String = "") -> [Word] {
+        print("popa")
+        
+        print(searchText)
+        
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortTitle", ascending: true)]
         
