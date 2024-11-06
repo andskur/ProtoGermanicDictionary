@@ -9,15 +9,12 @@ import SwiftUI
 
 struct WordListView: View {
     @ObservedObject var viewModel: WordListViewModel
-    
-    @State private var selectedLetter: String? = nil // Holds the selected letter for scrolling
-
+    @State private var selectedLetter: String? = nil
 
     var body: some View {
         MainWordList(viewModel: viewModel, selectedLetter: $selectedLetter)
     }
 }
-
 
 struct LetterSidebar: View {
     @ObservedObject var viewModel: WordListViewModel
@@ -38,24 +35,20 @@ struct LetterSidebar: View {
     }
 }
 
-
 struct MainWordList: View {
     @ObservedObject var viewModel: WordListViewModel
     @Binding var selectedLetter: String?
 
     var body: some View {
         VStack {
-            // Search and Filter Row
             SearchFilterRow(viewModel: viewModel)
             
-            // Loading Indicator or Word List
             if viewModel.isLoading {
                 LoadingIndicator()
             } else {
                 HStack {
-                    LetterSidebar(viewModel: viewModel, selectedLetter:  $selectedLetter)
+                    LetterSidebar(viewModel: viewModel, selectedLetter: $selectedLetter)
                     WordListContent(viewModel: viewModel, selectedLetter: $selectedLetter)
-
                 }
             }
         }
@@ -65,18 +58,33 @@ struct MainWordList: View {
     }
 }
 
-
 struct WordListContent: View {
     @ObservedObject var viewModel: WordListViewModel
     @Binding var selectedLetter: String?
 
     var body: some View {
         ScrollViewReader { proxy in
-            List(viewModel.words, id: \.id) { word in
-                NavigationLink(destination: WordDetailView(word: word)) {
-                    WordRow(word: word, showWordType: viewModel.filterWordType == nil)
+            List {
+                ForEach(viewModel.letters, id: \.self) { letter in
+                    Section() {
+                        ForEach(viewModel.words.filter { $0.title?.first?.uppercased() == letter }, id: \.id) { word in
+                            NavigationLink(destination: WordDetailView(word: word)) {
+                                WordRow(word: word, showWordType: viewModel.filterWordType == nil)
+                            }
+                        }
+                    }
+                    .background(
+                        GeometryReader { geo -> Color in
+                            let frame = geo.frame(in: .global)
+                            DispatchQueue.main.async {
+                                if frame.minY < 100 && frame.minY > 0 {
+                                    selectedLetter = letter
+                                }
+                            }
+                            return Color.clear
+                        }
+                    )
                 }
-                .id(word.title?.prefix(1).uppercased() ?? "")
             }
             .listStyle(PlainListStyle())
             .onChange(of: selectedLetter) {
@@ -129,7 +137,6 @@ struct SearchFilterRow: View {
     }
 }
 
-
 struct LoadingIndicator: View {
     var body: some View {
         VStack {
@@ -147,14 +154,13 @@ struct WordRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            // Display word title
             Text(word.title ?? "Unknown")
                 .font(.headline)
                 .lineLimit(1)
             
-            // Display translations if available
             if let translations = word.translations as? Set<Translation> {
-                let filteredTranslations = Array(translations.compactMap { $0.text?.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty })
+                let filteredTranslations = translations.compactMap { $0.text?.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
                 
                 if !filteredTranslations.isEmpty {
                     Text(filteredTranslations.joined(separator: ", ").prefix(100))
@@ -164,7 +170,6 @@ struct WordRow: View {
                 }
             }
             
-            // Display word type if no filter is applied
             if showWordType, let wordType = word.wordType {
                 Text(wordType)
                     .font(.caption)
