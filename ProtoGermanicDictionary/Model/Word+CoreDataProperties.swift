@@ -22,6 +22,7 @@ extension Word {
     @NSManaged public var title: String?
     @NSManaged public var wordType: String?
     @NSManaged public var nounGender: String?
+    @NSManaged public var nounStem: String?
     @NSManaged public var translations: NSSet?
 
 }

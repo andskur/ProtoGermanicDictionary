@@ -12,6 +12,7 @@ class WordDetailViewModel: ObservableObject {
     @Published var translations: [Translation] = []
     @Published var wordType: WordType = .unknown
     @Published var nounGender: NounGender? = nil
+    @Published var nounStem: NounStem? = nil
     @Published var isLoading = false
     
     init(word: Word) {
@@ -21,9 +22,9 @@ class WordDetailViewModel: ObservableObject {
         loadExistingWordDetails()
         
         // Fetch details if they're missing
-//        if translations.isEmpty || word.wordType == nil {
+        if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
-//        }
+        }
     }
     
     private func loadExistingWordDetails() {
@@ -34,6 +35,14 @@ class WordDetailViewModel: ObservableObject {
         
         if let storedWordType = word.wordType {
             self.wordType = WordType(rawValue: storedWordType) ?? .unknown
+        }
+        
+        if let storedNounGender = word.nounGender {
+            self.nounGender = NounGender(rawValue: storedNounGender)
+        }
+        
+        if let storedNounStem = word.nounStem {
+            self.nounStem = NounStem(rawValue: storedNounStem)  
         }
     }
     
@@ -49,7 +58,13 @@ class WordDetailViewModel: ObservableObject {
                 case .success(let content):
                     let parsedData = WiktionaryParser.parse(content: content)
                     self?.wordType = parsedData.wordType
-                    self?.nounGender = parsedData.gender
+                    
+                    if parsedData.wordType == .noun {
+                        self?.nounGender = parsedData.gender
+                        self?.nounStem = NounStem.detectStemType(nominativeSingular: fullTitle, gender: parsedData.gender!)
+                    }
+                    
+                    
                     self?.updateWordWithFetchedData(translationsTexts: parsedData.translations)
                 case .failure(let error):
                     print("Error fetching details: \(error)")
@@ -60,7 +75,7 @@ class WordDetailViewModel: ObservableObject {
     
     private func updateWordWithFetchedData(translationsTexts: [String]) {
         // Update word and translations in Core Data through DataManager
-        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender)
+        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender, nounStem: nounStem)
         
         // Refresh the translations array from the updated Core Data
         if let updatedTranslationsSet = word.translations as? Set<Translation> {

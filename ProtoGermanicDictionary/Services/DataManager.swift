@@ -109,7 +109,11 @@ class DataManager {
                     wordEntry.sortTitle = wordData.title.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
                     wordEntry.id = wordEntry.id ?? UUID()
                     wordEntry.wordType = wordData.wordType.rawValue
-                    wordEntry.nounGender = wordData.gender?.rawValue
+                    
+                    if wordData.wordType == .noun {
+                        wordEntry.nounGender = wordData.gender?.rawValue
+                        wordEntry.nounStem = NounStem.detectStemType(nominativeSingular: wordData.title, gender: wordData.gender ?? NounGender.neuter).rawValue
+                    }
 
                     // Update translations
                     if let translations = wordEntry.translations as? Set<Translation> {
@@ -154,7 +158,7 @@ class DataManager {
     }
 
     // Update translations and word type for a specific word
-    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: NounGender?) {
+    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: NounGender?, nounStem: NounStem?) {
         // Remove existing translations
         if let existingTranslations = word.translations as? Set<Translation> {
             for translation in existingTranslations {
@@ -172,7 +176,12 @@ class DataManager {
         // Update wordType
         word.wordType = wordType.rawValue
         
-        word.nounGender = nounGender?.rawValue
+        if wordType == .noun {
+            word.nounGender = nounGender?.rawValue
+//            print (NounStem.detectStemType(nominativeSingular: word.title!, gender: nounGender!).rawValue)
+            
+            word.nounStem = nounStem?.rawValue
+        }
         
         saveContext()
     }

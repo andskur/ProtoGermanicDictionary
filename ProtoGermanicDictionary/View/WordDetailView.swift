@@ -26,7 +26,7 @@ struct WordDetailView: View {
                         .padding(.top, 20)
                 } else {
                     if viewModel.wordType != .unknown {
-                        Text("Type: \(viewModel.wordType.rawValue) \(viewModel.nounGender?.rawValue ?? "")")
+                        Text("Type: \(viewModel.wordType.rawValue)")
                             .font(.headline)
                     } else {
                         Text("Type: Unknown")
@@ -35,6 +35,11 @@ struct WordDetailView: View {
                     
                     if viewModel.nounGender != nil {
                         Text("Gender: \(viewModel.nounGender!.rawValue)")
+                            .font(.subheadline)
+                    }
+                    
+                    if viewModel.nounStem != nil {
+                        Text("Stem: \(viewModel.nounStem!)")
                             .font(.subheadline)
                     }
                     
