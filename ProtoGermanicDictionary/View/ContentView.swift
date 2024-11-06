@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var context
-    @StateObject private var viewModel = WordListViewModel(context: DataManager.shared.context)
+    @StateObject private var viewModel = WordListViewModel()
 
     var body: some View {
         NavigationView {

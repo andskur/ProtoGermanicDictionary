@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 class WordListViewModel: ObservableObject {
     @Published var words: [Word] = []
@@ -18,11 +17,8 @@ class WordListViewModel: ObservableObject {
         }
     }
 
-    private var context: NSManagedObjectContext
 
-    init(context: NSManagedObjectContext) {
-        self.context = context
-
+    init() {
         // Check if data has already been loaded
         if !UserDefaults.standard.bool(forKey: "isDataLoaded") {
             preloadAllWordsWithDetails()
