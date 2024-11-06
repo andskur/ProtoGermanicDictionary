@@ -16,16 +16,30 @@ struct WordListView: View {
     }
 }
 
+import SwiftUI
+
 struct LetterSidebar: View {
     @ObservedObject var viewModel: WordListViewModel
     @Binding var selectedLetter: String?
+
+    private var fontSize: CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        switch screenWidth {
+        case ...375:
+            return 11 // Smaller iPhones (e.g., iPhone SE, iPhone 12 mini)
+        case 376...430:
+            return 13 // Standard iPhones (e.g., iPhone 14)
+        default:
+            return 16 // Pro Max or larger devices
+        }
+    }
 
     var body: some View {
         VStack {
             ForEach(viewModel.letters, id: \.self) { letter in
                 Text(letter)
-                    .font(.system(size: 14, weight: .bold))
-                    .padding(.vertical, 1)
+                    .font(.system(size: fontSize, weight: .bold))
+                    .padding(.vertical, 2)
                     .foregroundColor(letter == selectedLetter ? .blue : .primary)
                     .onTapGesture {
                         selectedLetter = letter
@@ -34,6 +48,7 @@ struct LetterSidebar: View {
         }
     }
 }
+
 
 struct MainWordList: View {
     @ObservedObject var viewModel: WordListViewModel
