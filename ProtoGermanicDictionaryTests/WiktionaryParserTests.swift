@@ -9,7 +9,85 @@ import XCTest
 @testable import ProtoGermanicDictionary // Replace with your actual module name
 
 final class WiktionaryParserTests: XCTestCase {
-    
+    func testStrongVerbParsing() {
+        let content = """
+        {{reconstructed}}
+        ==Proto-Germanic==
+
+        ===Etymology===
+        See {{m|gem-pro|*blōtą}}.
+
+        ===Pronunciation===
+        * {{IPA|gem-pro|/ˈblɔː.tɑ.nɑ̃/}}
+
+        ===Verb===
+        {{gem-verb}}
+
+        # to [[worship]]
+        # {{lb|gem-pro|with instrumental}} to [[sacrifice]]
+
+        ====Inflection====
+        {{gem-conj-st|class=7e|blōt|beblōt|beblōt|blōt}}
+
+        ====Related terms====
+        * {{l|gem-pro|*blōstrą}}
+        * {{l|gem-pro|*blōtą}}
+        * {{l|gem-pro|*blōtiz}}
+
+        ====Descendants====
+        * {{desctree|gmw-pro|*blōtan}}
+        * {{desc|non|blóta}}
+        ** {{desc|is|blóta}}
+        ** {{desc|fo|blóta}}
+        ** {{desc|nn|blóta}}
+        ** {{desc|gmq-osw|blota|alt=blōta}}
+        *** {{desc|sv|blota}}
+        ** {{desc|da|blote|bor=1}}
+        * {{desc|got|𐌱𐌻𐍉𐍄𐌰𐌽}}
+
+        {{topics|gem-pro|Religion}}
+        """
+
+        let parsedData = WiktionaryParser.parse(content: content)
+        
+        XCTAssertEqual(parsedData.wordType, .verb)
+        XCTAssertEqual(parsedData.verbClass, VerbClass.strongClass7)
+    }
+
+    func testWeakVerbParsing() {
+        let content = """
+        {{reconstructed}}
+        ==Proto-Germanic==
+
+        ===Etymology===
+        {{root|gem-pro|ine-pro|*del-}}
+        From {{der|gem-pro|ine-pro|*del-}}, {{m|ine-pro||*dol-|t=to aim, calculate, adjust}}. Equivalent to {{suffix|gem-pro|*talō|t1=narration, calculation|*-janą|id2=denominative}}. Cognate with {{cog|la|dolus|t=guile, deception}}.
+
+        ===Pronunciation===
+        * {{IPA|gem-pro|/ˈtɑl.jɑ.nɑ̃/}}
+
+        ===Verb===
+        {{gem-verb}}
+
+        # to [[enumerate]], [[count]]
+        # to [[account]], [[recount]], [[tell]]
+
+        ====Inflection====
+        {{gem-conj-wk1|tal|j=j}}
+
+        ====Related terms====
+        * {{l|gem-pro|*talō}}
+
+        ====Descendants====
+        * {{desctree|gmw-pro|*talljan}}
+        * {{desctree|non|telja}}
+        """
+        
+        let parsedData = WiktionaryParser.parse(content: content)
+        
+        XCTAssertEqual(parsedData.wordType, .verb)
+        XCTAssertEqual(parsedData.verbClass, VerbClass.weakClass1)
+    }
     
     func testGenderAndStem() {
         let content = """
@@ -73,10 +151,6 @@ final class WiktionaryParserTests: XCTestCase {
         let expectedGender =  NounGender.masculine
         
         let parsedData = WiktionaryParser.parse(content: content)
-        
-        print(parsedData.gender ?? "jopa")
-        print(parsedData.wordType.rawValue)
-        print(parsedData.stem ?? "konya")
         
         XCTAssertEqual(parsedData.wordType, expectedWordType, "Word type should be Noun")
         XCTAssertEqual(parsedData.gender, expectedGender )

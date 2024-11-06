@@ -13,6 +13,7 @@ class WordDetailViewModel: ObservableObject {
     @Published var wordType: WordType = .unknown
     @Published var nounGender: NounGender? = nil
     @Published var nounStem: NounStem? = nil
+    @Published var verbClass: VerbClass? = nil
     @Published var isLoading = false
     
     init(word: Word) {
@@ -22,9 +23,9 @@ class WordDetailViewModel: ObservableObject {
         loadExistingWordDetails()
         
         // Fetch details if they're missing
-        if translations.isEmpty || word.wordType == nil {
+//        if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
-        }
+//        }
     }
     
     private func loadExistingWordDetails() {
@@ -44,6 +45,10 @@ class WordDetailViewModel: ObservableObject {
         if let storedNounStem = word.nounStem {
             self.nounStem = NounStem(rawValue: storedNounStem)  
         }
+        
+        if let storedVerbClass = word.verbClass {
+            self.verbClass = VerbClass(rawValue: storedVerbClass)   
+        }
     }
     
     func fetchWordDetails() {
@@ -62,8 +67,9 @@ class WordDetailViewModel: ObservableObject {
                     if parsedData.wordType == .noun {
                         self?.nounGender = parsedData.gender
                         self?.nounStem = NounStem.detectStemType(nominativeSingular: fullTitle, gender: parsedData.gender!)
+                    } else if parsedData.wordType == .verb {
+                        self?.verbClass = parsedData.verbClass
                     }
-                    
                     
                     self?.updateWordWithFetchedData(translationsTexts: parsedData.translations)
                 case .failure(let error):
@@ -75,7 +81,7 @@ class WordDetailViewModel: ObservableObject {
     
     private func updateWordWithFetchedData(translationsTexts: [String]) {
         // Update word and translations in Core Data through DataManager
-        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender, nounStem: nounStem)
+        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender, nounStem: nounStem, verbClass: verbClass)
         
         // Refresh the translations array from the updated Core Data
         if let updatedTranslationsSet = word.translations as? Set<Translation> {

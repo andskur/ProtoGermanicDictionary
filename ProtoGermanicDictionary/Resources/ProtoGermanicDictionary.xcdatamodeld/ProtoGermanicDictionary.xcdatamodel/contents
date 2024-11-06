@@ -11,6 +11,7 @@
         <attribute name="nounStem" optional="YES" attributeType="String"/>
         <attribute name="sortTitle" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
+        <attribute name="verbClass" optional="YES" attributeType="String"/>
         <attribute name="wordType" optional="YES" attributeType="String"/>
         <relationship name="translations" toMany="YES" deletionRule="Nullify" destinationEntity="Translation" inverseName="word" inverseEntity="Translation"/>
     </entity>

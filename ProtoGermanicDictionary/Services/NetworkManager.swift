@@ -170,6 +170,7 @@ class NetworkManager {
                                             allWordsData[index].wordType = parsedData.wordType
                                             allWordsData[index].translations = parsedData.translations
                                             allWordsData[index].gender = parsedData.gender
+                                            allWordsData[index].verbClass = parsedData.verbClass
                                         }
                                     case .failure(let error):
                                         print("Error fetching details for \(wordData.title): \(error)")
@@ -237,6 +238,7 @@ struct WordData {
     var wordType: WordType
     var translations: [String] // Stores translations
     var gender: NounGender?
+    var verbClass: VerbClass?
 
     init(pageid: Int64, title: String, wordType: WordType, translations: [String]) {
         self.pageid = pageid

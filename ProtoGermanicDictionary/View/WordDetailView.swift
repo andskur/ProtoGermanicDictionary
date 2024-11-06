@@ -43,6 +43,11 @@ struct WordDetailView: View {
                             .font(.subheadline)
                     }
                     
+                    if viewModel.verbClass != nil {
+                        Text("Class: \(viewModel.verbClass!.rawValue)")
+                            .font(.subheadline)
+                    }
+                    
                     if !viewModel.translations.isEmpty {
                         Text("Translations:")
                             .font(.headline)

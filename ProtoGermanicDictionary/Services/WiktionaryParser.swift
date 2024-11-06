@@ -14,11 +14,11 @@ class WiktionaryParser {
         var translations: [String] = []
         var wordType: WordType = .unknown
         var gender: NounGender? = nil
-        var stem: String? = nil
+        var verbClass: VerbClass?
     }
 
     static func parse(content: String) -> ParsedData {
-//        print(content)
+        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false
@@ -64,7 +64,13 @@ class WiktionaryParser {
                 if let gender = extractGender(from: trimmedLine) {
                     parsedData.gender = gender
                 }
-
+                
+                if inWordTypeSection && parsedData.wordType == .verb {
+                    if let (isStrong, verbClass) = detectVerbClass(from: trimmedLine) {
+                        parsedData.verbClass = VerbClass.detectVerbClass(isStrong: isStrong, verbClass: verbClass)
+                    }
+                }
+                
                 // Collect translations under word type sections
                 if inEtymologySection && inWordTypeSection && trimmedLine.hasPrefix("#") {
                     var translationLine = trimmedLine
@@ -82,6 +88,24 @@ class WiktionaryParser {
         }
 
         return parsedData
+    }
+    
+    // Function to detect verb type and class
+    static func detectVerbClass(from line: String) -> (isStrong: Bool, verbClass: String)? {
+        // Pattern to capture strong verbs with class, e.g., {{gem-conj-st|class=7e|...}}
+        let strongPattern = #"\{\{gem-conj-st\|class=(\w+)"#
+        if let strongClass = line.captures(for: strongPattern).first {
+            return (isStrong: true, verbClass: strongClass)
+        }
+
+        // Pattern to capture weak verbs with class, e.g., {{gem-conj-wk1|...}}
+        let weakPattern = #"\{\{gem-conj-wk(\d+)"#
+        if let weakClass = line.captures(for: weakPattern).first {
+            return (isStrong: false, verbClass: "wk\(weakClass)")
+        }
+
+        // If no pattern is matched, return nil
+        return nil
     }
 
     static func extractGender(from line: String) -> NounGender? {
