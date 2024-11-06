@@ -9,8 +9,12 @@ import Foundation
 
 class NetworkManager {
     static let shared = NetworkManager()
-    private init() {}
-
+    private var session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+    
     func fetchWords(cmcontinue: String? = nil, completion: @escaping (Result<([WordData], String?), Error>) -> Void) {
         let apiEndpoint = "https://en.wiktionary.org/w/api.php"
         var urlComponents = URLComponents(string: apiEndpoint)!
@@ -32,7 +36,7 @@ class NetworkManager {
         var request = URLRequest(url: urlComponents.url!)
         request.cachePolicy = .reloadIgnoringLocalCacheData
 
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        let task = session.dataTask(with: request) { data, _, error in
             if let error = error {
                 DispatchQueue.main.async {
                     completion(.failure(error))
@@ -93,7 +97,7 @@ class NetworkManager {
         var request = URLRequest(url: urlComponents.url!)
         request.cachePolicy = .reloadIgnoringLocalCacheData
 
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        let task = session.dataTask(with: request) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
