@@ -123,15 +123,31 @@ struct SearchFilterRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            TextField("Search words...", text: $viewModel.searchText)
-                .padding(10)
-                #if os(iOS)
-                .background(Color(UIColor.systemGray6))
-                #endif
-                .cornerRadius(8)
-                .autocorrectionDisabled(true)
-                .padding(.horizontal)
-            
+            ZStack(alignment: .trailing) {
+                // Search TextField
+                TextField("Search words...", text: $viewModel.searchText)
+                    .padding(10)
+                    #if os(iOS)
+                    .background(Color(UIColor.systemGray6))
+                    #endif
+                    .cornerRadius(8)
+                    .autocorrectionDisabled(true)
+                    .padding(.horizontal)
+
+                // Clear button
+                if !viewModel.searchText.isEmpty {
+                    Button(action: {
+                        viewModel.searchText = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 20)
+                    }
+                    .buttonStyle(PlainButtonStyle()) // Prevents button style change on tap
+                }
+            }
+
+            // Filter Menu Button
             Menu {
                 Button("All", action: { viewModel.applyFilter(wordType: nil) })
                 ForEach(WordType.allCases, id: \.self) { type in
@@ -157,6 +173,7 @@ struct SearchFilterRow: View {
         .padding(.vertical, 10)
     }
 }
+
 
 struct LoadingIndicator: View {
     var body: some View {

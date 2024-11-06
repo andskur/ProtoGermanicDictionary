@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 class WordDetailViewModel: ObservableObject {
     @Published var word: Word
@@ -14,24 +13,26 @@ class WordDetailViewModel: ObservableObject {
     @Published var wordType: WordType = .unknown
     @Published var isLoading = false
     
-    private var context: NSManagedObjectContext
-    
-    init(word: Word, context: NSManagedObjectContext = DataManager.shared.context) {
+    init(word: Word) {
         self.word = word
-        self.context = context
         
-        // Load existing translations
+        // Load initial data from the passed word
+        loadExistingWordDetails()
+        
+        // Fetch details if they're missing
+        if translations.isEmpty || word.wordType == nil {
+            fetchWordDetails()
+        }
+    }
+    
+    private func loadExistingWordDetails() {
+        // Load existing translations and word type
         if let translationsSet = word.translations as? Set<Translation> {
             self.translations = Array(translationsSet).sorted { ($0.text ?? "") < ($1.text ?? "") }
         }
         
-        // Load wordType
         if let storedWordType = word.wordType {
             self.wordType = WordType(rawValue: storedWordType) ?? .unknown
-        }
-        
-        if self.translations.isEmpty || word.wordType == nil {
-            fetchWordDetails()
         }
     }
     
@@ -39,6 +40,7 @@ class WordDetailViewModel: ObservableObject {
         guard let fullTitle = word.fullTitle else { return }
         isLoading = true
         
+        // Fetch details from network
         NetworkManager.shared.fetchWordDetails(title: fullTitle) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
@@ -46,7 +48,7 @@ class WordDetailViewModel: ObservableObject {
                 case .success(let content):
                     let parsedData = WiktionaryParser.parse(content: content)
                     self?.wordType = parsedData.wordType
-                    self?.updateWordInCoreData(with: parsedData.translations)
+                    self?.updateWordWithFetchedData(translationsTexts: parsedData.translations)
                 case .failure(let error):
                     print("Error fetching details: \(error)")
                 }
@@ -54,33 +56,13 @@ class WordDetailViewModel: ObservableObject {
         }
     }
     
-    private func updateWordInCoreData(with translationsTexts: [String]) {
-        // Remove existing translations
-        if let existingTranslations = word.translations as? Set<Translation> {
-            for translation in existingTranslations {
-                context.delete(translation)
-            }
-        }
+    private func updateWordWithFetchedData(translationsTexts: [String]) {
+        // Update word and translations in Core Data through DataManager
+        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType)
         
-        // Add new translations
-        for text in translationsTexts {
-            let translation = Translation(context: context)
-            translation.text = text
-            translation.word = word
-        }
-        
-        // Assign wordType
-        word.wordType = wordType.rawValue
-        
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
-        
-        // Update the published translations array
-        if let translationsSet = word.translations as? Set<Translation> {
-            self.translations = Array(translationsSet).sorted { ($0.text ?? "") < ($1.text ?? "") }
+        // Refresh the translations array from the updated Core Data
+        if let updatedTranslationsSet = word.translations as? Set<Translation> {
+            self.translations = Array(updatedTranslationsSet).sorted { ($0.text ?? "") < ($1.text ?? "") }
         }
     }
 }

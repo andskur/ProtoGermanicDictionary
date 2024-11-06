@@ -131,4 +131,40 @@ class DataManager {
             }
         }
     }
+    
+    
+    // Fetch a specific word by title
+    func fetchWordDetails(title: String) -> Word? {
+        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+        
+        do {
+            return try context.fetch(fetchRequest).first
+        } catch {
+            print("Fetch error: \(error)")
+            return nil
+        }
+    }
+
+    // Update translations and word type for a specific word
+    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType) {
+        // Remove existing translations
+        if let existingTranslations = word.translations as? Set<Translation> {
+            for translation in existingTranslations {
+                context.delete(translation)
+            }
+        }
+        
+        // Add new translations
+        for text in translationsTexts {
+            let translation = Translation(context: context)
+            translation.text = text
+            translation.word = word
+        }
+        
+        // Update wordType
+        word.wordType = wordType.rawValue
+        
+        saveContext()
+    }
 }
