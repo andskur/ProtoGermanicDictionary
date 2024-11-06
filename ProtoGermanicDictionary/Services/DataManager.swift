@@ -83,9 +83,7 @@ class DataManager {
                 if wordData.title.hasPrefix(skipPrefix) {
                     continue
                 }
-                
-//                print(wordData.title)
-                
+                                
                 let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
                 fetchRequest.predicate = NSPredicate(format: "title == %@", wordData.title)
 

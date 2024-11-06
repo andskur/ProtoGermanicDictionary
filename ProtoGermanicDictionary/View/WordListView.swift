@@ -34,15 +34,17 @@ struct LetterSidebar: View {
             return 16 // Pro Max or larger devices
         }
     }
-#else
-    private var fontSize = 20
 #endif
 
     var body: some View {
         VStack {
             ForEach(viewModel.letters, id: \.self) { letter in
                 Text(letter)
+                #if os(iOS)
                     .font(.system(size: fontSize, weight: .bold))
+                #else
+                    .font(.system(size: 16, weight: .bold))
+                #endif
                     .padding(.vertical, 2)
                     .foregroundColor(letter == selectedLetter ? .blue : .primary)
                     .onTapGesture {
