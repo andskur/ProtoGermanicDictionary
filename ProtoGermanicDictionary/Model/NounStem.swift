@@ -25,11 +25,6 @@ enum NounStem: String {
 
     // Function to detect stem type based on nominative ending and gender
     static func detectStemType(nominativeSingular: String, gender: NounGender) -> NounStem {
-        // Normalize diacritics and lowercase the nominative form
-//        let normalizedEnding = nominativeSingular
-//            .folding(options: .diacriticInsensitive, locale: .current)
-//            .lowercased()
-        
         let ending = nominativeSingular.lowercased()
         
         // Check for specific stem types based on known patterns

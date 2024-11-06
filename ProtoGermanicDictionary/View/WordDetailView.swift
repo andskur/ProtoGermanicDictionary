@@ -39,7 +39,7 @@ struct WordDetailView: View {
                     }
                     
                     if viewModel.nounStem != nil {
-                        Text("Stem: \(viewModel.nounStem!)")
+                        Text("Stem: \(viewModel.nounStem!.rawValue)")
                             .font(.subheadline)
                     }
                     
