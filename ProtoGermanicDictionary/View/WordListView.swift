@@ -27,7 +27,7 @@ struct LetterSidebar: View {
         switch screenWidth {
         case ...375:
             return 11 // Smaller iPhones (e.g., iPhone SE, iPhone 12 mini)
-        case 376...430:
+        case 376...410:
             return 13 // Standard iPhones (e.g., iPhone 14)
         default:
             return 16 // Pro Max or larger devices
