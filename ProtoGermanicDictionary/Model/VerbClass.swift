@@ -24,10 +24,6 @@ enum VerbClass: String {
     
     // Function to detect stem type based on nominative ending and gender
     static func detectVerbClass(isStrong: Bool, verbClass: String) -> VerbClass {
-        print(isStrong)
-        print(verbClass)
-        
-        
         switch (isStrong, verbClass) {
         case (true, "1"):
             return .strongClass1

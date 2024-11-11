@@ -18,7 +18,7 @@ class WiktionaryParser {
     }
 
     static func parse(content: String) -> ParsedData {
-        print(content)
+//        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false
@@ -72,7 +72,7 @@ class WiktionaryParser {
                 }
                 
                 // Collect translations under word type sections
-                if inEtymologySection && inWordTypeSection && trimmedLine.hasPrefix("#") {
+                if inEtymologySection && inWordTypeSection && trimmedLine.hasPrefix("#") && !trimmedLine.hasSuffix("#:"){
                     var translationLine = trimmedLine
                     // Remove leading '#' characters and whitespace
                     translationLine = translationLine.replacingOccurrences(of: "^#+\\s*", with: "", options: .regularExpression)

@@ -61,12 +61,12 @@ struct MainWordList: View {
     @Binding var selectedLetter: String?
 
     var body: some View {
-        VStack {
-            SearchFilterRow(viewModel: viewModel)
-            
+        VStack {            
             if viewModel.isLoading {
                 LoadingIndicator()
             } else {
+                SearchFilterRow(viewModel: viewModel)
+
                 HStack {
                     LetterSidebar(viewModel: viewModel, selectedLetter: $selectedLetter)
                     WordListContent(viewModel: viewModel, selectedLetter: $selectedLetter)
