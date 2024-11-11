@@ -78,6 +78,17 @@ struct WordDetailView: View {
                 }
                 
                 Spacer()
+                
+                if viewModel.wordType == .noun {
+                    InflectionTableView(inflections: [
+                        .nominative: (singular: "word_nom_sg", plural: "word_nom_pl"),
+                        .vocative: (singular: "word_voc_sg", plural: "word_voc_pl"),
+                        .accusative: (singular: "word_acc_sg", plural: "word_acc_pl"),
+                        .genitive: (singular: "word_gen_sg", plural: "word_gen_pl"),
+                        .dative: (singular: "word_dat_sg", plural: "word_dat_pl"),
+                        .instrumental: (singular: "word_inst_sg", plural: "word_inst_pl")
+                    ])
+                }
             }
             .padding()
         }
