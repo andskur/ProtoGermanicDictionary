@@ -26,7 +26,7 @@ class NounStemTests: XCTestCase {
     }
     
     func testOStemFeminine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "alinō", gender: .femenine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "alinō", gender: .feminine)
         XCTAssertEqual(stemType, .oStem, "Expected ō-stem for feminine noun ending in 'ō'")
     }
     
@@ -36,12 +36,12 @@ class NounStemTests: XCTestCase {
     }
     
     func testOnStemFeminine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "godōn", gender: .femenine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "godōn", gender: .feminine)
         XCTAssertEqual(stemType, .onStem, "Expected ōn-stem for feminine noun ending in 'ōn'")
     }
     
     func testInStemFeminine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "landīn", gender: .femenine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "landīn", gender: .feminine)
         XCTAssertEqual(stemType, .inStem, "Expected īn-stem for feminine noun ending in 'īn'")
     }
     
@@ -66,7 +66,7 @@ class NounStemTests: XCTestCase {
     }
     
     func testConsonantStem() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "nahts", gender: .femenine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "nahts", gender: .feminine)
         XCTAssertEqual(stemType, .consonantStem, "Expected consonant-stem for noun not ending in vowel-based suffixes")
     }
 }

@@ -113,7 +113,7 @@ class WiktionaryParser {
         if let genderCode = line.captures(for: pattern).first {
             switch genderCode {
             case "m": return NounGender.masculine
-            case "f": return NounGender.femenine
+            case "f": return NounGender.feminine
             case "n": return NounGender.neuter
             default: return nil
             }

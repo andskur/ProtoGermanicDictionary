@@ -9,6 +9,6 @@ import Foundation
 
 enum NounGender: String, CaseIterable {
     case masculine = "Masculine"
-    case femenine = "Femenine"
+    case feminine = "Feminine"
     case neuter = "Neuter"
 }
