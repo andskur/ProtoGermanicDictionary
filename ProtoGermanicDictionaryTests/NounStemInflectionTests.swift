@@ -373,4 +373,27 @@ class NounStemInflectionTests: XCTestCase {
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .feminine, word: word), "gramīnē")
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .feminine, word: word), "gramīmiz")
     }
+    
+    func testRStemInflectionsForFadēr() {
+        let nounStem = NounStem.rStem
+        let word = "fadēr"
+        
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: .masculine, word: word), "fadēr")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: .masculine, word: word), "fadriz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: .masculine, word: word), "fadēr")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: .masculine, word: word), "fadriz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: .masculine, word: word), "faderų")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: .masculine, word: word), "fadrunz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: .masculine, word: word), "fadurz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: .masculine, word: word), "fadrǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: .masculine, word: word), "fadri")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: .masculine, word: word), "fadrumaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .masculine, word: word), "fadrē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .masculine, word: word), "fadrumiz")
+    }
 }

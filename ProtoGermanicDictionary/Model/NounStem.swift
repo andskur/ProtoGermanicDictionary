@@ -37,7 +37,7 @@ enum NounStem: String {
         case .onStem, .inStem:
             root = String(root.dropLast(1)) // Drop 2 characters for these stems
         case .rStem:
-            root = String(root.dropLast(1)) // Drop 1 character for r-stems
+            root = String(root.dropLast(2)) // Drop 2 character for r-stems
         case .consonantStem:
             // No specific suffix to drop for consonant stems
             break
@@ -70,6 +70,8 @@ enum NounStem: String {
             return inStemInflection(for: grammaticalCase, number: number, root: root)
         case .onStem:
             return onStemInflection(for: grammaticalCase, number: number, root: root)
+        case .rStem:
+            return rStemInflection(for: grammaticalCase, number: number, root: root)
         case .consonantStem:
             return consonantStemInflection(for: grammaticalCase, number: number, root: root)
         default:
@@ -345,6 +347,23 @@ enum NounStem: String {
         }
     }
 
+    private func rStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
+        switch (grammaticalCase, number) {
+        case (.nominative, .singular): return root + "ēr"
+        case (.nominative, .plural): return root + "riz"
+        case (.vocative, .singular): return root + "ēr"
+        case (.vocative, .plural): return root + "riz"
+        case (.accusative, .singular): return root + "erų"
+        case (.accusative, .plural): return root + "runz"
+        case (.genitive, .singular): return root + "urz"
+        case (.genitive, .plural): return root + "rǫ̂"
+        case (.dative, .singular): return root + "ri"
+        case (.dative, .plural): return root + "rumaz"
+        case (.instrumental, .singular): return root + "rē"
+        case (.instrumental, .plural): return root + "rumiz"
+        }
+    }
+
     private func consonantStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
         // Define u-stem inflections here
         return "-"
@@ -404,8 +423,8 @@ enum NounStem: String {
         case let (end, gen) where end.hasSuffix("u") && gen == .neuter:
             return .uStem
 
-        // r-Stem (ends with "r" for kinship terms, usually masculine or feminine)
-        case let (end, _) where end.hasSuffix("r"):
+        // r-Stem (ends with "ēr" for kinship terms, usually masculine or feminine)
+        case let (end, _) where end.hasSuffix("ēr"):
             return .rStem
 
         // z-Stem (mainly masculine, ends with "z")
