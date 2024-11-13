@@ -396,4 +396,29 @@ class NounStemInflectionTests: XCTestCase {
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .masculine, word: word), "fadrē")
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .masculine, word: word), "fadrumiz")
     }
+    
+    func testZStemInflectionsForHajaz() {
+        let nounStem = NounStem.zStem
+        let word = "hajaz"
+        let root = nounStem.extractBaseForm(from: word, gender: .masculine)
+        
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: .masculine, word: word), root + "az")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: .masculine, word: word), root + "izō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: .masculine, word: word), root + "az")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: .masculine, word: word), root + "izō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: .masculine, word: word), root + "az")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: .masculine, word: word), root + "izō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: .masculine, word: word), root + "iziz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: .masculine, word: word), root + "izǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: .masculine, word: word), root + "izi")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: .masculine, word: word), root + "izumaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .masculine, word: word), root + "izē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .masculine, word: word), root + "izumiz")
+    }
+
 }

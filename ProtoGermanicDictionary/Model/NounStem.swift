@@ -29,14 +29,14 @@ enum NounStem: String {
 
         // Apply different rules depending on the noun stem type and gender
         switch self {
-        case .aStem, .jaStem, .iStem, .uStem, .zStem:
+        case .aStem, .jaStem, .iStem, .uStem:
             // For neuter nouns, drop 1 character; otherwise, drop 2
             root = gender == .neuter ? String(root.dropLast(1)) : String(root.dropLast(2))
         case .oStem, .ijStem, .anStem:
             root = String(root.dropLast(1)) // Drop 1 character for feminine o-stems and ī/jō-stem
         case .onStem, .inStem:
             root = String(root.dropLast(1)) // Drop 2 characters for these stems
-        case .rStem:
+        case .rStem, .zStem:
             root = String(root.dropLast(2)) // Drop 2 character for r-stems
         case .consonantStem:
             // No specific suffix to drop for consonant stems
@@ -72,6 +72,8 @@ enum NounStem: String {
             return onStemInflection(for: grammaticalCase, number: number, root: root)
         case .rStem:
             return rStemInflection(for: grammaticalCase, number: number, root: root)
+        case .zStem:
+            return zStemInflection(for: grammaticalCase, number: number, root: root)
         case .consonantStem:
             return consonantStemInflection(for: grammaticalCase, number: number, root: root)
         default:
@@ -364,6 +366,23 @@ enum NounStem: String {
         }
     }
 
+    private func zStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
+        switch (grammaticalCase, number) {
+        case (.nominative, .singular): return root + "az"
+        case (.nominative, .plural): return root + "izō"
+        case (.vocative, .singular): return root + "az"
+        case (.vocative, .plural): return root + "izō"
+        case (.accusative, .singular): return root + "az"
+        case (.accusative, .plural): return root + "izō"
+        case (.genitive, .singular): return root + "iziz"
+        case (.genitive, .plural): return root + "izǫ̂"
+        case (.dative, .singular): return root + "izi"
+        case (.dative, .plural): return root + "izumaz"
+        case (.instrumental, .singular): return root + "izē"
+        case (.instrumental, .plural): return root + "izumiz"
+        }
+    }
+
     private func consonantStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
         // Define u-stem inflections here
         return "-"
@@ -377,7 +396,7 @@ enum NounStem: String {
         switch (ending, gender) {
         
         // a-Stem masculine (nominative ends with "az" or "s")
-        case let (end, gen) where ((end.hasSuffix("az") || end.hasSuffix("s")) && !end.hasSuffix("jaz")) && gen == .masculine:
+        case let (end, gen) where (end.hasSuffix("az") && !end.hasSuffix("jaz")) && gen == .masculine:
             return .aStem
 
         // ja-Stem masculine (ends with "jaz")
@@ -427,8 +446,8 @@ enum NounStem: String {
         case let (end, _) where end.hasSuffix("ēr"):
             return .rStem
 
-        // z-Stem (mainly masculine, ends with "z")
-        case let (end, gen) where end.hasSuffix("z") && gen == .masculine:
+        // z-Stem (only neuter, ends with "az")
+        case let (end, gen) where end.hasSuffix("az") && gen == .neuter:
             return .zStem
 
         // General case for consonant stems that do not match vowel stems
