@@ -64,14 +64,14 @@ enum NounStem: String {
             return oStemInflection(for: grammaticalCase, number: number, root: root)
         case .ijStem:
             return ijStemInflection(for: grammaticalCase, number: number, root: root)
-        case .consonantStem:
-            return consonantStemInflection(for: grammaticalCase, number: number, root: root)
         case .anStem:
             return anStemInflection(for: grammaticalCase, number: number, root: root, gender: gender)
         case .inStem:
             return inStemInflection(for: grammaticalCase, number: number, root: root)
         case .onStem:
             return onStemInflection(for: grammaticalCase, number: number, root: root)
+        case .consonantStem:
+            return consonantStemInflection(for: grammaticalCase, number: number, root: root)
         default:
             return "-"
         }
@@ -329,8 +329,20 @@ enum NounStem: String {
     }
 
     private func inStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
-        // Define u-stem inflections here
-        return "-"
+        switch (grammaticalCase, number) {
+        case (.nominative, .singular): return root + "į̄"
+        case (.nominative, .plural): return root + "īniz"
+        case (.vocative, .singular): return root + "į̄"
+        case (.vocative, .plural): return root + "īniz"
+        case (.accusative, .singular): return root + "īnų"
+        case (.accusative, .plural): return root + "īnunz"
+        case (.genitive, .singular): return root + "īniz"
+        case (.genitive, .plural): return root + "īnǫ̂"
+        case (.dative, .singular): return root + "īni"
+        case (.dative, .plural): return root + "īmaz"
+        case (.instrumental, .singular): return root + "īnē"
+        case (.instrumental, .plural): return root + "īmiz"
+        }
     }
 
     private func consonantStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
@@ -372,8 +384,8 @@ enum NounStem: String {
         case let (end, gen) where end.hasSuffix("ǭ") && gen == .feminine:
             return .onStem
 
-        // īn-Stem feminine (ends with "īn")
-        case let (end, gen) where end.hasSuffix("īn") && gen == .feminine:
+        // īn-Stem feminine (ends with "į̄")
+        case let (end, gen) where end.hasSuffix("į̄") && gen == .feminine:
             return .inStem
 
         // i-Stem masculine/feminine (ends with "iz")

@@ -350,4 +350,27 @@ class NounStemInflectionTests: XCTestCase {
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .feminine, word: word), "kakōnē")
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .feminine, word: word), "kakōmiz")
     }
+    
+    func testInStemInflectionsForGramį̄() {
+        let nounStem = NounStem.inStem
+        let word = "gramį̄"
+        
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: .feminine, word: word), "gramį̄")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: .feminine, word: word), "gramīniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: .feminine, word: word), "gramį̄")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: .feminine, word: word), "gramīniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: .feminine, word: word), "gramīnų")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: .feminine, word: word), "gramīnunz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: .feminine, word: word), "gramīniz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: .feminine, word: word), "gramīnǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: .feminine, word: word), "gramīni")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: .feminine, word: word), "gramīmaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .feminine, word: word), "gramīnē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .feminine, word: word), "gramīmiz")
+    }
 }
