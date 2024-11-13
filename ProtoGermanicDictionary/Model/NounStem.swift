@@ -59,7 +59,7 @@ enum NounStem: String {
         case .iStem:
             return iStemInflection(for: grammaticalCase, number: number, root: root, gender: gender)
         case .uStem:
-            return uStemInflection(for: grammaticalCase, number: number, root: root)
+            return uStemInflection(for: grammaticalCase, number: number, root: root, gender: gender)
         case .oStem:
             return oStemInflection(for: grammaticalCase, number: number, root: root)
         case .ijStem:
@@ -204,9 +204,59 @@ enum NounStem: String {
         }
     }
 
-    private func uStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
-        // Define u-stem inflections here
-        return "-"
+    private func uStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+        switch (grammaticalCase, number, gender) {
+            
+            // Nominative
+        case (.nominative, .singular, .masculine), (.nominative, .singular, .feminine):
+            return root + "uz"
+        case (.nominative, .plural, .masculine), (.nominative, .plural, .feminine):
+            return root + "iwiz"
+        case (.nominative, .singular, .neuter):
+            return root + "u"
+        case (.nominative, .plural, .neuter):
+            return root + "ū"
+            
+            // Vocative
+        case (.vocative, .singular, .masculine), (.vocative, .singular, .feminine), (.vocative, .singular, .neuter):
+            return root + "u"
+        case (.vocative, .plural, .masculine), (.vocative, .plural, .feminine):
+            return root + "iwiz"
+        case (.vocative, .plural, .neuter):
+            return root + "ū"
+            
+            // Accusative
+        case (.accusative, .singular, .masculine), (.accusative, .singular, .feminine):
+            return root + "ų"
+        case (.accusative, .plural, .masculine), (.accusative, .plural, .feminine):
+            return root + "unz"
+        case (.accusative, .singular, .neuter):
+            return root + "u"
+        case (.accusative, .plural, .neuter):
+            return root + "ū"
+            
+            // Genitive
+        case (.genitive, .singular, .masculine), (.genitive, .singular, .feminine):
+            return root + "auz"
+        case (.genitive, .plural, .masculine), (.genitive, .plural, .feminine):
+            return root + "iwǫ̂"
+        case (.genitive, .singular, .neuter):
+            return root + "auz"
+        case (.genitive, .plural, .neuter):
+            return root + "iwǫ̂"
+            
+            // Dative
+        case (.dative, .singular, _):
+            return root + "iwi"
+        case (.dative, .plural, _):
+            return root + "umaz"
+            
+            // Instrumental
+        case (.instrumental, .singular, _):
+            return root + "ū"
+        case (.instrumental, .plural, _):
+            return root + "umiz"
+        }
     }
 
     private func anStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
