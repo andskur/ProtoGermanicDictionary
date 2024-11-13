@@ -328,5 +328,26 @@ class NounStemInflectionTests: XCTestCase {
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: gender, word: word), "hīwammiz")
     }
     
-    
+    func testOnStemInflectionsForKakō() {
+        let nounStem = NounStem.onStem
+        let word = "kakǭ"
+        
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: .feminine, word: word), "kakǭ")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: .feminine, word: word), "kakōniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: .feminine, word: word), "kakǭ")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: .feminine, word: word), "kakōniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: .feminine, word: word), "kakōnų")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: .feminine, word: word), "kakōnunz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: .feminine, word: word), "kakōniz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: .feminine, word: word), "kakōnǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: .feminine, word: word), "kakōni")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: .feminine, word: word), "kakōmaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .feminine, word: word), "kakōnē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .feminine, word: word), "kakōmiz")
+    }
 }

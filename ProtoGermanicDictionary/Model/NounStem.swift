@@ -35,7 +35,7 @@ enum NounStem: String {
         case .oStem, .ijStem, .anStem:
             root = String(root.dropLast(1)) // Drop 1 character for feminine o-stems and ī/jō-stem
         case .onStem, .inStem:
-            root = String(root.dropLast(2)) // Drop 2 characters for these stems
+            root = String(root.dropLast(1)) // Drop 2 characters for these stems
         case .rStem:
             root = String(root.dropLast(1)) // Drop 1 character for r-stems
         case .consonantStem:
@@ -312,8 +312,20 @@ enum NounStem: String {
     }
     
     private func onStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
-        // Define u-stem inflections here
-        return "-"
+        switch (grammaticalCase, number) {
+        case (.nominative, .singular): return root + "ǭ"
+        case (.nominative, .plural): return root + "ōniz"
+        case (.vocative, .singular): return root + "ǭ"
+        case (.vocative, .plural): return root + "ōniz"
+        case (.accusative, .singular): return root + "ōnų"
+        case (.accusative, .plural): return root + "ōnunz"
+        case (.genitive, .singular): return root + "ōniz"
+        case (.genitive, .plural): return root + "ōnǫ̂"
+        case (.dative, .singular): return root + "ōni"
+        case (.dative, .plural): return root + "ōmaz"
+        case (.instrumental, .singular): return root + "ōnē"
+        case (.instrumental, .plural): return root + "ōmiz"
+        }
     }
 
     private func inStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
@@ -356,8 +368,8 @@ enum NounStem: String {
         case let (end, gen) where end.hasSuffix("ô") && (gen == .masculine || gen == .neuter):
             return .anStem
 
-        // ōn-Stem feminine (ends with "ōn")
-        case let (end, gen) where end.hasSuffix("ōn") && gen == .feminine:
+        // ōn-Stem feminine (ends with "ǭ")
+        case let (end, gen) where end.hasSuffix("ǭ") && gen == .feminine:
             return .onStem
 
         // īn-Stem feminine (ends with "īn")
