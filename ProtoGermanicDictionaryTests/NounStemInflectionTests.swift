@@ -212,7 +212,7 @@ class NounStemInflectionTests: XCTestCase {
         let nounStem = NounStem.uStem
         let word = "ansuz"
         let gender = NounGender.masculine
-
+        
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "ansuz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "ansiwiz")
         
@@ -236,7 +236,7 @@ class NounStemInflectionTests: XCTestCase {
         let nounStem = NounStem.uStem
         let word = "weruz"
         let gender = NounGender.feminine
-
+        
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "weruz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "weriwiz")
         
@@ -260,7 +260,7 @@ class NounStemInflectionTests: XCTestCase {
         let nounStem = NounStem.uStem
         let word = "fehu"
         let gender = NounGender.neuter
-
+        
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "fehu")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "fehū")
         
@@ -278,4 +278,55 @@ class NounStemInflectionTests: XCTestCase {
         
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: gender, word: word), "fehū")
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: gender, word: word), "fehumiz")
-    }}
+    }
+    
+    func testMasculineAnStemInflectionsForAtto() {
+        let nounStem = NounStem.anStem
+        let word = "attô"
+        let gender = NounGender.masculine
+
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "attô")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "attaniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: gender, word: word), "attô")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: gender, word: word), "attaniz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: gender, word: word), "attanų")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: gender, word: word), "attanunz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: gender, word: word), "attiniz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: gender, word: word), "attanǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: gender, word: word), "attini")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: gender, word: word), "attammaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: gender, word: word), "attinē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: gender, word: word), "attammiz")
+    }
+    
+    func testNeuterAnStemInflectionsForHiwo() {
+        let nounStem = NounStem.anStem
+        let word = "hīwô"
+        let gender = NounGender.neuter
+
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "hīwô")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "hīwōnō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: gender, word: word), "hīwô")
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: gender, word: word), "hīwōnō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: gender, word: word), "hīwô")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: gender, word: word), "hīwōnō")
+        
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: gender, word: word), "hīwiniz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: gender, word: word), "hīwanǫ̂")
+        
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: gender, word: word), "hīwini")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: gender, word: word), "hīwammaz")
+        
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: gender, word: word), "hīwinē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: gender, word: word), "hīwammiz")
+    }
+    
+    
+}

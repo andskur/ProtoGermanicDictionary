@@ -161,7 +161,6 @@ class DataManager {
 
     // Update translations and word type for a specific word
     func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: NounGender?, nounStem: NounStem?, verbClass: VerbClass?) {
-        print(verbClass?.rawValue ?? "popa")
         
         // Remove existing translations
         if let existingTranslations = word.translations as? Set<Translation> {

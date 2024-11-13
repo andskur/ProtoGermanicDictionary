@@ -32,9 +32,9 @@ enum NounStem: String {
         case .aStem, .jaStem, .iStem, .uStem, .zStem:
             // For neuter nouns, drop 1 character; otherwise, drop 2
             root = gender == .neuter ? String(root.dropLast(1)) : String(root.dropLast(2))
-        case .oStem, .ijStem:
+        case .oStem, .ijStem, .anStem:
             root = String(root.dropLast(1)) // Drop 1 character for feminine o-stems and ī/jō-stem
-        case .anStem, .onStem, .inStem:
+        case .onStem, .inStem:
             root = String(root.dropLast(2)) // Drop 2 characters for these stems
         case .rStem:
             root = String(root.dropLast(1)) // Drop 1 character for r-stems
@@ -67,7 +67,7 @@ enum NounStem: String {
         case .consonantStem:
             return consonantStemInflection(for: grammaticalCase, number: number, root: root)
         case .anStem:
-            return anStemInflection(for: grammaticalCase, number: number, root: root)
+            return anStemInflection(for: grammaticalCase, number: number, root: root, gender: gender)
         case .inStem:
             return inStemInflection(for: grammaticalCase, number: number, root: root)
         case .onStem:
@@ -259,17 +259,64 @@ enum NounStem: String {
         }
     }
 
-    private func anStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
+    private func anStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+        switch (grammaticalCase, number, gender) {
+            
+            // Nominative
+        case (.nominative, .singular, _):
+            return root + "ô"
+        case (.nominative, .plural, .masculine):
+            return root + "aniz"
+        case (.nominative, .plural, .neuter):
+            return root + "ōnō"
+            
+            // Vocative
+        case (.vocative, .singular, _):
+            return root + "ô"
+        case (.vocative, .plural, .masculine):
+            return root + "aniz"
+        case (.vocative, .plural, .neuter):
+            return root + "ōnō"
+            
+            // Accusative
+        case (.accusative, .singular, .masculine):
+            return root + "anų"
+        case (.accusative, .plural, .masculine):
+            return root + "anunz"
+        case (.accusative, .singular, .neuter):
+            return root + "ô"
+        case (.accusative, .plural, .neuter):
+            return root + "ōnō"
+            
+            // Genitive
+        case (.genitive, .singular, _):
+            return root + "iniz"
+        case (.genitive, .plural, _):
+            return root + "anǫ̂"
+            
+            // Dative
+        case (.dative, .singular, _):
+            return root + "ini"
+        case (.dative, .plural, _):
+            return root + "ammaz"
+            
+            // Instrumental
+        case (.instrumental, .singular, _):
+            return root + "inē"
+        case (.instrumental, .plural, _):
+            return root + "ammiz"
+            
+        // Default
+        default: return "-"
+        }
+    }
+    
+    private func onStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
         // Define u-stem inflections here
         return "-"
     }
 
     private func inStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
-        // Define u-stem inflections here
-        return "-"
-    }
-
-    private func onStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
         // Define u-stem inflections here
         return "-"
     }
@@ -305,8 +352,8 @@ enum NounStem: String {
         case let (end, gen) where end.hasSuffix("ī") && gen == .feminine:
             return .ijStem
 
-        // n-Stem masculine (ends with "an" or "on")
-        case let (end, gen) where (end.hasSuffix("an") || end.hasSuffix("on")) && gen == .masculine:
+        // an-Stem masculine (ends with "ô")
+        case let (end, gen) where end.hasSuffix("ô") && (gen == .masculine || gen == .neuter):
             return .anStem
 
         // ōn-Stem feminine (ends with "ōn")
