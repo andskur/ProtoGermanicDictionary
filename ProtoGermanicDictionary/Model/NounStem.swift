@@ -133,6 +133,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "ōmaz"
         case (.instrumental, .singular): return root + "ō"
         case (.instrumental, .plural): return root + "ōmiz"
+        default: return root
         }
     }
     
@@ -150,6 +151,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "ijōmaz"
         case (.instrumental, .singular): return root + "ijō"
         case (.instrumental, .plural): return root + "ijōmiz"
+        default: return root
         }
     }
 
@@ -205,6 +207,7 @@ enum NounStem: String {
             return root + "ī"
         case (.instrumental, .plural, _):
             return root + "imiz"
+        default: return root
         }
     }
 
@@ -260,6 +263,7 @@ enum NounStem: String {
             return root + "ū"
         case (.instrumental, .plural, _):
             return root + "umiz"
+        default: return root
         }
     }
 
@@ -329,6 +333,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "ōmaz"
         case (.instrumental, .singular): return root + "ōnē"
         case (.instrumental, .plural): return root + "ōmiz"
+        default: return root
         }
     }
 
@@ -346,6 +351,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "īmaz"
         case (.instrumental, .singular): return root + "īnē"
         case (.instrumental, .plural): return root + "īmiz"
+        default: return root
         }
     }
 
@@ -363,6 +369,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "rumaz"
         case (.instrumental, .singular): return root + "rē"
         case (.instrumental, .plural): return root + "rumiz"
+        default: return root
         }
     }
 
@@ -380,6 +387,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "izumaz"
         case (.instrumental, .singular): return root + "izē"
         case (.instrumental, .plural): return root + "izumiz"
+        default: return root
         }
     }
 
@@ -397,6 +405,7 @@ enum NounStem: String {
         case (.dative, .plural): return root + "umaz"
         case (.instrumental, .singular): return root + "ē"
         case (.instrumental, .plural): return root + "umiz"
+        default: return root
         }
     }
 

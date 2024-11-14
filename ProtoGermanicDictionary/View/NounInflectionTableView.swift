@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InflectionTableView: View {
+struct NounInflectionTableView: View {
     var inflections: [GrammaticalCase: [GrammaticalNumber: String]]
 
     var body: some View {

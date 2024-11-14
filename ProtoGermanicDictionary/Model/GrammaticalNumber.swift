@@ -9,5 +9,6 @@ import Foundation
 
 enum GrammaticalNumber: String, CaseIterable {
     case singular = "Singular"
+    case dual    = "Dual"
     case plural = "Plural"
 }
