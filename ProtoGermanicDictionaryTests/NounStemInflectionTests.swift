@@ -420,5 +420,35 @@ class NounStemInflectionTests: XCTestCase {
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .masculine, word: word), root + "izē")
         XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .masculine, word: word), root + "izumiz")
     }
+    
+    func testConsonantStemInflectionsForRiks() {
+        let nounStem = NounStem.consonantStem
+        let word = "rīks"
+        let root = nounStem.extractBaseForm(from: word, gender: .masculine)
+        
+        // Nominative
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: .masculine, word: word), root + "s")
+        XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: .masculine, word: word), root + "iz")
+        
+        // Vocative
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .singular, gender: .masculine, word: word), root)
+        XCTAssertEqual(nounStem.inflection(for: .vocative, number: .plural, gender: .masculine, word: word), root + "iz")
+        
+        // Accusative
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .singular, gender: .masculine, word: word), root + "ų")
+        XCTAssertEqual(nounStem.inflection(for: .accusative, number: .plural, gender: .masculine, word: word), root + "unz")
+        
+        // Genitive
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .singular, gender: .masculine, word: word), root + "iz")
+        XCTAssertEqual(nounStem.inflection(for: .genitive, number: .plural, gender: .masculine, word: word), root + "ǫ̂")
+        
+        // Dative
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .singular, gender: .masculine, word: word), root + "i")
+        XCTAssertEqual(nounStem.inflection(for: .dative, number: .plural, gender: .masculine, word: word), root + "umaz")
+        
+        // Instrumental
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .singular, gender: .masculine, word: word), root + "ē")
+        XCTAssertEqual(nounStem.inflection(for: .instrumental, number: .plural, gender: .masculine, word: word), root + "umiz")
+    }
 
 }

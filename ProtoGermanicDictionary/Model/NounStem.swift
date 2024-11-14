@@ -39,7 +39,7 @@ enum NounStem: String {
         case .rStem, .zStem:
             root = String(root.dropLast(2)) // Drop 2 character for r-stems
         case .consonantStem:
-            // No specific suffix to drop for consonant stems
+            root = String(root.dropLast(1))
             break
         default:
             break
@@ -384,8 +384,20 @@ enum NounStem: String {
     }
 
     private func consonantStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String) -> String {
-        // Define u-stem inflections here
-        return "-"
+        switch (grammaticalCase, number) {
+        case (.nominative, .singular): return root + "s"
+        case (.nominative, .plural): return root + "iz"
+        case (.vocative, .singular): return root
+        case (.vocative, .plural): return root + "iz"
+        case (.accusative, .singular): return root + "ų"
+        case (.accusative, .plural): return root + "unz"
+        case (.genitive, .singular): return root + "iz"
+        case (.genitive, .plural): return root + "ǫ̂"
+        case (.dative, .singular): return root + "i"
+        case (.dative, .plural): return root + "umaz"
+        case (.instrumental, .singular): return root + "ē"
+        case (.instrumental, .plural): return root + "umiz"
+        }
     }
 
     // Function to detect stem type based on nominative ending and gender
