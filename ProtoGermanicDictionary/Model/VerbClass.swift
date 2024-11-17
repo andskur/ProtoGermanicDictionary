@@ -75,9 +75,17 @@ enum VerbClass: String {
         case .strongClass2:
             return root.replacingOccurrences(of: "eu", with: "au")
         case .strongClass3:
-            return root.replacingOccurrences(of: "e", with: "a")
+            for (_, char) in root.enumerated() {
+                if char == "i" {
+                    return root.replacingOccurrences(of: "i", with: "a")
+                }
+                
+                if char == "e" {
+                    return root.replacingOccurrences(of: "e", with: "a")
+                }
+            }
         case .strongClass4:
-            return root.replacingOccurrences(of: "ē", with: "a")
+            return root.replacingOccurrences(of: "e", with: "a")
         case .strongClass5:
             return root.replacingOccurrences(of: "e", with: "a")
         case .strongClass6:
@@ -87,6 +95,8 @@ enum VerbClass: String {
         default:
             return root // For weak verbs or irregular cases, return unchanged
         }
+        
+        return root
     }
     
     /// Generate the preterite plural stem dynamically
@@ -97,9 +107,17 @@ enum VerbClass: String {
          case .strongClass2:
              return root.replacingOccurrences(of: "eu", with: "u")
          case .strongClass3:
-             return root.replacingOccurrences(of: "e", with: "u")
+             for (_, char) in root.enumerated() {
+                 if char == "i" {
+                     return root.replacingOccurrences(of: "i", with: "u")
+                 }
+                 
+                 if char == "e" {
+                     return root.replacingOccurrences(of: "e", with: "u")
+                 }
+             }
          case .strongClass4:
-             return root.replacingOccurrences(of: "ē", with: "ē")
+             return root.replacingOccurrences(of: "e", with: "ē")
          case .strongClass5:
              return root.replacingOccurrences(of: "e", with: "ē")
          case .strongClass6:
@@ -109,6 +127,8 @@ enum VerbClass: String {
          default:
              return root // For weak verbs or irregular cases, return unchanged
          }
+         
+         return root
      }
     
     /// Return suffixes for the verb form

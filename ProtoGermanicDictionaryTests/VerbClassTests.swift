@@ -110,4 +110,107 @@ class VerbClassTests: XCTestCase {
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "kleubandau")
     }
 
+    func testStrongClass3VerbInflections() {
+        // Test for brinnaną (Strong Class III, Vowel Pattern 1)
+        let verbClassBrinnan = VerbClass.strongClass3
+        let wordBrinnan = "brinnaną" // Example Strong Class III verb with vowel pattern 1
+
+        // Present Indicative
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: wordBrinnan), "brinnō")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: wordBrinnan), "brinnizi")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: wordBrinnan), "brinnidi")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: wordBrinnan), "brinnamaz")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: wordBrinnan), "brinnid")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: wordBrinnan), "brinnandi")
+
+        // Past Indicative
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: wordBrinnan), "brann")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: wordBrinnan), "brannst")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: wordBrinnan), "brann")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: wordBrinnan), "brunnum")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: wordBrinnan), "brunnud")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: wordBrinnan), "brunnun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: wordBrinnan), "brinnaų")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: wordBrinnan), "brinnaiz")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: wordBrinnan), "brinnai")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: wordBrinnan), "brinnaim")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: wordBrinnan), "brinnaid")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: wordBrinnan), "brinnain")
+        
+        // Imperative
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: wordBrinnan), "brinn")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: wordBrinnan), "brinnid")
+        XCTAssertEqual(verbClassBrinnan.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: wordBrinnan), "brinnandau")
+        
+        // Test for kerbaną (Strong Class III, Vowel Pattern 2)
+        let verbClassKerban = VerbClass.strongClass3
+        let wordKerban = "kerbaną" // Example Strong Class III verb with vowel pattern 2
+
+        // Present Indicative
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: wordKerban), "kerbō")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: wordKerban), "kerbizi")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: wordKerban), "kerbidi")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: wordKerban), "kerbamaz")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: wordKerban), "kerbid")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: wordKerban), "kerbandi")
+
+        // Past Indicative
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: wordKerban), "karb")
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: wordKerban), "karbst")
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: wordKerban), "karb")
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: wordKerban), "kurbum")
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: wordKerban), "kurbud")
+        XCTAssertEqual(verbClassKerban.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: wordKerban), "kurbun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: wordKerban), "kerbaų")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: wordKerban), "kerbaiz")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: wordKerban), "kerbai")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: wordKerban), "kerbaim")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: wordKerban), "kerbaid")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: wordKerban), "kerbain")
+        
+        // Imperative
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: wordKerban), "kerb")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: wordKerban), "kerbid")
+        XCTAssertEqual(verbClassKerban.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: wordKerban), "kerbandau")
+    }
+    
+    func testStrongClass4VerbInflections() {
+        let verbClass = VerbClass.strongClass4
+        let word = "kwemaną" // Example Strong Class IV verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "kwemō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "kwemizi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "kwemidi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "kwemamaz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "kwemid")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "kwemandi")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "kwam")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "kwamst")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "kwam")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "kwēmum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "kwēmud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "kwēmun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "kwemaų")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "kwemaiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "kwemai")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "kwemaim")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "kwemaid")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "kwemain")
+        
+        // Imperative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: word), "kwem")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "kwemid")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "kwemandau")
+    }
+
+
 }
