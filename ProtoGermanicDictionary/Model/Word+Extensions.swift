@@ -28,7 +28,7 @@ extension Word {
         return url
     }
     
-    func generateInflections() -> [GrammaticalCase: [GrammaticalNumber: String]] {
+    func generateNounInflections() -> [GrammaticalCase: [GrammaticalNumber: String]] {
         guard let nounStem = NounStem(rawValue: self.nounStem ?? ""),
               let gender = NounGender(rawValue: self.nounGender ?? "") else {
             return [:]
@@ -54,4 +54,46 @@ extension Word {
         
         return inflections
     }
+    
+    /// Generates verb inflections for the word based on tense, mood, number, and person.
+    func generateVerbInflections() -> [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]] {
+        guard let verbClass = VerbClass(rawValue: self.verbClass ?? "") else {
+            return [:]
+        }
+        
+        var inflections = [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]()
+        
+        // Loop through all tenses, moods, numbers, and persons to generate verb inflections
+        for tense in GrammaticalTense.allCases {
+            var moodInflections = [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]()
+
+            for mood in GrammaticalMood.allCases {
+                var numberInflections = [GrammaticalNumber: [GrammaticalPerson: String]]()
+                
+                for number in GrammaticalNumber.allCases {
+                    var personInflections = [GrammaticalPerson: String]()
+                    
+                    for person in GrammaticalPerson.allCases {
+                        personInflections[person] = verbClass.inflection(
+                            for: tense,
+                            mood: mood,
+                            number: number,
+                            person: person,
+                            word: self.title ?? ""
+                        )
+                    }
+                    
+                    numberInflections[number] = personInflections
+                }
+                
+                moodInflections[mood] = numberInflections
+            }
+            
+            inflections[tense] = moodInflections
+        }
+        
+        return inflections
+    }
+    
+    
 }

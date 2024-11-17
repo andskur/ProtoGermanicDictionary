@@ -21,6 +21,7 @@ struct VerbInflectionTableView: View {
                 Text("\(tense.rawValue) Tense")
                     .font(.subheadline)
                     .padding(.top, 10)
+                    .fontWeight(.bold)
                 
                 tenseHeaderRow()
                 

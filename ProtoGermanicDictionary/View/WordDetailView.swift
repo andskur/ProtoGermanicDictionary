@@ -80,97 +80,11 @@ struct WordDetailView: View {
                 Spacer()
                 
                 if viewModel.wordType == .noun {
-                    let inflections = viewModel.word.generateInflections()
+                    let inflections = viewModel.word.generateNounInflections()
                     NounInflectionTableView(inflections: inflections)
                 } else if viewModel.wordType == .verb {
-                    if viewModel.wordType == .verb {
-                        let verbInflections: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]] = [
-                            .present: [
-                                .indicative: [
-                                    .singular: [
-                                        .first: "*bīđō",
-                                        .second: "*bīđizi",
-                                        .third: "*bīđidi"
-                                    ],
-                                    .dual: [
-                                        .first: "*bīđōz",
-                                        .second: "*bīđadiz",
-                                        .third: "*bīđandōz"
-                                    ],
-                                    .plural: [
-                                        .first: "*bīđamaz",
-                                        .second: "*bīđid",
-                                        .third: "*bīđandi"
-                                    ]
-                                ],
-                                .subjunctive: [
-                                    .singular: [
-                                        .first: "*bīđau",
-                                        .second: "*bīđaiz",
-                                        .third: "*bīđai"
-                                    ],
-                                    .dual: [
-                                        .first: "*bīđaiw",
-                                        .second: "*bīđaidiz",
-                                        .third: "*bīđaidōz"
-                                    ],
-                                    .plural: [
-                                        .first: "*bīđaim",
-                                        .second: "*bīđaid",
-                                        .third: "*bīđain"
-                                    ]
-                                ],
-                                .imperative: [
-                                    .singular: [
-                                        .second: "*bīđ"
-                                    ],
-                                    .dual: [
-                                        .second: "*bīđadiz"
-                                    ],
-                                    .plural: [
-                                        .second: "*bīđid"
-                                    ]
-                                ]
-                            ],
-                            .past: [
-                                .indicative: [
-                                    .singular: [
-                                        .first: "*baid",
-                                        .second: "*baist",
-                                        .third: "*baid"
-                                    ],
-                                    .dual: [
-                                        .first: "*bidū",
-                                        .second: "*bidudiz"
-                                    ],
-                                    .plural: [
-                                        .first: "*bidum",
-                                        .second: "*bidud",
-                                        .third: "*bidun"
-                                    ]
-                                ],
-                                .subjunctive: [
-                                    .singular: [
-                                        .first: "*bidjau",
-                                        .second: "*bidjiz",
-                                        .third: "*bidjē"
-                                    ],
-                                    .dual: [
-                                        .first: "*bidjwē",
-                                        .second: "*bidjizwē"
-                                    ],
-                                    .plural: [
-                                        .first: "*bidjēmu",
-                                        .second: "*bidjēdu",
-                                        .third: "*bidjēn"
-                                    ]
-                                ]
-                            ]
-                        ]
-
-                        VerbInflectionTableView(inflections: verbInflections)
-                    }
-
+                    let verbInflections = viewModel.word.generateVerbInflections()
+                    VerbInflectionTableView(inflections: verbInflections)
                 }
             }
             .padding()
