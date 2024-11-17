@@ -25,7 +25,7 @@ enum VerbClass: String {
     /// Extracts the base form of a verb, based on class-specific rules.
     private func extractBaseForm(from word: String) -> String {
         switch self {
-        case .strongClass1:
+        case .strongClass1, .strongClass2, .strongClass3, .strongClass4, .strongClass5, .strongClass6, .strongClass7:
             return String(word.dropLast(3))
         default:
             return word
@@ -73,7 +73,7 @@ enum VerbClass: String {
         case .strongClass1:
             return root.replacingOccurrences(of: "ī", with: "ai")
         case .strongClass2:
-            return root.replacingOccurrences(of: "ū", with: "au")
+            return root.replacingOccurrences(of: "eu", with: "au")
         case .strongClass3:
             return root.replacingOccurrences(of: "e", with: "a")
         case .strongClass4:
@@ -95,7 +95,7 @@ enum VerbClass: String {
          case .strongClass1:
              return root.replacingOccurrences(of: "ī", with: "i")
          case .strongClass2:
-             return root.replacingOccurrences(of: "ū", with: "u")
+             return root.replacingOccurrences(of: "eu", with: "u")
          case .strongClass3:
              return root.replacingOccurrences(of: "e", with: "u")
          case .strongClass4:
