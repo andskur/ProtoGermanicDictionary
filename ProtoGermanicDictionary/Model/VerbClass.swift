@@ -121,7 +121,7 @@ enum VerbClass: String {
          case .strongClass5:
              return root.replacingOccurrences(of: "e", with: "ē")
          case .strongClass6:
-             return root.replacingOccurrences(of: "a", with: "a")
+             return root.replacingOccurrences(of: "a", with: "ō")
          case .strongClass7:
              return root + "ē"
          default:
