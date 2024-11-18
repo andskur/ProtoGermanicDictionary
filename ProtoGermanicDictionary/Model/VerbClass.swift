@@ -59,6 +59,16 @@ enum VerbClass: String {
             return "-"
         }
         
+        
+        if tense == .past {
+            print(mood.rawValue)
+            print(number.rawValue)
+            print(person.rawValue)
+            print(stem)
+            print(suffix)
+            print("===============")
+        }
+        
         return stem + suffix
     }
     
@@ -91,7 +101,7 @@ enum VerbClass: String {
         case .strongClass6:
             return root.replacingOccurrences(of: "a", with: "ō")
         case .strongClass7:
-            return root + "ē"
+            return String(root.first!) + "e" + root
         default:
             return root // For weak verbs or irregular cases, return unchanged
         }
@@ -123,7 +133,7 @@ enum VerbClass: String {
          case .strongClass6:
              return root.replacingOccurrences(of: "a", with: "ō")
          case .strongClass7:
-             return root + "ē"
+             return String(root.first!) + "e" + root
          default:
              return root // For weak verbs or irregular cases, return unchanged
          }
