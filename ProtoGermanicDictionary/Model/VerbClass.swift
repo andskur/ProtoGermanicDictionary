@@ -59,6 +59,10 @@ enum VerbClass: String {
             return "-"
         }
         
+        if self == .strongClass7 && mood == .indicative && number == .singular && person == .second && tense == .past {
+            return stem.dropLast() + suffix
+        }
+        
         return stem + suffix
     }
     
