@@ -59,16 +59,6 @@ enum VerbClass: String {
             return "-"
         }
         
-        
-        if tense == .past {
-            print(mood.rawValue)
-            print(number.rawValue)
-            print(person.rawValue)
-            print(stem)
-            print(suffix)
-            print("===============")
-        }
-        
         return stem + suffix
     }
     
