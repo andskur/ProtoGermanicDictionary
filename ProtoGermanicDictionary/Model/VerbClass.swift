@@ -21,19 +21,57 @@ enum VerbClass: String {
     case weakClass4 = "Weak Class IV"
     case irregular = "Irregular"
     case unknown = "Unknown"
-    
+
     /// Extracts the base form of a verb, based on class-specific rules.
     private func extractBaseForm(from word: String) -> String {
         switch self {
         case .strongClass1, .strongClass2, .strongClass3, .strongClass4, .strongClass5, .strongClass6, .strongClass7:
             return String(word.dropLast(3))
+        case .weakClass1:
+            return String(word.dropLast(4))
         default:
             return word
         }
     }
-    
+
     /// Generate verb inflection dynamically based on the requested tense, mood, number, person, and root
     func inflection(
+        for tense: GrammaticalTense,
+        mood: GrammaticalMood,
+        number: GrammaticalNumber,
+        person: GrammaticalPerson,
+        word: String
+    ) -> String {
+        switch self {
+        case .strongClass1, .strongClass2, .strongClass3, .strongClass4, .strongClass5, .strongClass6, .strongClass7:
+            return strongInflection(for: tense, mood: mood, number: number, person: person, word: word)
+        case .weakClass1, .weakClass2, .weakClass3, .weakClass4:
+            return weakInflection(for: tense, mood: mood, number: number, person: person, word: word)
+        case .irregular:
+            return "-"
+        default:
+            return "-"
+        }
+    }
+
+    func weakInflection(
+        for tense: GrammaticalTense,
+        mood: GrammaticalMood,
+        number: GrammaticalNumber,
+        person: GrammaticalPerson,
+        word: String
+    ) -> String {
+        let suffix = weakSuffix(for: tense, mood: mood, number: number, person: person)
+
+        // Add suffix based on tense, mood, number, and person
+        if suffix == "-" {
+            return "-"
+        }
+
+        return extractBaseForm(from: word) + suffix
+    }
+    
+    func strongInflection(
         for tense: GrammaticalTense,
         mood: GrammaticalMood,
         number: GrammaticalNumber,
@@ -50,9 +88,8 @@ enum VerbClass: String {
         case (.past, _):
             stem = extractBaseForm(from: generatePreteritePluralStem(from: word))
         }
-
         
-        let suffix = suffix(for: tense, mood: mood, number: number, person: person)
+        let suffix = strongSuffix(for: tense, mood: mood, number: number, person: person)
         
         // Add suffix based on tense, mood, number, and person
         if suffix == "-" {
@@ -65,12 +102,12 @@ enum VerbClass: String {
         
         return stem + suffix
     }
-    
+
     /// Generate the present stem dynamically
     private func generatePresentStem(from root: String) -> String {
         return root // No transformation needed for present stem in most cases
     }
-    
+
     /// Generate the preterite singular stem dynamically
     private func generatePreteriteSingularStem(from root: String) -> String {
         switch self {
@@ -83,7 +120,7 @@ enum VerbClass: String {
                 if char == "i" {
                     return root.replacingOccurrences(of: "i", with: "a")
                 }
-                
+            
                 if char == "e" {
                     return root.replacingOccurrences(of: "e", with: "a")
                 }
@@ -136,7 +173,64 @@ enum VerbClass: String {
      }
     
     /// Return suffixes for the verb form
-    private func suffix(for tense: GrammaticalTense, mood: GrammaticalMood, number: GrammaticalNumber, person: GrammaticalPerson) -> String {
+    private func weakSuffix(for tense: GrammaticalTense, mood: GrammaticalMood, number: GrammaticalNumber, person: GrammaticalPerson) -> String {
+        switch (tense, mood, number, person) {
+        
+        // Present Indicative
+        case (.present, .indicative, .singular, .first): return "jō"
+        case (.present, .indicative, .singular, .second): return "si"
+        case (.present, .indicative, .singular, .third): return "þi"
+        case (.present, .indicative, .dual, .first): return "jōs"
+        case (.present, .indicative, .dual, .second): return "jaþiz"
+        case (.present, .indicative, .plural, .first): return "jamaz"
+        case (.present, .indicative, .plural, .second): return "þ"
+        case (.present, .indicative, .plural, .third): return "ijanþi"
+        
+        // Present Subjunctive
+        case (.present, .subjunctive, .singular, .first): return "jaų"
+        case (.present, .subjunctive, .singular, .second): return "jais"
+        case (.present, .subjunctive, .singular, .third): return "jai"
+        case (.present, .subjunctive, .dual, .first): return "jaiw"
+        case (.present, .subjunctive, .dual, .second): return "jaiþiz"
+        case (.present, .subjunctive, .plural, .first): return "jaim"
+        case (.present, .subjunctive, .plural, .second): return "jaiþ"
+        case (.present, .subjunctive, .plural, .third): return "jain"
+            
+        // Present Inperative
+        case (.present, .imperative, .singular, .second): return ""
+        case (.present, .imperative, .singular, .third): return "jaþau"
+        case (.present, .imperative, .dual, .second): return "jaþiz"
+        case (.present, .imperative, .plural, .second): return "īþ"
+        case (.present, .imperative, .plural, .third): return "janþau"
+        
+        // Past Indicative
+        case (.past, .indicative, .singular, .first): return "dǭ"
+        case (.past, .indicative, .singular, .second): return "dēz"
+        case (.past, .indicative, .singular, .third): return "dē"
+        case (.past, .indicative, .dual, .first): return "dēdū"
+        case (.past, .indicative, .dual, .second): return "dēdudiz"
+        case (.past, .indicative, .plural, .first): return "dēdum"
+        case (.past, .indicative, .plural, .second): return "dēdud"
+        case (.past, .indicative, .plural, .third): return "dēdun"
+            
+        // Present Subjunctive
+        case (.past, .subjunctive, .singular, .first): return "dēdį̄"
+        case (.past, .subjunctive, .singular, .second): return "dēdīz"
+        case (.past, .subjunctive, .singular, .third): return "dēdī"
+        case (.past, .subjunctive, .dual, .first): return "dēdīw"
+        case (.past, .subjunctive, .dual, .second): return "dēdīdiz"
+        case (.past, .subjunctive, .plural, .first): return "dēdīm"
+        case (.past, .subjunctive, .plural, .second): return "dēdīd"
+        case (.past, .subjunctive, .plural, .third): return "dēdīn"
+        
+            
+        default:
+            return "-"
+        }
+    }
+    
+    /// Return suffixes for the verb form
+    private func strongSuffix(for tense: GrammaticalTense, mood: GrammaticalMood, number: GrammaticalNumber, person: GrammaticalPerson) -> String {
         switch (tense, mood, number, person) {
         
         // Present Indicative

@@ -47,7 +47,7 @@ class WiktionaryParser {
                     inWordTypeSection = false
                     continue
                 }
-
+                
                 // Check for word type section header (===Noun=== or ====Noun====)
                 if inEtymologySection && isWordTypeHeader(line: trimmedLine) {
                     let header = extractWordType(from: trimmedLine)
@@ -109,14 +109,18 @@ class WiktionaryParser {
     }
 
     static func extractGender(from line: String) -> NounGender? {
-        let pattern = #"\{\{gem-noun\|([mfn])\}\}"#
+        let pattern = #"\{\{gem-noun\|([mfn])(\|head=[^}]*)?\}\}"#
+
         if let genderCode = line.captures(for: pattern).first {
             switch genderCode {
             case "m": return NounGender.masculine
             case "f": return NounGender.feminine
             case "n": return NounGender.neuter
-            default: return nil
+            default:
+                return nil
             }
+        } else {
+            
         }
         return nil
     }
