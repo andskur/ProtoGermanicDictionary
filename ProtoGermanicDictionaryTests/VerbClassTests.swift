@@ -449,4 +449,46 @@ class VerbClassTests: XCTestCase {
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "blōtid")
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "blōtandau")
     }
+    
+    func testWeakClass2VerbInflections() {
+        let verbClass = VerbClass.weakClass2
+        let word = "gamanōną" // Example Weak Class 2 verb
+        
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "gamanō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "gamanōsi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "gamanōþi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "gamanōmaz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "gamanōþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "gamanōnþi")
+        
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "gamanōdǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "gamanōdēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "gamanōdē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "gamanōdēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "gamanōdēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "gamanōdēdun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "gamanǭ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "gamanōs")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "gamanō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "gamanōm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "gamanōþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "gamanōn")
+        
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "gamanōdēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "gamanōdēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "gamanōdēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "gamanōdēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "gamanōdēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "gamanōdēdīn")
+        
+        // Imperative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: word), "gamanō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "gamanōþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "gamanōnþau")
+    }
 }

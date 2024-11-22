@@ -29,6 +29,8 @@ enum VerbClass: String {
             return String(word.dropLast(3))
         case .weakClass1:
             return String(word.dropLast(4))
+        case .weakClass2:
+            return String(word.dropLast(3))
         default:
             return word
         }
@@ -177,53 +179,347 @@ enum VerbClass: String {
         switch (tense, mood, number, person) {
         
         // Present Indicative
-        case (.present, .indicative, .singular, .first): return "jō"
-        case (.present, .indicative, .singular, .second): return "si"
-        case (.present, .indicative, .singular, .third): return "þi"
-        case (.present, .indicative, .dual, .first): return "jōs"
-        case (.present, .indicative, .dual, .second): return "jaþiz"
-        case (.present, .indicative, .plural, .first): return "jamaz"
-        case (.present, .indicative, .plural, .second): return "þ"
-        case (.present, .indicative, .plural, .third): return "ijanþi"
+        case (.present, .indicative, .singular, .first): 
+            switch self {
+            case .weakClass1:
+                return "jō"
+            case .weakClass2:
+                return "ō"
+            default:
+                return "ō"
+            }
+        case (.present, .indicative, .singular, .second):
+            switch self {
+            case .weakClass1:
+                return "si"
+            case .weakClass2:
+                return "ōsi"
+            default:
+                return "si"
+            }
+        case (.present, .indicative, .singular, .third):
+            switch self {
+            case .weakClass1:
+                return "þi"
+            case .weakClass2:
+                return "ōþi"
+            default:
+                return "þi"
+            }
+        case (.present, .indicative, .dual, .first): 
+            switch self {
+            case .weakClass1:
+                return "jōs"
+            case .weakClass2:
+                return "ōs"
+            default:
+                return "ōs"
+            }
+        case (.present, .indicative, .dual, .second): 
+            switch self {
+            case .weakClass1:
+                return "jaþiz"
+            case .weakClass2:
+                return "ōþiz"
+            default:
+                return "þiz"
+            }
+        case (.present, .indicative, .plural, .first): 
+            switch self {
+            case .weakClass1:
+                return "jamaz"
+            case    .weakClass2:
+                return "ōmaz"
+            default:
+                return "maz"
+            }
+        case (.present, .indicative, .plural, .second):
+            switch self {
+            case .weakClass1:
+                return "þ"
+            case .weakClass2:
+                return "ōþ"
+            default:
+                return "þ"
+            }
+        case (.present, .indicative, .plural, .third):
+            switch self {
+            case .weakClass1:
+                return "ijanþi"
+            case .weakClass2:
+                return "ōnþi"
+            default:
+                return "anþi"
+            }
         
         // Present Subjunctive
-        case (.present, .subjunctive, .singular, .first): return "jaų"
-        case (.present, .subjunctive, .singular, .second): return "jais"
-        case (.present, .subjunctive, .singular, .third): return "jai"
-        case (.present, .subjunctive, .dual, .first): return "jaiw"
-        case (.present, .subjunctive, .dual, .second): return "jaiþiz"
-        case (.present, .subjunctive, .plural, .first): return "jaim"
-        case (.present, .subjunctive, .plural, .second): return "jaiþ"
-        case (.present, .subjunctive, .plural, .third): return "jain"
+        case (.present, .subjunctive, .singular, .first):
+            switch self {
+            case .weakClass1:
+                return "jaų"
+            case .weakClass2:
+                return "ǭ"
+            default:
+                return "aų"
+            }
+        case (.present, .subjunctive, .singular, .second): 
+            switch self {
+                case .weakClass1:
+                return "jais"
+            case .weakClass2:
+                return "ōs"
+            default:
+                return "is"
+            }
+        case (.present, .subjunctive, .singular, .third):
+            switch self {
+            case .weakClass1:
+                return "jai"
+            case .weakClass2:
+                return "ō"
+            default:
+                return "ai"
+            }
+        case (.present, .subjunctive, .dual, .first): 
+            switch self {
+            case .weakClass1:
+                return "jaiw"
+            case .weakClass2:
+                return "ōw"
+            default:
+                return "aiw"
+            }
+        case (.present, .subjunctive, .dual, .second): 
+            switch self {
+            case .weakClass1:
+                return "jaiþiz"
+            case .weakClass2:
+                return "ōþiz"
+            default:
+                return "þiz"
+            }
+        case (.present, .subjunctive, .plural, .first):
+            switch self {
+            case .weakClass1:
+                return "jaim"
+            case .weakClass2:
+                return "ōm"
+            default:
+                return "aim"
+            }
+        case (.present, .subjunctive, .plural, .second): 
+            switch self {
+            case .weakClass1:
+                return "jaiþ"
+            case .weakClass2:
+                return "ōþ"
+            default:
+                return "aiþ"
+            }
+        case (.present, .subjunctive, .plural, .third): 
+            switch self {
+            case .weakClass1:
+                return "jain"
+            case .weakClass2:
+                return "ōn"
+            default:
+                return "ain"
+            }
             
         // Present Inperative
-        case (.present, .imperative, .singular, .second): return ""
-        case (.present, .imperative, .singular, .third): return "jaþau"
-        case (.present, .imperative, .dual, .second): return "jaþiz"
-        case (.present, .imperative, .plural, .second): return "īþ"
-        case (.present, .imperative, .plural, .third): return "janþau"
+        case (.present, .imperative, .singular, .second): 
+            switch self {
+            case .weakClass1:
+                return ""
+            case .weakClass2:
+                return "ō"
+            default:
+                return ""
+            }
+        case (.present, .imperative, .singular, .third):
+            switch self {
+            case .weakClass1:
+                return "jaþau"
+            case .weakClass2:
+                return "ōþau"
+            default:
+                return "þau"
+            }
+        case (.present, .imperative, .dual, .second):
+            switch self {
+            case .weakClass1:
+                return "jaþiz"
+            case .weakClass2:
+                return "ōþiz"
+            default:
+                return "þiz"
+            }
+        case (.present, .imperative, .plural, .second):
+            switch self {
+            case .weakClass1:
+                return "īþ"
+            case .weakClass2:
+                return "ōþ"
+            default:
+                return "īþ"
+            }
+        case (.present, .imperative, .plural, .third):
+            switch self {
+            case .weakClass1:
+                return "janþau"
+            case .weakClass2:
+                return "ōnþau"
+            default:
+                return "nþau"
+            }
         
         // Past Indicative
-        case (.past, .indicative, .singular, .first): return "dǭ"
-        case (.past, .indicative, .singular, .second): return "dēz"
-        case (.past, .indicative, .singular, .third): return "dē"
-        case (.past, .indicative, .dual, .first): return "dēdū"
-        case (.past, .indicative, .dual, .second): return "dēdudiz"
-        case (.past, .indicative, .plural, .first): return "dēdum"
-        case (.past, .indicative, .plural, .second): return "dēdud"
-        case (.past, .indicative, .plural, .third): return "dēdun"
+        case (.past, .indicative, .singular, .first): 
+            switch self {
+            case .weakClass1:
+                return "dǭ"
+            case .weakClass2:
+                return "ōdǭ"
+            default:
+                return "dǭ"
+            }
+        case (.past, .indicative, .singular, .second):
+            switch self {
+            case .weakClass1:
+                return "dēz"
+            case .weakClass2:
+                return "ōdēz"
+            default:
+                return "dēz"
+            }
+        case (.past, .indicative, .singular, .third):
+            switch self {
+            case .weakClass1:
+                return "dē"
+            case .weakClass2:
+                return "ōdē"
+            default:
+                return "dē"
+            }
+        case (.past, .indicative, .dual, .first):
+            switch self {
+            case .weakClass1:
+                return "dēdū"
+            case .weakClass2:
+                return "ōdēdū"
+            default:
+                return "dēdū"
+            }
+        case (.past, .indicative, .dual, .second):
+            switch self {
+            case .weakClass1:
+                return "dēdudiz"
+            case .weakClass2:
+                return "ōdēdudiz"
+            default:
+                return "dēdudiz"
+            }
+        case (.past, .indicative, .plural, .first):
+            switch self {
+            case .weakClass1:
+                return "dēdum"
+            case .weakClass2:
+                return "ōdēdum"
+            default:
+                return "dēdum"
+            }
+        case (.past, .indicative, .plural, .second):
+            switch self {
+            case .weakClass1:
+                return "dēdud"
+            case .weakClass2:
+                return "ōdēdud"
+            default:
+                return "dēdud"
+            }
+        case (.past, .indicative, .plural, .third):
+            switch self {
+            case .weakClass1:
+                return "dēdun"
+            case .weakClass2:
+                return "ōdēdun"
+            default:
+                return "dēdun"
+            }
             
         // Present Subjunctive
-        case (.past, .subjunctive, .singular, .first): return "dēdį̄"
-        case (.past, .subjunctive, .singular, .second): return "dēdīz"
-        case (.past, .subjunctive, .singular, .third): return "dēdī"
-        case (.past, .subjunctive, .dual, .first): return "dēdīw"
-        case (.past, .subjunctive, .dual, .second): return "dēdīdiz"
-        case (.past, .subjunctive, .plural, .first): return "dēdīm"
-        case (.past, .subjunctive, .plural, .second): return "dēdīd"
-        case (.past, .subjunctive, .plural, .third): return "dēdīn"
-        
-            
+        case (.past, .subjunctive, .singular, .first): 
+            switch self {
+            case .weakClass1:
+                return "dēdį̄"
+            case .weakClass2:
+                return "ōdēdį̄"
+            default:
+                return "dēdį̄"
+            }
+        case (.past, .subjunctive, .singular, .second): 
+            switch self {
+            case .weakClass1:
+                return "dēdīz"
+            case .weakClass2:
+                return "ōdēdīz"
+            default:
+                return "dēdīz"
+            }
+        case (.past, .subjunctive, .singular, .third):
+            switch self {
+            case .weakClass1:
+                return "dēdī"
+            case .weakClass2:
+                return "ōdēdī"
+            default:
+                return "dēdī"
+            }
+        case (.past, .subjunctive, .dual, .first):
+            switch self {
+            case .weakClass1:
+                return "dēdīw"
+            case .weakClass2:
+                return "ōdēdīw"
+            default:
+                return "dēdīw"
+            }
+        case (.past, .subjunctive, .dual, .second):
+            switch self {
+            case .weakClass1:
+                return "dēdīdiz"
+            case .weakClass2:
+                return "ōdēdīdiz"
+            default:
+                return "dēdīdiz"
+            }
+        case (.past, .subjunctive, .plural, .first):
+            switch self {
+            case .weakClass1:
+                return "dēdīm"
+            case .weakClass2:
+                return "ōdēdīm"
+            default:
+                return "dēdīm"
+            }
+        case (.past, .subjunctive, .plural, .second):
+            switch self {
+            case .weakClass1:
+                return "dēdīd"
+            case .weakClass2:
+                return "ōdēdīd"
+            default:
+                return "dēdīd"
+            }
+        case (.past, .subjunctive, .plural, .third):
+            switch self {
+            case .weakClass1:
+                return "dēdīn"
+            case .weakClass2:
+                return "ōdēdīn"
+            default:
+                return "dēdīn"
+            }
         default:
             return "-"
         }
