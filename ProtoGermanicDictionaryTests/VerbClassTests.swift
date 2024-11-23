@@ -491,4 +491,46 @@ class VerbClassTests: XCTestCase {
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "gamanōþ")
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "gamanōnþau")
     }
+    
+    func testWeakClass3VerbInflections() {
+        let verbClass = VerbClass.weakClass3
+        let word = "dagāną" // Example Weak Class 3 verb
+        
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "dagō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "dagaisi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "dagaiþi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "dagāmaz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "dagaiþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "dagānþi")
+        
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "dagadǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "dagadēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "dagadē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "dagadēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "dagadēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "dagadēdun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "dagaų")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "dagis")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "dagai")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "dagaim")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "dagaiþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "dagain")
+        
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "dagadēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "dagadēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "dagadēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "dagadēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "dagadēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "dagadēdīn")
+        
+        // Imperative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: word), "dagai")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "dagaiþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "dagānþau")
+    }
 }

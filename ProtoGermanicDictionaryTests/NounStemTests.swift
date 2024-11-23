@@ -31,17 +31,17 @@ class NounStemTests: XCTestCase {
     }
     
     func testAnStemMasculine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "hundan", gender: .masculine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "attô", gender: .masculine)
         XCTAssertEqual(stemType, .anStem, "Expected an-stem for masculine noun ending in 'an'")
     }
     
     func testOnStemFeminine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "godōn", gender: .feminine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "kakǭ", gender: .feminine)
         XCTAssertEqual(stemType, .onStem, "Expected ōn-stem for feminine noun ending in 'ōn'")
     }
     
     func testInStemFeminine() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "landīn", gender: .feminine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "gramį̄", gender: .feminine)
         XCTAssertEqual(stemType, .inStem, "Expected īn-stem for feminine noun ending in 'īn'")
     }
     
@@ -61,7 +61,7 @@ class NounStemTests: XCTestCase {
     }
     
     func testZStem() {
-        let stemType = NounStem.detectStemType(nominativeSingular: "skildz", gender: .masculine)
+        let stemType = NounStem.detectStemType(nominativeSingular: "kelaz", gender: .neuter)
         XCTAssertEqual(stemType, .zStem, "Expected z-stem for masculine noun ending in 'z'")
     }
     

@@ -29,7 +29,7 @@ enum VerbClass: String {
             return String(word.dropLast(3))
         case .weakClass1:
             return String(word.dropLast(4))
-        case .weakClass2:
+        case .weakClass2, .weakClass3:
             return String(word.dropLast(3))
         default:
             return word
@@ -185,6 +185,8 @@ enum VerbClass: String {
                 return "jō"
             case .weakClass2:
                 return "ō"
+            case .weakClass3:
+                return "ō"
             default:
                 return "ō"
             }
@@ -194,6 +196,8 @@ enum VerbClass: String {
                 return "si"
             case .weakClass2:
                 return "ōsi"
+            case .weakClass3:
+                return "aisi"
             default:
                 return "si"
             }
@@ -203,6 +207,8 @@ enum VerbClass: String {
                 return "þi"
             case .weakClass2:
                 return "ōþi"
+            case .weakClass3:
+                return "aiþi"
             default:
                 return "þi"
             }
@@ -211,6 +217,8 @@ enum VerbClass: String {
             case .weakClass1:
                 return "jōs"
             case .weakClass2:
+                return "ōs"
+            case .weakClass3:
                 return "ōs"
             default:
                 return "ōs"
@@ -221,6 +229,8 @@ enum VerbClass: String {
                 return "jaþiz"
             case .weakClass2:
                 return "ōþiz"
+            case .weakClass3:
+                return "āþiz"
             default:
                 return "þiz"
             }
@@ -228,8 +238,10 @@ enum VerbClass: String {
             switch self {
             case .weakClass1:
                 return "jamaz"
-            case    .weakClass2:
+            case .weakClass2:
                 return "ōmaz"
+            case .weakClass3:
+                return "āmaz"
             default:
                 return "maz"
             }
@@ -239,6 +251,8 @@ enum VerbClass: String {
                 return "þ"
             case .weakClass2:
                 return "ōþ"
+            case .weakClass3:
+                return "aiþ"
             default:
                 return "þ"
             }
@@ -248,6 +262,8 @@ enum VerbClass: String {
                 return "ijanþi"
             case .weakClass2:
                 return "ōnþi"
+            case .weakClass3:
+                return "ānþi"
             default:
                 return "anþi"
             }
@@ -259,15 +275,19 @@ enum VerbClass: String {
                 return "jaų"
             case .weakClass2:
                 return "ǭ"
+            case .weakClass3:
+                return "aų"
             default:
                 return "aų"
             }
         case (.present, .subjunctive, .singular, .second): 
             switch self {
-                case .weakClass1:
+            case .weakClass1:
                 return "jais"
             case .weakClass2:
                 return "ōs"
+            case .weakClass3:
+                return "is"
             default:
                 return "is"
             }
@@ -277,6 +297,8 @@ enum VerbClass: String {
                 return "jai"
             case .weakClass2:
                 return "ō"
+            case .weakClass3:
+                return "ai"
             default:
                 return "ai"
             }
@@ -286,6 +308,8 @@ enum VerbClass: String {
                 return "jaiw"
             case .weakClass2:
                 return "ōw"
+            case .weakClass3:
+                return "aiw"
             default:
                 return "aiw"
             }
@@ -295,8 +319,10 @@ enum VerbClass: String {
                 return "jaiþiz"
             case .weakClass2:
                 return "ōþiz"
+            case .weakClass3:
+                return "aþiz"
             default:
-                return "þiz"
+                return "aþiz"
             }
         case (.present, .subjunctive, .plural, .first):
             switch self {
@@ -304,6 +330,8 @@ enum VerbClass: String {
                 return "jaim"
             case .weakClass2:
                 return "ōm"
+            case .weakClass3:
+                return "aim"
             default:
                 return "aim"
             }
@@ -313,6 +341,8 @@ enum VerbClass: String {
                 return "jaiþ"
             case .weakClass2:
                 return "ōþ"
+            case .weakClass3:
+                return "aiþ"
             default:
                 return "aiþ"
             }
@@ -322,6 +352,8 @@ enum VerbClass: String {
                 return "jain"
             case .weakClass2:
                 return "ōn"
+            case .weakClass3:
+                return "ain"
             default:
                 return "ain"
             }
@@ -333,6 +365,8 @@ enum VerbClass: String {
                 return ""
             case .weakClass2:
                 return "ō"
+            case .weakClass3:
+                return "ai"
             default:
                 return ""
             }
@@ -342,6 +376,8 @@ enum VerbClass: String {
                 return "jaþau"
             case .weakClass2:
                 return "ōþau"
+            case .weakClass3:
+                return "āþau"
             default:
                 return "þau"
             }
@@ -351,6 +387,8 @@ enum VerbClass: String {
                 return "jaþiz"
             case .weakClass2:
                 return "ōþiz"
+            case .weakClass3:
+                return "āþiz"
             default:
                 return "þiz"
             }
@@ -360,6 +398,8 @@ enum VerbClass: String {
                 return "īþ"
             case .weakClass2:
                 return "ōþ"
+            case .weakClass3:
+                return "aiþ"
             default:
                 return "īþ"
             }
@@ -369,6 +409,8 @@ enum VerbClass: String {
                 return "janþau"
             case .weakClass2:
                 return "ōnþau"
+            case .weakClass3:
+                return "ānþau"
             default:
                 return "nþau"
             }
@@ -380,6 +422,8 @@ enum VerbClass: String {
                 return "dǭ"
             case .weakClass2:
                 return "ōdǭ"
+            case .weakClass3:
+                return "adǭ"
             default:
                 return "dǭ"
             }
@@ -389,6 +433,8 @@ enum VerbClass: String {
                 return "dēz"
             case .weakClass2:
                 return "ōdēz"
+            case .weakClass3:
+                return "adēz"
             default:
                 return "dēz"
             }
@@ -398,6 +444,8 @@ enum VerbClass: String {
                 return "dē"
             case .weakClass2:
                 return "ōdē"
+            case .weakClass3:
+                return "adē"
             default:
                 return "dē"
             }
@@ -407,6 +455,8 @@ enum VerbClass: String {
                 return "dēdū"
             case .weakClass2:
                 return "ōdēdū"
+            case .weakClass3:
+                return "adēdū"
             default:
                 return "dēdū"
             }
@@ -416,6 +466,8 @@ enum VerbClass: String {
                 return "dēdudiz"
             case .weakClass2:
                 return "ōdēdudiz"
+            case .weakClass3:
+                return "adēdudiz"
             default:
                 return "dēdudiz"
             }
@@ -425,6 +477,8 @@ enum VerbClass: String {
                 return "dēdum"
             case .weakClass2:
                 return "ōdēdum"
+            case .weakClass3:
+                return "adēdum"
             default:
                 return "dēdum"
             }
@@ -434,6 +488,8 @@ enum VerbClass: String {
                 return "dēdud"
             case .weakClass2:
                 return "ōdēdud"
+            case .weakClass3:
+                return "adēdud"
             default:
                 return "dēdud"
             }
@@ -443,6 +499,8 @@ enum VerbClass: String {
                 return "dēdun"
             case .weakClass2:
                 return "ōdēdun"
+            case .weakClass3:
+                return "adēdun"
             default:
                 return "dēdun"
             }
@@ -454,6 +512,8 @@ enum VerbClass: String {
                 return "dēdį̄"
             case .weakClass2:
                 return "ōdēdį̄"
+            case .weakClass3:
+                return "adēdį̄"
             default:
                 return "dēdį̄"
             }
@@ -463,6 +523,8 @@ enum VerbClass: String {
                 return "dēdīz"
             case .weakClass2:
                 return "ōdēdīz"
+            case .weakClass3:
+                return "adēdīz"
             default:
                 return "dēdīz"
             }
@@ -472,6 +534,8 @@ enum VerbClass: String {
                 return "dēdī"
             case .weakClass2:
                 return "ōdēdī"
+            case .weakClass3:
+                return "adēdī"
             default:
                 return "dēdī"
             }
@@ -481,6 +545,8 @@ enum VerbClass: String {
                 return "dēdīw"
             case .weakClass2:
                 return "ōdēdīw"
+            case .weakClass3:
+                return "adēdīw"
             default:
                 return "dēdīw"
             }
@@ -490,6 +556,8 @@ enum VerbClass: String {
                 return "dēdīdiz"
             case .weakClass2:
                 return "ōdēdīdiz"
+            case .weakClass3:
+                return "adēdīdiz"
             default:
                 return "dēdīdiz"
             }
@@ -499,6 +567,8 @@ enum VerbClass: String {
                 return "dēdīm"
             case .weakClass2:
                 return "ōdēdīm"
+            case .weakClass3:
+                return "adēdīm"
             default:
                 return "dēdīm"
             }
@@ -508,6 +578,8 @@ enum VerbClass: String {
                 return "dēdīd"
             case .weakClass2:
                 return "ōdēdīd"
+            case .weakClass3:
+                return "adēdīd"
             default:
                 return "dēdīd"
             }
@@ -517,6 +589,8 @@ enum VerbClass: String {
                 return "dēdīn"
             case .weakClass2:
                 return "ōdēdīn"
+            case .weakClass3:
+                return "adēdīn"
             default:
                 return "dēdīn"
             }
