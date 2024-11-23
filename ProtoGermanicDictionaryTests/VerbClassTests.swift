@@ -533,4 +533,46 @@ class VerbClassTests: XCTestCase {
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "dagaiþ")
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "dagānþau")
     }
+    
+    func testWeakClass4VerbInflections() {
+        let verbClass = VerbClass.weakClass4
+        let word = "sturknaną" // Example Weak Class 4 verb
+        
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "sturknō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "sturknōsi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "sturknōþi")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "sturknāmaz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "sturknāþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "sturknanþi")
+        
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "sturknōdǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "sturknōdēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "sturknōdē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "sturknōdēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "sturknōdēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "sturknōdēdun")
+        
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "sturknaų")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "sturknais")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "sturknai")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "sturknaim")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "sturknaiþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "sturknain")
+        
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "sturknōdēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "sturknōdēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "sturknōdēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "sturknōdēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "sturknōdēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "sturknōdēdīn")
+        
+        // Imperative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .singular, person: .second, word: word), "sturknō")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "sturknaþ")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "sturknanþau")
+    }
 }
