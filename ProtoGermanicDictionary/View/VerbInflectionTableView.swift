@@ -14,32 +14,37 @@ struct VerbInflectionTableView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Verb Inflection Table")
                 .font(.headline)
-                .padding(.bottom, 5)
+                .padding(.bottom, 8)
 
             // Loop through all tenses
             ForEach(GrammaticalTense.allCases, id: \.self) { tense in
-                Text("\(tense.rawValue) Tense")
-                    .font(.subheadline)
-                    .padding(.top, 10)
-                    .fontWeight(.bold)
-                
-                tenseHeaderRow(for: tense)
-                
-                // Loop through grammatical numbers and display inflection rows for the current tense
-                ForEach(GrammaticalNumber.allCases, id: \.self) { number in
-                    verbInflectionRow(number: number, tense: tense)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("\(tense.rawValue) Tense")
+                        .font(.subheadline)
+                        .padding(.vertical, 5)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color(UIColor.systemGray5))
+                    
+                    tenseHeaderRow(for: tense)
+                    
+                    // Loop through grammatical numbers and display inflection rows for the current tense
+                    ForEach(GrammaticalNumber.allCases, id: \.self) { number in
+                        verbInflectionRow(number: number, tense: tense)
+                    }
                 }
+                .padding(.vertical, 4)
             }
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemGray6).opacity(0.2))
-        .cornerRadius(8)
+        .cornerRadius(10)
     }
     
     private func tenseHeaderRow(for tense: GrammaticalTense) -> some View {
         HStack {
             Text("") // Empty cell for alignment
-                .frame(width: 100, alignment: .leading)
+                .frame(width: 80, alignment: .leading) // Adjusted width for first column
             
             // Loop through moods to create headers
             ForEach(GrammaticalMood.allCases.filter { mood in
@@ -48,6 +53,7 @@ struct VerbInflectionTableView: View {
                 Text(mood.rawValue)
                     .frame(maxWidth: .infinity)
                     .font(.subheadline.weight(.medium))
+                    .multilineTextAlignment(.center)
             }
         }
         .background(Color(UIColor.systemGray5))
@@ -61,16 +67,24 @@ struct VerbInflectionTableView: View {
                 !(number == .dual && person == .third) // Exclude third dual
             }, id: \.self) { person in
                 personInflectionRow(person: person, number: number, tense: tense)
+                    .background(Color(UIColor.systemGray6).opacity(0.05)) // Subtle row background
             }
         }
     }
     
     private func personInflectionRow(person: GrammaticalPerson, number: GrammaticalNumber, tense: GrammaticalTense) -> some View {
-        HStack {
-            Text("\(person.rawValue) \(number.rawValue.lowercased())")
-                .frame(width: 100, alignment: .leading)
-                .padding(.vertical, 4)
-                .background(Color(UIColor.systemGray5).opacity(0.3))
+        HStack(spacing: 0) {
+            VStack(spacing: 2) {
+                Text(person.rawValue)
+                Text(number.rawValue.lowercased())
+            }
+            .frame(width: 80, alignment: .center) // Adjusted width for the first column
+            .padding(.vertical, 4)
+            .background(Color(UIColor.systemGray5).opacity(0.3))
+            .font(.caption) // Slightly smaller font for multi-line text
+            .multilineTextAlignment(.center)
+            
+            Divider() // Add a divider between columns
             
             // Loop through each mood to fill in the cells
             ForEach(GrammaticalMood.allCases.filter { mood in
@@ -79,8 +93,17 @@ struct VerbInflectionTableView: View {
                 let form = inflections[tense]?[mood]?[number]?[person] ?? "-"
                 Text(form)
                     .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 4)
+                    .font(.callout) // Slightly smaller text
+                    .multilineTextAlignment(.center)
             }
         }
-        .background(Color(UIColor.systemGray6).opacity(0.1))
+        .padding(.vertical, 6)
+        .overlay(
+            Rectangle()
+                .frame(height: 1)
+                .foregroundColor(Color(UIColor.systemGray4)),
+            alignment: .bottom // Row separator
+        )
     }
 }
