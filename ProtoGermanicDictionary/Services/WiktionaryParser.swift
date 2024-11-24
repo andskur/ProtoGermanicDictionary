@@ -18,12 +18,14 @@ class WiktionaryParser {
     }
 
     static func parse(content: String) -> ParsedData {
-//        print(content)
+        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false
         var inEtymologySection = false
         var inWordTypeSection = false
+        
+        var verbClassSelected = false
 
         // Split the content into lines
         let lines = content.components(separatedBy: .newlines)
@@ -65,9 +67,10 @@ class WiktionaryParser {
                     parsedData.gender = gender
                 }
                 
-                if inWordTypeSection && parsedData.wordType == .verb {
-                    if let (isStrong, verbClass) = detectVerbClass(from: trimmedLine) {
+                if inWordTypeSection && parsedData.wordType == .verb && !verbClassSelected {
+                    if let (isStrong, verbClass) = detectVerbClass(from: trimmedLine) {                        
                         parsedData.verbClass = VerbClass.detectVerbClass(isStrong: isStrong, verbClass: verbClass)
+                        verbClassSelected = true
                     }
                 }
                 
@@ -108,6 +111,12 @@ class WiktionaryParser {
         let preteritePresentPattern = #"\{\{gem-conj-pp\|.*\}\}"#
         if line.range(of: preteritePresentPattern, options: .regularExpression) != nil {
             return (isStrong: false, verbClass: "Preterite-Present")
+        }
+
+        // Pattern to capture irregular verbs, e.g., {{gem-conj-irreg|...}}
+        let irregularPattern = #"\{\{gem-conj-irreg\|.*\}\}"#
+        if line.range(of: irregularPattern, options: .regularExpression) != nil {
+            return (isStrong: false, verbClass: "Irregular")
         }
 
         // If no pattern is matched, return nil

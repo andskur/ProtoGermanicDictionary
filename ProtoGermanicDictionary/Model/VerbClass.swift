@@ -55,10 +55,24 @@ enum VerbClass: String {
         case .preteritePresent:
             return preteritePresentInflection(for: tense, mood: mood, number: number, person: person, word: word)
         case .irregular:
-            return "-"
+            return irregularInflection(for: tense, mood: mood, number: number, person: person, word: word)
         default:
             return "-"
         }
+    }
+    
+    /// Handle irregular verb inflection using the data-driven approach
+    private func irregularInflection(
+        for tense: GrammaticalTense,
+        mood: GrammaticalMood,
+        number: GrammaticalNumber,
+        person: GrammaticalPerson,
+        word: String
+    ) -> String {
+        guard let irregularVerb = IrregularVerbStore.shared.getVerb(baseForm: word) else {
+            return "-"
+        }
+        return irregularVerb.inflections[tense]?[mood]?[number]?[person] ?? "-"
     }
     
     func preteritePresentInflection (
@@ -817,6 +831,8 @@ enum VerbClass: String {
             return .weakClass4
         case (false, "Preterite-Present"):
             return .preteritePresent
+        case (false, "Irregular"):
+            return .irregular
         default:
             return .unknown
         }
