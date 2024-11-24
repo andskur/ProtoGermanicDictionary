@@ -20,29 +20,47 @@ struct NounInflectionTableView: View {
             HStack(spacing: 0) {
                 Text("") // Empty cell for alignment
                     .frame(width: 120, height: 40, alignment: .leading)
+                
+                #if os(iOS)
                     .background(Color(UIColor.systemGray5))
+                #endif
                 Divider()
                 Text(GrammaticalNumber.singular.rawValue)
                     .font(.subheadline)
                     .frame(maxWidth: .infinity)
+                
+                #if os(iOS)
                     .background(Color(UIColor.systemGray5))
+                #endif
                 Divider()
                 Text(GrammaticalNumber.plural.rawValue)
                     .font(.subheadline)
                     .frame(maxWidth: .infinity)
+                
+                #if os(iOS)
                     .background(Color(UIColor.systemGray5))
+                #endif
             }
+            
+            #if os(iOS)
             .background(Color(UIColor.systemGray5))
+            #endif
 
             // Rows for each grammatical case
             ForEach(GrammaticalCase.allCases.indices, id: \.self) { index in
                 let grammaticalCase = GrammaticalCase.allCases[index]
                 inflectionRow(for: grammaticalCase)
+                
+                #if os(iOS)
                     .background(index.isMultiple(of: 2) ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
+                #endif
             }
         }
         .frame(maxWidth: .infinity)
+        
+        #if os(iOS)
         .background(Color(UIColor.systemGray6).opacity(0.2))
+        #endif
         .cornerRadius(8)
     }
 
@@ -50,7 +68,10 @@ struct NounInflectionTableView: View {
         HStack(spacing: 0) {
             Text(grammaticalCase.rawValue)
                 .frame(width: 120, height: 40, alignment: .leading)
+            
+            #if os(iOS)
                 .background(Color(UIColor.systemGray5))
+            #endif
                 .font(.subheadline.weight(.medium))
                 .foregroundColor(.primary)
 

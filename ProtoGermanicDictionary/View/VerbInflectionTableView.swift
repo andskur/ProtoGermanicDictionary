@@ -24,7 +24,10 @@ struct VerbInflectionTableView: View {
                         .padding(.vertical, 5)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    #if os(iOS)
                         .background(Color(UIColor.systemGray5))
+                    #endif
                     
                     tenseHeaderRow(for: tense)
                     
@@ -37,7 +40,10 @@ struct VerbInflectionTableView: View {
             }
         }
         .frame(maxWidth: .infinity)
+        
+        #if os(iOS)
         .background(Color(UIColor.systemGray6).opacity(0.2))
+        #endif
         .cornerRadius(10)
     }
     
@@ -56,7 +62,10 @@ struct VerbInflectionTableView: View {
                     .multilineTextAlignment(.center)
             }
         }
+        
+        #if os(iOS)
         .background(Color(UIColor.systemGray5))
+        #endif
         .padding(.vertical, 4)
     }
     
@@ -67,7 +76,10 @@ struct VerbInflectionTableView: View {
                 !(number == .dual && person == .third) // Exclude third dual
             }, id: \.self) { person in
                 personInflectionRow(person: person, number: number, tense: tense)
+                
+                #if os(iOS)
                     .background(Color(UIColor.systemGray6).opacity(0.05)) // Subtle row background
+                #endif
             }
         }
     }
@@ -80,7 +92,10 @@ struct VerbInflectionTableView: View {
             }
             .frame(width: 80, alignment: .center) // Adjusted width for the first column
             .padding(.vertical, 4)
+            
+            #if os(iOS)
             .background(Color(UIColor.systemGray5).opacity(0.3))
+            #endif
             .font(.caption) // Slightly smaller font for multi-line text
             .multilineTextAlignment(.center)
             
@@ -99,11 +114,14 @@ struct VerbInflectionTableView: View {
             }
         }
         .padding(.vertical, 6)
+        
+        #if os(iOS)
         .overlay(
             Rectangle()
                 .frame(height: 1)
                 .foregroundColor(Color(UIColor.systemGray4)),
             alignment: .bottom // Row separator
         )
+        #endif
     }
 }
