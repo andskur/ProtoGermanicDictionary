@@ -19,6 +19,7 @@ enum VerbClass: String {
     case weakClass2 = "Weak Class II"
     case weakClass3 = "Weak Class III"
     case weakClass4 = "Weak Class IV"
+    case preteritePresent = "Preterite-Present"
     case irregular = "Irregular"
     case unknown = "Unknown"
 
@@ -30,6 +31,8 @@ enum VerbClass: String {
         case .weakClass1:
             return String(word.dropLast(4))
         case .weakClass2, .weakClass3, .weakClass4:
+            return String(word.dropLast(3))
+        case .preteritePresent:
             return String(word.dropLast(3))
         default:
             return word
@@ -49,11 +52,83 @@ enum VerbClass: String {
             return strongInflection(for: tense, mood: mood, number: number, person: person, word: word)
         case .weakClass1, .weakClass2, .weakClass3, .weakClass4:
             return weakInflection(for: tense, mood: mood, number: number, person: person, word: word)
+        case .preteritePresent:
+            return preteritePresentInflection(for: tense, mood: mood, number: number, person: person, word: word)
         case .irregular:
             return "-"
         default:
             return "-"
         }
+    }
+    
+    func preteritePresentInflection (
+        for tense: GrammaticalTense,
+        mood: GrammaticalMood,
+        number: GrammaticalNumber,
+        person: GrammaticalPerson,
+        word: String
+    ) -> String {
+        var suffix = preteritePresentSuffix(for: tense, mood: mood, number: number, person: person)
+        
+        if suffix == "-" {
+            return "-"
+        }
+        
+        var aiPattern = false
+        
+        var stem = extractBaseForm(from: word)
+        for (_, char) in stem.enumerated() {
+            if char == "u" {
+                if tense == .present && mood == .indicative && number == .singular {
+                    stem = stem.replacingOccurrences(of: "u", with: "a")
+                }
+                break
+            }
+            
+            if char == "i" {
+                if tense == .present && mood == .indicative && number == .singular {
+                    stem = stem.replacingOccurrences(of: "i", with: "ai")
+                }
+                aiPattern = true
+                break
+            }
+        }
+        
+        if aiPattern {
+            if tense == .past || (tense == .present && mood == .indicative && number == .singular) {
+                if tense == .present && (person != .second && stem.first == "w") {
+                    print(stem)
+                } else {
+                    stem = stem.dropLast() + "s"
+                }
+            }
+            
+            if tense == .past {
+                if stem.first == "l" {
+                    suffix = "t" + suffix.dropFirst()
+                } else if stem.first == "w" {
+                    suffix = "s" + suffix.dropFirst()
+                }
+            }
+        } else if stem.first == "þ" {
+            if tense == .past || (tense == .present && number == .singular && mood == .indicative) {
+                stem = stem.dropLast() + "f"
+            }
+            
+            if tense == .past {
+                suffix = "t" + suffix.dropFirst()
+            }
+        } else {
+            if stem.last == "g" && suffix != "" && (tense == .past || (tense == .present && mood == .indicative && number == .singular && person == .second) ) {
+                stem = stem.dropLast() + "h"
+            }
+            
+            if stem.last == "h" && suffix.first == "d" {
+                suffix = "t" + suffix.dropFirst()
+            }
+        }
+        
+        return stem + suffix
     }
 
     func weakInflection(
@@ -65,7 +140,6 @@ enum VerbClass: String {
     ) -> String {
         let suffix = weakSuffix(for: tense, mood: mood, number: number, person: person)
 
-        // Add suffix based on tense, mood, number, and person
         if suffix == "-" {
             return "-"
         }
@@ -93,7 +167,6 @@ enum VerbClass: String {
         
         let suffix = strongSuffix(for: tense, mood: mood, number: number, person: person)
         
-        // Add suffix based on tense, mood, number, and person
         if suffix == "-" {
             return "-"
         }
@@ -173,6 +246,57 @@ enum VerbClass: String {
          
          return root
      }
+    
+    private func preteritePresentSuffix(for tense: GrammaticalTense, mood: GrammaticalMood, number: GrammaticalNumber, person: GrammaticalPerson) -> String {
+        
+        switch (tense, mood, number, person) {
+        
+        // Present Indicative
+        case (.present, .indicative, .singular, .first): return ""
+        case (.present, .indicative, .singular, .second): return "t"
+        case (.present, .indicative, .singular, .third): return ""
+        case (.present, .indicative, .dual, .first): return "ū"
+        case (.present, .indicative, .dual, .second): return "udiz"
+        case (.present, .indicative, .plural, .first): return "um"
+        case (.present, .indicative, .plural, .second): return "ud"
+        case (.present, .indicative, .plural, .third): return "un"
+        
+        // Present Subjunctive
+        case (.present, .subjunctive, .singular, .first): return "į̄"
+        case (.present, .subjunctive, .singular, .second): return "īz"
+        case (.present, .subjunctive, .singular, .third): return "ī"
+        case (.present, .subjunctive, .dual, .first): return "īw"
+        case (.present, .subjunctive, .dual, .second): return "īdiz"
+        case (.present, .subjunctive, .plural, .first): return "īm"
+        case (.present, .subjunctive, .plural, .second): return "īd"
+        case (.present, .subjunctive, .plural, .third): return "īn"
+        
+        // Past Indicative
+        case (.past, .indicative, .singular, .first): return "dǭ"
+        case (.past, .indicative, .singular, .second): return "dēz"
+        case (.past, .indicative, .singular, .third): return "dē"
+        case (.past, .indicative, .dual, .first): return "dēdū"
+        case (.past, .indicative, .dual, .second): return "dēdudiz"
+        case (.past, .indicative, .plural, .first): return "dēdum"
+        case (.past, .indicative, .plural, .second): return "dēdud"
+        case (.past, .indicative, .plural, .third): return "dēdun"
+            
+        // Past Subjunctive
+        case (.past, .subjunctive, .singular, .first): return "dēdį̄"
+        case (.past, .subjunctive, .singular, .second): return "dēdīz"
+        case (.past, .subjunctive, .singular, .third): return "dēdī"
+        case (.past, .subjunctive, .dual, .first): return "dēdīw"
+        case (.past, .subjunctive, .dual, .second): return "dēdīdiz"
+        case (.past, .subjunctive, .plural, .first): return "dēdīm"
+        case (.past, .subjunctive, .plural, .second): return "dēdīd"
+        case (.past, .subjunctive, .plural, .third): return "dēdīn"
+        
+            
+        default:
+            return "-"
+        }
+        
+    }
     
     /// Return suffixes for the verb form
     private func weakSuffix(for tense: GrammaticalTense, mood: GrammaticalMood, number: GrammaticalNumber, person: GrammaticalPerson) -> String {
@@ -650,7 +774,7 @@ enum VerbClass: String {
         case (.past, .indicative, .plural, .second): return "ud"
         case (.past, .indicative, .plural, .third): return "un"
             
-        // Present Subjunctive
+        // Past Subjunctive
         case (.past, .subjunctive, .singular, .first): return "į̄"
         case (.past, .subjunctive, .singular, .second): return "īz"
         case (.past, .subjunctive, .singular, .third): return "ī"
@@ -691,6 +815,8 @@ enum VerbClass: String {
             return .weakClass3
         case (false, "wk4"):
             return .weakClass4
+        case (false, "Preterite-Present"):
+            return .preteritePresent
         default:
             return .unknown
         }

@@ -575,4 +575,229 @@ class VerbClassTests: XCTestCase {
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .second, word: word), "sturknaþ")
         XCTAssertEqual(verbClass.inflection(for: .present, mood: .imperative, number: .plural, person: .third, word: word), "sturknanþau")
     }
+    
+    func testPreteritePresentVerbMaganą() {
+        let verbClass = VerbClass.preteritePresent
+        let word = "maganą" // Example Preterite-Present verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "mag")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "maht")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "mag")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .first, word: word), "magū")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .second, word: word), "magudiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "magum")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "magud")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "magun")
+
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "magį̄")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "magīz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "magī")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .first, word: word), "magīw")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .second, word: word), "magīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "magīm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "magīd")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "magīn")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "mahtǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "mahtēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "mahtē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .first, word: word), "mahtēdū")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .second, word: word), "mahtēdudiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "mahtēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "mahtēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "mahtēdun")
+
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "mahtēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "mahtēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "mahtēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .first, word: word), "mahtēdīw")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .second, word: word), "mahtēdīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "mahtēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "mahtēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "mahtēdīn")
+    }
+    
+    func testPreteritePresentVerbLizana() {
+        let verbClass = VerbClass.preteritePresent
+        let word = "lizaną" // Example Preterite-Present verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "lais")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "laist")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "lais")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .first, word: word), "lizū")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .second, word: word), "lizudiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "lizum")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "lizud")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "lizun")
+
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "lizį̄")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "lizīz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "lizī")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .first, word: word), "lizīw")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .second, word: word), "lizīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "lizīm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "lizīd")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "lizīn")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "listǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "listēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "listē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .first, word: word), "listēdū")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .second, word: word), "listēdudiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "listēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "listēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "listēdun")
+
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "listēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "listēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "listēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .first, word: word), "listēdīw")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .second, word: word), "listēdīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "listēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "listēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "listēdīn")
+    }
+    
+    func testPreteritePresentVerbWitana() {
+        let verbClass = VerbClass.preteritePresent
+        let word = "witaną" // Example Preterite-Present verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "wait")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "waist")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "wait")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .first, word: word), "witū")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .second, word: word), "witudiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "witum")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "witud")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "witun")
+
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "witį̄")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "witīz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "witī")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .first, word: word), "witīw")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .second, word: word), "witīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "witīm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "witīd")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "witīn")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "wissǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "wissēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "wissē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .first, word: word), "wissēdū")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .second, word: word), "wissēdudiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "wissēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "wissēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "wissēdun")
+
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "wissēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "wissēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "wissēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .first, word: word), "wissēdīw")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .second, word: word), "wissēdīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "wissēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "wissēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "wissēdīn")
+    }
+    
+    func testPreteritePresentVerbThurbana() {
+        let verbClass = VerbClass.preteritePresent
+        let word = "þurbaną" // Example Preterite-Present verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "þarf")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "þarft")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "þarf")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .first, word: word), "þurbū")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .second, word: word), "þurbudiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "þurbum")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "þurbud")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "þurbun")
+
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "þurbį̄")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "þurbīz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "þurbī")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .first, word: word), "þurbīw")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .second, word: word), "þurbīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "þurbīm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "þurbīd")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "þurbīn")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "þurftǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "þurftēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "þurftē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .first, word: word), "þurftēdū")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .second, word: word), "þurftēdudiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "þurftēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "þurftēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "þurftēdun")
+
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "þurftēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "þurftēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "þurftēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .first, word: word), "þurftēdīw")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .second, word: word), "þurftēdīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "þurftēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "þurftēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "þurftēdīn")
+    }
+    
+    func testPreteritePresentVerbSkulana() {
+        let verbClass = VerbClass.preteritePresent
+        let word = "skulaną" // Example Preterite-Present verb
+
+        // Present Indicative
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .first, word: word), "skal")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .second, word: word), "skalt")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .singular, person: .third, word: word), "skal")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .first, word: word), "skulū")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .dual, person: .second, word: word), "skuludiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .first, word: word), "skulum")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .second, word: word), "skulud")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .indicative, number: .plural, person: .third, word: word), "skulun")
+
+        // Present Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .first, word: word), "skulį̄")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .second, word: word), "skulīz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .singular, person: .third, word: word), "skulī")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .first, word: word), "skulīw")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .dual, person: .second, word: word), "skulīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .first, word: word), "skulīm")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .second, word: word), "skulīd")
+        XCTAssertEqual(verbClass.inflection(for: .present, mood: .subjunctive, number: .plural, person: .third, word: word), "skulīn")
+
+        // Past Indicative
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .first, word: word), "skuldǭ")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .second, word: word), "skuldēz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .singular, person: .third, word: word), "skuldē")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .first, word: word), "skuldēdū")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .dual, person: .second, word: word), "skuldēdudiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .first, word: word), "skuldēdum")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .second, word: word), "skuldēdud")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .indicative, number: .plural, person: .third, word: word), "skuldēdun")
+
+        // Past Subjunctive
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .first, word: word), "skuldēdį̄")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .second, word: word), "skuldēdīz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .singular, person: .third, word: word), "skuldēdī")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .first, word: word), "skuldēdīw")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .dual, person: .second, word: word), "skuldēdīdiz")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .first, word: word), "skuldēdīm")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .second, word: word), "skuldēdīd")
+        XCTAssertEqual(verbClass.inflection(for: .past, mood: .subjunctive, number: .plural, person: .third, word: word), "skuldēdīn")
+    }
 }

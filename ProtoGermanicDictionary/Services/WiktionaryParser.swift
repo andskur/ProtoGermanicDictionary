@@ -104,6 +104,12 @@ class WiktionaryParser {
             return (isStrong: false, verbClass: "wk\(weakClass)")
         }
 
+        // Pattern to capture preterite-present verbs, e.g., {{gem-conj-pp|skul|skal|skuld}}
+        let preteritePresentPattern = #"\{\{gem-conj-pp\|.*\}\}"#
+        if line.range(of: preteritePresentPattern, options: .regularExpression) != nil {
+            return (isStrong: false, verbClass: "Preterite-Present")
+        }
+
         // If no pattern is matched, return nil
         return nil
     }
