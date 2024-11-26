@@ -24,7 +24,7 @@ enum NounStem: String {
     case unknown = "unknown"
     
     // Method to extract base form depending on the noun stem, case, and gender
-    func extractBaseForm(from title: String, gender: NounGender) -> String {
+    func extractBaseForm(from title: String, gender: GrammaticalGender) -> String {
         var root = title
 
         // Apply different rules depending on the noun stem type and gender
@@ -48,7 +48,7 @@ enum NounStem: String {
         return root
     }
     
-    func inflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, gender: NounGender, word: String) -> String {
+    func inflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, gender: GrammaticalGender, word: String) -> String {
         let root = extractBaseForm(from: word, gender: gender)
 
         switch self {
@@ -82,7 +82,7 @@ enum NounStem: String {
     }
     
     // Example method for the a-stem noun inflections
-    private func aStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+    private func aStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: GrammaticalGender) -> String {
         switch (grammaticalCase, number, gender) {
         case (.nominative, .singular, .masculine): return root + "az"
         case (.nominative, .plural, .masculine): return root + "ōz"
@@ -112,7 +112,7 @@ enum NounStem: String {
 
 
     // Additional methods for other stems
-    private func jaStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+    private func jaStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: GrammaticalGender) -> String {
         switch (grammaticalCase, number, gender) {
         case (.vocative, .singular, .masculine) : return root.dropLast(1) + "i"
         default: return aStemInflection(for: grammaticalCase, number: number, root: root, gender: gender)
@@ -155,7 +155,7 @@ enum NounStem: String {
         }
     }
 
-    private func iStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+    private func iStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: GrammaticalGender) -> String {
         switch (grammaticalCase, number, gender) {
             
             // Nominative
@@ -211,7 +211,7 @@ enum NounStem: String {
         }
     }
 
-    private func uStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+    private func uStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: GrammaticalGender) -> String {
         switch (grammaticalCase, number, gender) {
             
             // Nominative
@@ -267,7 +267,7 @@ enum NounStem: String {
         }
     }
 
-    private func anStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: NounGender) -> String {
+    private func anStemInflection(for grammaticalCase: GrammaticalCase, number: GrammaticalNumber, root: String, gender: GrammaticalGender) -> String {
         switch (grammaticalCase, number, gender) {
             
             // Nominative
@@ -410,7 +410,7 @@ enum NounStem: String {
     }
 
     // Function to detect stem type based on nominative ending and gender
-    static func detectStemType(nominativeSingular: String, gender: NounGender) -> NounStem {
+    static func detectStemType(nominativeSingular: String, gender: GrammaticalGender) -> NounStem {
         let ending = nominativeSingular.lowercased()
         
         // Check for specific stem types based on known patterns

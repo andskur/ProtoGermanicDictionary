@@ -120,7 +120,7 @@ class DataManagerTests: XCTestCase {
         let updatedWord = dataManager.fetchWordDetails(title: "updateWord")
         XCTAssertEqual(updatedWord?.translations?.count, 2)
         XCTAssertEqual(updatedWord?.wordType, WordType.noun.rawValue)
-        XCTAssertEqual(updatedWord?.nounGender, NounGender.neuter.rawValue)
+        XCTAssertEqual(updatedWord?.nounGender, GrammaticalGender.neuter.rawValue)
         XCTAssertEqual(updatedWord?.nounStem, NounStem.aStem.rawValue)
     }
     

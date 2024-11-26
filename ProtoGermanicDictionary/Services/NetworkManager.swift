@@ -237,7 +237,7 @@ struct WordData {
     let title: String
     var wordType: WordType
     var translations: [String] // Stores translations
-    var gender: NounGender?
+    var gender: GrammaticalGender?
     var verbClass: VerbClass?
 
     init(pageid: Int64, title: String, wordType: WordType, translations: [String]) {

@@ -13,12 +13,12 @@ class WiktionaryParser {
     struct ParsedData {
         var translations: [String] = []
         var wordType: WordType = .unknown
-        var gender: NounGender? = nil
+        var gender: GrammaticalGender? = nil
         var verbClass: VerbClass?
     }
 
     static func parse(content: String) -> ParsedData {
-        print(content)
+//        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false
@@ -81,9 +81,10 @@ class WiktionaryParser {
                     translationLine = translationLine.replacingOccurrences(of: "^#+\\s*", with: "", options: .regularExpression)
                     // Clean up wiki formatting
                     translationLine = removeWikiFormatting(from: translationLine)
-                    if !translationLine.isEmpty {
+                    if !translationLine.isEmpty && !CharacterSet.punctuationCharacters.contains(translationLine.unicodeScalars.first!){
                         // Split multiple translations separated by ';' or ','
                         let splitTranslations = translationLine.components(separatedBy: CharacterSet(charactersIn: ";,")).map { $0.trimmingCharacters(in: .whitespaces) }
+                                                
                         parsedData.translations.append(contentsOf: splitTranslations)
                     }
                 }
@@ -123,14 +124,14 @@ class WiktionaryParser {
         return nil
     }
 
-    static func extractGender(from line: String) -> NounGender? {
+    static func extractGender(from line: String) -> GrammaticalGender? {
         let pattern = #"\{\{gem-noun\|([mfn])(\|head=[^}]*)?\}\}"#
 
         if let genderCode = line.captures(for: pattern).first {
             switch genderCode {
-            case "m": return NounGender.masculine
-            case "f": return NounGender.feminine
-            case "n": return NounGender.neuter
+            case "m": return GrammaticalGender.masculine
+            case "f": return GrammaticalGender.feminine
+            case "n": return GrammaticalGender.neuter
             default:
                 return nil
             }

@@ -112,7 +112,7 @@ class DataManager {
                     
                     if wordData.wordType == .noun {
                         wordEntry.nounGender = wordData.gender?.rawValue
-                        wordEntry.nounStem = NounStem.detectStemType(nominativeSingular: wordData.title, gender: wordData.gender ?? NounGender.neuter).rawValue
+                        wordEntry.nounStem = NounStem.detectStemType(nominativeSingular: wordData.title, gender: wordData.gender ?? GrammaticalGender.neuter).rawValue
                     } else if wordData.wordType == .verb {
                         wordEntry.verbClass = wordData.verbClass?.rawValue
                     }
@@ -160,7 +160,7 @@ class DataManager {
     }
 
     // Update translations and word type for a specific word
-    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: NounGender?, nounStem: NounStem?, verbClass: VerbClass?) {
+    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: GrammaticalGender?, nounStem: NounStem?, verbClass: VerbClass?) {
         
         // Remove existing translations
         if let existingTranslations = word.translations as? Set<Translation> {

@@ -86,10 +86,18 @@ struct WordDetailView: View {
                     let verbInflections = viewModel.word.generateVerbInflections()
                     VerbInflectionTableView(inflections: verbInflections)
                 } else if viewModel.wordType == .pronoun {
-                    let pronounInflections = viewModel.word.generatePronounInflections()
-                    
-                    if pronounInflections != [:] {
-                        PronounTableView(inflections: pronounInflections)
+                    if viewModel.word.isPersonalPronoun {
+                        let pronounInflections = viewModel.word.generatePersonalPronounInflections()
+                        
+                        if pronounInflections != [:] {
+                            PersonalPronounTableView(inflections: pronounInflections)
+                        }
+                    } else {
+                        let pronounInflections = viewModel.word.generateGenderPronounInflections()
+                        
+                        if pronounInflections != [:] {
+                            GenderPronounTableView(inflections: pronounInflections)
+                        }
                     }
                 }
             }

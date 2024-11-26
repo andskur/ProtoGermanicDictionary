@@ -11,7 +11,7 @@ class WordDetailViewModel: ObservableObject {
     @Published var word: Word
     @Published var translations: [Translation] = []
     @Published var wordType: WordType = .unknown
-    @Published var nounGender: NounGender? = nil
+    @Published var nounGender: GrammaticalGender? = nil
     @Published var nounStem: NounStem? = nil
     @Published var verbClass: VerbClass? = nil
     @Published var isLoading = false
@@ -23,9 +23,9 @@ class WordDetailViewModel: ObservableObject {
         loadExistingWordDetails()
         
         // Fetch details if they're missing
-//        if translations.isEmpty || word.wordType == nil {
+        if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
-//        }
+        }
     }
     
     private func loadExistingWordDetails() {
@@ -39,7 +39,7 @@ class WordDetailViewModel: ObservableObject {
         }
         
         if let storedNounGender = word.nounGender {
-            self.nounGender = NounGender(rawValue: storedNounGender)
+            self.nounGender = GrammaticalGender(rawValue: storedNounGender)
         }
         
         if let storedNounStem = word.nounStem {

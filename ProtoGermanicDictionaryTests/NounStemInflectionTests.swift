@@ -14,7 +14,7 @@ class NounStemInflectionTests: XCTestCase {
     func testMasculineAStemInflections() {
         let nounStem = NounStem.aStem
         let word = "Dagaz" // Example masculine a-stem noun
-        let gender = NounGender.masculine
+        let gender = GrammaticalGender.masculine
         
         // Test cases for Dagaz (masculine a-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "Dagaz")
@@ -34,7 +34,7 @@ class NounStemInflectionTests: XCTestCase {
     func testNeuterAStemInflections() {
         let nounStem = NounStem.aStem
         let word = "Baką" // Example neuter a-stem noun
-        let gender = NounGender.neuter
+        let gender = GrammaticalGender.neuter
         
         // Test cases for Baką (neuter a-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "Baką")
@@ -55,7 +55,7 @@ class NounStemInflectionTests: XCTestCase {
     func testMasculineJaStemInflections() {
         let nounStem = NounStem.jaStem
         let word = "Harjaz" // Example masculine ja-stem noun
-        let gender = NounGender.masculine
+        let gender = GrammaticalGender.masculine
         
         // Test cases for Harjaz (masculine ja-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "Harjaz")
@@ -76,7 +76,7 @@ class NounStemInflectionTests: XCTestCase {
     func testNeuterJaStemInflections() {
         let nounStem = NounStem.jaStem
         let word = "Abniją" // Example neuter ja-stem noun
-        let gender = NounGender.neuter
+        let gender = GrammaticalGender.neuter
         
         // Test cases for Abniją (neuter ja-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "Abniją")
@@ -98,7 +98,7 @@ class NounStemInflectionTests: XCTestCase {
     func testFeminineOStemInflections() {
         let nounStem = NounStem.oStem
         let word = "frijō" // Example feminine o-stem noun
-        let gender = NounGender.feminine
+        let gender = GrammaticalGender.feminine
         
         // Test cases for frijō (feminine o-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "frijō")
@@ -119,7 +119,7 @@ class NounStemInflectionTests: XCTestCase {
     func testFeminineIjStemInflections() {
         let nounStem = NounStem.ijStem
         let word = "unþī" // Example feminine ij-stem noun
-        let gender = NounGender.feminine
+        let gender = GrammaticalGender.feminine
         
         // Test cases for unþī (feminine ij-stem)
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "unþī")
@@ -139,7 +139,7 @@ class NounStemInflectionTests: XCTestCase {
     func testMasculineIStemInflectionsForAlgiz() {
         let nounStem = NounStem.iStem
         let word = "algiz"
-        let gender = NounGender.masculine
+        let gender = GrammaticalGender.masculine
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "algiz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "algīz")
@@ -163,7 +163,7 @@ class NounStemInflectionTests: XCTestCase {
     func testFeminineIStemInflectionsForFurdiz() {
         let nounStem = NounStem.iStem
         let word = "furdiz"
-        let gender = NounGender.feminine
+        let gender = GrammaticalGender.feminine
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "furdiz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "furdīz")
@@ -187,7 +187,7 @@ class NounStemInflectionTests: XCTestCase {
     func testNeuterIStemInflectionsForFrōkni() {
         let nounStem = NounStem.iStem
         let word = "frōkni"
-        let gender = NounGender.neuter
+        let gender = GrammaticalGender.neuter
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "frōkni")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "frōknī")
@@ -211,7 +211,7 @@ class NounStemInflectionTests: XCTestCase {
     func testMasculineUStemInflectionsForAnsuz() {
         let nounStem = NounStem.uStem
         let word = "ansuz"
-        let gender = NounGender.masculine
+        let gender = GrammaticalGender.masculine
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "ansuz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "ansiwiz")
@@ -235,7 +235,7 @@ class NounStemInflectionTests: XCTestCase {
     func testFeminineUStemInflectionsForWeruz() {
         let nounStem = NounStem.uStem
         let word = "weruz"
-        let gender = NounGender.feminine
+        let gender = GrammaticalGender.feminine
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "weruz")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "weriwiz")
@@ -259,7 +259,7 @@ class NounStemInflectionTests: XCTestCase {
     func testNeuterUStemInflectionsForFehu() {
         let nounStem = NounStem.uStem
         let word = "fehu"
-        let gender = NounGender.neuter
+        let gender = GrammaticalGender.neuter
         
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "fehu")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "fehū")
@@ -283,7 +283,7 @@ class NounStemInflectionTests: XCTestCase {
     func testMasculineAnStemInflectionsForAtto() {
         let nounStem = NounStem.anStem
         let word = "attô"
-        let gender = NounGender.masculine
+        let gender = GrammaticalGender.masculine
 
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "attô")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "attaniz")
@@ -307,7 +307,7 @@ class NounStemInflectionTests: XCTestCase {
     func testNeuterAnStemInflectionsForHiwo() {
         let nounStem = NounStem.anStem
         let word = "hīwô"
-        let gender = NounGender.neuter
+        let gender = GrammaticalGender.neuter
 
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .singular, gender: gender, word: word), "hīwô")
         XCTAssertEqual(nounStem.inflection(for: .nominative, number: .plural, gender: gender, word: word), "hīwōnō")

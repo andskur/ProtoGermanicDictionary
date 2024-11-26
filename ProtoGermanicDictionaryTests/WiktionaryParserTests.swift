@@ -148,7 +148,7 @@ final class WiktionaryParserTests: XCTestCase {
         
         let expectedWordType = WordType.noun
         
-        let expectedGender =  NounGender.masculine
+        let expectedGender =  GrammaticalGender.masculine
         
         let parsedData = WiktionaryParser.parse(content: content)
         
