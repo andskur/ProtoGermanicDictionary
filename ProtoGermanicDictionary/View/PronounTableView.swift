@@ -19,61 +19,69 @@ struct PronounTableView: View {
 
             // Iterate over Grammatical Numbers (e.g., Singular, Dual, Plural)
             ForEach(GrammaticalNumber.allCases, id: \.self) { number in
-                VStack(alignment: .leading, spacing: 0) {
-                    // Header for each grammatical number
-                    Text(number.rawValue.capitalized)
-                        .font(.subheadline)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, 6)
-                        .background(Color(UIColor.systemGray5))
-                        .foregroundColor(.primary)
-
-                    // Header Row
-                    HStack(spacing: 0) {
-                        // Left Column (Grammatical Case Header)
-                        Text("Grammatical Case")
-                            .frame(width: 150, alignment: .leading)
+                // Filter cases for the current number
+                let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
+                    // Check if at least one person's value is not "-"
+                    inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
+                }
+                
+                if !filteredCases.isEmpty {
+                    VStack(alignment: .leading, spacing: 0) {
+                        // Header for each grammatical number
+                        Text(number.rawValue.capitalized)
                             .font(.subheadline)
-                            .foregroundColor(.primary)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.vertical, 6)
-                            .background(Color(UIColor.systemGray6)) // Gray background for left column
-                        // Filter out the third person
-                        ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
-                            Text(person.rawValue.capitalized)
-                                .frame(maxWidth: .infinity)
+                            .background(Color(UIColor.systemGray5))
+                            .foregroundColor(.primary)
+
+                        // Header Row
+                        HStack(spacing: 0) {
+                            // Left Column (Grammatical Case Header)
+                            Text("Grammatical Case")
+                                .frame(width: 150, alignment: .leading)
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                                 .padding(.vertical, 6)
-                                .background(Color(UIColor.systemGray6))
-                        }
-                    }
-                    .border(Color(UIColor.systemGray4))
-
-                    // Rows for Grammatical Cases
-                    ForEach(GrammaticalCase.allCases, id: \.self) { grammaticalCase in
-                        HStack(spacing: 0) {
-                            // Case Name (Gray Background for Left Column)
-                            Text(grammaticalCase.rawValue.capitalized)
-                                .frame(width: 150, alignment: .leading)
-                                .font(.body)
-                                .padding(.vertical, 6)
-                                .background(Color(UIColor.systemGray6)) // Gray background for case column
-
-                            // Inflection Values (excluding third person)
+                                .background(Color(UIColor.systemGray6)) // Gray background for left column
+                            // Filter out the third person
                             ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
-                                Text(inflections[number]?[grammaticalCase]?[person] ?? "-")
+                                Text(person.rawValue.capitalized)
                                     .frame(maxWidth: .infinity)
-                                    .font(.body)
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
                                     .padding(.vertical, 6)
-                                    .multilineTextAlignment(.center)
-                                    .background(grammaticalCase.hashValue % 2 == 0 ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
+                                    .background(Color(UIColor.systemGray6))
                             }
                         }
                         .border(Color(UIColor.systemGray4))
+
+                        // Rows for Grammatical Cases
+                        ForEach(filteredCases, id: \.self) { grammaticalCase in
+                            HStack(spacing: 0) {
+                                // Case Name (Gray Background for Left Column)
+                                Text(grammaticalCase.rawValue.capitalized)
+                                    .frame(width: 150, alignment: .leading)
+                                    .font(.body)
+                                    .padding(.vertical, 6)
+                                    .background(Color(UIColor.systemGray6)) // Gray background for case column
+
+                                // Inflection Values (excluding third person)
+                                ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
+                                    Text(inflections[number]?[grammaticalCase]?[person] ?? "-")
+                                        .frame(maxWidth: .infinity)
+                                        .font(.body)
+                                        .padding(.vertical, 6)
+                                        .multilineTextAlignment(.center)
+                                        .background(grammaticalCase.hashValue % 2 == 0 ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
+                                }
+                            }
+                            .border(Color(UIColor.systemGray4))
+                        }
                     }
+                    .padding(.vertical, 4)
                 }
-                .padding(.vertical, 4)
             }
         }
         .frame(maxWidth: .infinity)

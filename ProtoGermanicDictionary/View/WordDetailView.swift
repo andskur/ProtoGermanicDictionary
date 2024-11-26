@@ -86,77 +86,11 @@ struct WordDetailView: View {
                     let verbInflections = viewModel.word.generateVerbInflections()
                     VerbInflectionTableView(inflections: verbInflections)
                 } else if viewModel.wordType == .pronoun {
-                    let mockInflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalPerson: String]]] = [
-                        .singular: [
-                            .nominative: [
-                                .first: "ek",
-                                .second: "þū",
-                                .reflexive: "se"
-                            ],
-                            .accusative: [
-                                .first: "mek",
-                                .second: "þek",
-                                .reflexive: "sek"
-                            ],
-                            .dative: [
-                                .first: "miz",
-                                .second: "þiz",
-                                .reflexive: "siz"
-                            ],
-                            .genitive: [
-                                .first: "mīnaz",
-                                .second: "þīnaz",
-                                .reflexive: "sīnaz"
-                            ]
-                        ],
-                        .dual: [
-                            .nominative: [
-                                .first: "wet",
-                                .second: "jut, jit",
-                                .reflexive: "se"
-                            ],
-                            .accusative: [
-                                .first: "*unk",
-                                .second: "*inkw",
-                                .reflexive: "sek"
-                            ],
-                            .dative: [
-                                .first: "unkiz",
-                                .second: "inkwiz",
-                                .reflexive: "siz"
-                            ],
-                            .genitive: [
-                                .first: "unkeraz",
-                                .second: "inkweraz",
-                                .reflexive: "sīnaz"
-                            ]
-                        ],
-                        .plural: [
-                            .nominative: [
-                                .first: "wīz",
-                                .second: "jūz",
-                                .reflexive: "se"
-                            ],
-                            .accusative: [
-                                .first: "uns",
-                                .second: "izwiz",
-                                .reflexive: "sek"
-                            ],
-                            .dative: [
-                                .first: "unsiz",
-                                .second: "izwiz",
-                                .reflexive: "siz"
-                            ],
-                            .genitive: [
-                                .first: "unseraz",
-                                .second: "izweraz",
-                                .reflexive: "se"
-                            ]
-                        ]
-                    ]
+                    let pronounInflections = viewModel.word.generatePronounInflections()
                     
-                    PronounTableView(inflections: mockInflections)
-                    
+                    if pronounInflections != [:] {
+                        PronounTableView(inflections: pronounInflections)
+                    }
                 }
             }
             .padding()

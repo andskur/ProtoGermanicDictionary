@@ -46,9 +46,16 @@ struct NounInflectionTableView: View {
             .background(Color(UIColor.systemGray5))
             #endif
 
-            // Rows for each grammatical case
-            ForEach(GrammaticalCase.allCases.indices, id: \.self) { index in
-                let grammaticalCase = GrammaticalCase.allCases[index]
+            // Filtered rows for each grammatical case
+            let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
+                // Check if at least one value is not "-"
+                let singular = inflections[grammaticalCase]?[.singular] ?? "-"
+                let plural = inflections[grammaticalCase]?[.plural] ?? "-"
+                return singular != "-" || plural != "-"
+            }
+
+            ForEach(filteredCases.indices, id: \.self) { index in
+                let grammaticalCase = filteredCases[index]
                 inflectionRow(for: grammaticalCase)
                 
                 #if os(iOS)

@@ -95,5 +95,79 @@ extension Word {
         return inflections
     }
     
-    
+    /// Generates hardcoded pronoun inflections only for supported pronouns.
+    func generatePronounInflections() -> [GrammaticalNumber: [GrammaticalCase: [GrammaticalPerson: String]]] {
+        switch self.title?.folding(options: .diacriticInsensitive, locale: .current) {
+        case "ek", "wet", "wiz", "þu", "jut", "jūz", "se", "se-":
+            return [
+                .singular: [
+                    .nominative: [
+                        .first: "ek",
+                        .second: "þū",
+                        .reflexive: "se"
+                    ],
+                    .accusative: [
+                        .first: "mek",
+                        .second: "þek",
+                        .reflexive: "sek"
+                    ],
+                    .dative: [
+                        .first: "miz",
+                        .second: "þiz",
+                        .reflexive: "siz"
+                    ],
+                    .genitive: [
+                        .first: "mīnaz",
+                        .second: "þīnaz",
+                        .reflexive: "sīnaz"
+                    ]
+                ],
+                .dual: [
+                    .nominative: [
+                        .first: "wet",
+                        .second: "jut",
+                        .reflexive: "se"
+                    ],
+                    .accusative: [
+                        .first: "unk",
+                        .second: "inkw",
+                        .reflexive: "sek"
+                    ],
+                    .dative: [
+                        .first: "unkiz",
+                        .second: "inkwiz",
+                        .reflexive: "siz"
+                    ],
+                    .genitive: [
+                        .first: "unkeraz",
+                        .second: "inkweraz",
+                        .reflexive: "sīnaz"
+                    ]
+                ],
+                .plural: [
+                    .nominative: [
+                        .first: "wīz",
+                        .second: "jūz",
+                        .reflexive: "se"
+                    ],
+                    .accusative: [
+                        .first: "uns",
+                        .second: "izwiz",
+                        .reflexive: "sek"
+                    ],
+                    .dative: [
+                        .first: "unsiz",
+                        .second: "izwiz",
+                        .reflexive: "siz"
+                    ],
+                    .genitive: [
+                        .first: "unseraz",
+                        .second: "izweraz",
+                        .reflexive: "se"
+                    ]
+                ]
+            ]
+        default: return [:]
+        }
+    }
 }

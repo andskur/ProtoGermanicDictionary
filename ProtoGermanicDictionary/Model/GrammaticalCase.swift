@@ -14,4 +14,5 @@ enum GrammaticalCase: String, CaseIterable {
     case genitive = "Genitive"
     case dative = "Dative"
     case instrumental = "Instrumental"
+    case possessive   = "Possessive"
 }
