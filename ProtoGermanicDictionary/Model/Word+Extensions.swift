@@ -98,7 +98,7 @@ extension Word {
     /// Generates hardcoded pronoun inflections only for supported pronouns.
     func generatePronounInflections() -> [GrammaticalNumber: [GrammaticalCase: [GrammaticalPerson: String]]] {
         switch self.title?.folding(options: .diacriticInsensitive, locale: .current) {
-        case "ek", "wet", "wiz", "þu", "jut", "jūz", "se", "se-":
+        case "ek", "wet", "wiz", "þu", "jut", "juz", "se", "se-":
             return [
                 .singular: [
                     .nominative: [
