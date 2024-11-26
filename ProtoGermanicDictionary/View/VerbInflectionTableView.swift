@@ -73,7 +73,7 @@ struct VerbInflectionTableView: View {
     private func verbInflectionRow(number: GrammaticalNumber, tense: GrammaticalTense) -> some View {
         VStack(spacing: 0) {
             ForEach(GrammaticalPerson.allCases.filter { person in
-                !(number == .dual && person == .third) // Exclude third dual
+                !(number == .dual && person == .third) && person != .reflexive
             }, id: \.self) { person in
                 personInflectionRow(person: person, number: number, tense: tense)
                 

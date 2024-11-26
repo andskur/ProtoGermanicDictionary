@@ -8,7 +8,8 @@
 import Foundation
 
 enum GrammaticalPerson: String, CaseIterable {
-    case first = "1st"
-    case second = "2nd"
-    case third = "3nd"
+    case first          = "1st"
+    case second         = "2nd"
+    case third          = "3nd"
+    case reflexive      = "reflexive"
 }
