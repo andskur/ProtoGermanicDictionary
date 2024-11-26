@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NounGender: String, CaseIterable {
+enum GrammaticalGender: String, CaseIterable {
     case masculine = "Masculine"
     case feminine = "Feminine"
     case neuter = "Neuter"

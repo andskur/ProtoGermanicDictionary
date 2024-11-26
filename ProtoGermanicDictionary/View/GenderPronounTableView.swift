@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PronounTableView: View {
+struct PersonalPronounTableView: View {
     var inflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalPerson: String]]]
 
     var body: some View {
@@ -37,25 +37,7 @@ struct PronounTableView: View {
                             .foregroundColor(.primary)
 
                         // Header Row
-                        HStack(spacing: 0) {
-                            // Left Column (Grammatical Case Header)
-                            Text("Grammatical Case")
-                                .frame(width: 150, alignment: .leading)
-                                .font(.subheadline)
-                                .foregroundColor(.primary)
-                                .padding(.vertical, 6)
-                                .background(Color(UIColor.systemGray6)) // Gray background for left column
-                            // Filter out the third person
-                            ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
-                                Text(person.rawValue.capitalized)
-                                    .frame(maxWidth: .infinity)
-                                    .font(.subheadline)
-                                    .foregroundColor(.primary)
-                                    .padding(.vertical, 6)
-                                    .background(Color(UIColor.systemGray6))
-                            }
-                        }
-                        .border(Color(UIColor.systemGray4))
+                        renderHeaderRow(headers: filteredCases)
 
                         // Rows for Grammatical Cases
                         ForEach(filteredCases, id: \.self) { grammaticalCase in
@@ -88,5 +70,27 @@ struct PronounTableView: View {
         .background(Color(UIColor.systemGray6).opacity(0.2))
         .cornerRadius(8)
         .shadow(radius: 2)
+    }
+    
+    private func renderHeaderRow(headers: [GrammaticalCase]) -> some View {
+        HStack(spacing: 0) {
+            // Left Column (Grammatical Case Header)
+            Text("Grammatical Case")
+                .frame(width: 150, alignment: .leading)
+                .font(.subheadline)
+                .foregroundColor(.primary)
+                .padding(.vertical, 6)
+                .background(Color(UIColor.systemGray6)) // Gray background for left column
+            // Filter out the third person
+            ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
+                Text(person.rawValue.capitalized)
+                    .frame(maxWidth: .infinity)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                    .padding(.vertical, 6)
+                    .background(Color(UIColor.systemGray6))
+            }
+        }
+        .border(Color(UIColor.systemGray4))
     }
 }
