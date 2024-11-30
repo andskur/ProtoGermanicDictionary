@@ -25,56 +25,21 @@ struct PersonalPronounTableView: View {
                     inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
                 }
                 
-                if !filteredCases.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
-                        // Header for each grammatical number
-                        Text(number.rawValue.capitalized)
-                            .font(.subheadline)
-                            .bold()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 6)
-                        
-                        #if os(iOS)
-                            .background(Color(UIColor.systemGray5))
-                        #endif
-                            .foregroundColor(.primary)
-
-                        // Header Row
-                        renderHeaderRow(headers: filteredCases)
-
-                        // Rows for Grammatical Cases
-                        ForEach(filteredCases, id: \.self) { grammaticalCase in
-                            HStack(spacing: 0) {
-                                // Case Name (Gray Background for Left Column)
-                                Text(grammaticalCase.rawValue.capitalized)
-                                    .frame(width: 100, alignment: .leading)
-                                    .font(.body)
-                                    .padding(.vertical, 6)
-                                
-                                #if os(iOS)
-                                    .background(Color(UIColor.systemGray6)) // Gray background for case column
-                                #endif
-
-                                // Inflection Values (excluding third person)
-                                ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
-                                    Text(inflections[number]?[grammaticalCase]?[person] ?? "-")
-                                        .frame(maxWidth: .infinity)
-                                        .font(.body)
-                                        .padding(.vertical, 6)
-                                        .multilineTextAlignment(.center)
-                                    
-                                    #if os(iOS)
-                                        .background(grammaticalCase.hashValue % 2 == 0 ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
-                                    #endif
-                                }
-                            }
-                            
-                            #if os(iOS)
-                            .border(Color(UIColor.systemGray4))
-                            #endif
-                        }
+                // Filter persons for the current number and filtered cases
+                let filteredPersons = GrammaticalPerson.allCases.filter { person in
+                    let personValues = filteredCases.compactMap { grammaticalCase in
+                        inflections[number]?[grammaticalCase]?[person]
                     }
-                    .padding(.vertical, 4)
+                    return personValues.contains(where: { $0 != "-" && $0 != "" })
+                }
+                
+                if !filteredCases.isEmpty {
+                    renderNumberBlock(
+                        number: number,
+                        filteredCases: filteredCases,
+                        filteredPersons: filteredPersons,
+                        inflections: inflections[number] ?? [:]
+                    )
                 }
             }
         }
@@ -87,34 +52,41 @@ struct PersonalPronounTableView: View {
         .shadow(radius: 2)
     }
     
-    private func renderHeaderRow(headers: [GrammaticalCase]) -> some View {
-        HStack(spacing: 0) {
-            // Left Column (Grammatical Case Header)
-            Text("Case")
-                .frame(width: 100, alignment: .leading)
+    private func renderNumberBlock(
+        number: GrammaticalNumber,
+        filteredCases: [GrammaticalCase],
+        filteredPersons: [GrammaticalPerson],
+        inflections: [GrammaticalCase: [GrammaticalPerson: String]]
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Header for each grammatical number
+            Text(number.rawValue.capitalized)
                 .font(.subheadline)
-                .foregroundColor(.primary)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 6)
-            
-            #if os(iOS)
-                .background(Color(UIColor.systemGray6)) // Gray background for left column
-            #endif
-            // Filter out the third person
-            ForEach(GrammaticalPerson.allCases.filter { $0 != .third }, id: \.self) { person in
-                Text(person.rawValue.capitalized)
-                    .frame(maxWidth: .infinity)
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-                    .padding(.vertical, 6)
-                
+                .foregroundColor(.primary)
                 #if os(iOS)
-                    .background(Color(UIColor.systemGray6))
+                .background(Color(UIColor.systemGray5))
                 #endif
+
+            // Header Row
+            TableHeaderRow(
+                headers: filteredPersons,
+                leadingColumnTitle: "Case"
+            )
+
+            // Rows for Grammatical Cases
+            ForEach(filteredCases, id: \.self) { grammaticalCase in
+                TableRow(
+                    rowKey: grammaticalCase.rawValue.capitalized,
+                    columns: filteredPersons,
+                    valueForCell: { person  in
+                        inflections[grammaticalCase]?[person] ?? "-"
+                    }
+                )
             }
         }
-        
-        #if os(iOS)
-        .border(Color(UIColor.systemGray4))
-        #endif
+        .padding(.vertical, 4)
     }
 }

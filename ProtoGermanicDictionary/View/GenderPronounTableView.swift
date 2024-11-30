@@ -25,8 +25,21 @@ struct GenderPronounTableView: View {
                     inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
                 }
                 
+                // Filter persons for the current number and filtered cases
+                let filteredGenders = GrammaticalGender.allCases.filter { gender in
+                    let gendersValues = filteredCases.compactMap { grammaticalCase in
+                        inflections[number]?[grammaticalCase]?[gender]
+                    }
+                    return gendersValues.contains(where: { $0 != "-" && $0 != "" })
+                }
+                
                 if !filteredCases.isEmpty {
-                    renderNumberBlock(number: number, filteredCases: filteredCases, inflections: inflections[number] ?? [:])
+                    renderNumberBlock(
+                        number: number,
+                        filteredCases: filteredCases,
+                        filteredGenders: filteredGenders,
+                        inflections: inflections[number] ?? [:]
+                    )
                 }
             }
         }
@@ -38,8 +51,12 @@ struct GenderPronounTableView: View {
         .shadow(radius: 2)
     }
     
-    
-    private func renderNumberBlock(number: GrammaticalNumber, filteredCases: [GrammaticalCase], inflections: [GrammaticalCase: [GrammaticalGender: String]]) -> some View {
+    private func renderNumberBlock(
+        number: GrammaticalNumber,
+        filteredCases: [GrammaticalCase],
+        filteredGenders: [GrammaticalGender],
+        inflections: [GrammaticalCase: [GrammaticalGender: String]]
+    ) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header for each grammatical number
             Text(number.rawValue.capitalized)
@@ -53,72 +70,22 @@ struct GenderPronounTableView: View {
                 .foregroundColor(.primary)
 
             // Header Row
-            renderHeaderRow(headers: filteredCases)
+            TableHeaderRow(
+                headers: filteredGenders,
+                leadingColumnTitle: "Case"
+            )
 
             // Rows for Grammatical Cases
             ForEach(filteredCases, id: \.self) { grammaticalCase in
-                renderRow(grammaticalCase: grammaticalCase, inflections: inflections)
+                TableRow(
+                    rowKey: grammaticalCase.rawValue.capitalized,
+                    columns: filteredGenders,
+                    valueForCell: { gender  in
+                        inflections[grammaticalCase]?[gender] ?? "-"
+                    }
+                )
             }
         }
         .padding(.vertical, 4)
-    }
-    
-    private func renderHeaderRow(headers: [GrammaticalCase]) -> some View {
-        HStack(spacing: 0) {
-            // Left Column (Grammatical Case Header)
-            Text("Case")
-                .frame(width: 100, alignment: .leading)
-                .font(.subheadline)
-                .foregroundColor(.primary)
-                .padding(.vertical, 6)
-            #if os(iOS)
-                .background(Color(UIColor.systemGray6)) // Gray background for left column
-            #endif
-            // Filter out the third person
-            ForEach(GrammaticalGender.allCases, id: \.self) { gender in
-                Text(gender.rawValue.capitalized)
-                    .frame(maxWidth: .infinity)
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-                    .padding(.vertical, 6)
-                
-                #if os(iOS)
-                    .background(Color(UIColor.systemGray6))
-                #endif
-            }
-        }
-        #if os(iOS)
-        .border(Color(UIColor.systemGray4))
-        #endif
-    }
-    
-    private func renderRow(grammaticalCase: GrammaticalCase, inflections: [GrammaticalCase: [GrammaticalGender: String]]) -> some View {
-        HStack(spacing: 0) {
-            // Case Name (Gray Background for Left Column)
-            Text(grammaticalCase.rawValue.capitalized)
-                .frame(width: 100, alignment: .leading)
-                .font(.body)
-                .padding(.vertical, 6)
-            
-            #if os(iOS)
-                .background(Color(UIColor.systemGray6)) // Gray background for case column
-            #endif
-
-            // Inflection Values (excluding third person)
-            ForEach(GrammaticalGender.allCases, id: \.self) { gender in
-                Text(inflections[grammaticalCase]?[gender] ?? "-")
-                    .frame(maxWidth: .infinity)
-                    .font(.body)
-                    .padding(.vertical, 6)
-                    .multilineTextAlignment(.center)
-                
-                #if os(iOS)
-                    .background(grammaticalCase.hashValue % 2 == 0 ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
-                #endif
-            }
-        }
-        #if os(iOS)
-        .border(Color(UIColor.systemGray4))
-        #endif
     }
 }

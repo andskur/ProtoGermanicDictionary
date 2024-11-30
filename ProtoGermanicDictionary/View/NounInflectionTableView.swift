@@ -18,30 +18,12 @@ struct NounInflectionTableView: View {
 
             // Header row
             HStack(spacing: 0) {
-                Text("") // Empty cell for alignment
-                    .frame(width: 120, height: 40, alignment: .leading)
-                
-                #if os(iOS)
-                    .background(Color(UIColor.systemGray5))
-                #endif
-                Divider()
-                Text(GrammaticalNumber.singular.rawValue)
-                    .font(.subheadline)
-                    .frame(maxWidth: .infinity)
-                
-                #if os(iOS)
-                    .background(Color(UIColor.systemGray5))
-                #endif
-                Divider()
-                Text(GrammaticalNumber.plural.rawValue)
-                    .font(.subheadline)
-                    .frame(maxWidth: .infinity)
-                
-                #if os(iOS)
-                    .background(Color(UIColor.systemGray5))
-                #endif
+                // Header Row
+                TableHeaderRow(
+                    headers: [GrammaticalNumber.singular, GrammaticalNumber.plural],
+                    leadingColumnTitle: "Case"
+                )
             }
-            
             #if os(iOS)
             .background(Color(UIColor.systemGray5))
             #endif
@@ -54,13 +36,14 @@ struct NounInflectionTableView: View {
                 return singular != "-" || plural != "-"
             }
 
-            ForEach(filteredCases.indices, id: \.self) { index in
-                let grammaticalCase = filteredCases[index]
-                inflectionRow(for: grammaticalCase)
-                
-                #if os(iOS)
-                    .background(index.isMultiple(of: 2) ? Color(UIColor.systemGray6).opacity(0.1) : Color.clear)
-                #endif
+            ForEach(filteredCases, id: \.self) { grammaticalCase in
+                TableRow(
+                    rowKey: grammaticalCase.rawValue.capitalized,
+                    columns: [GrammaticalNumber.singular, GrammaticalNumber.plural],
+                    valueForCell: { value  in
+                        inflections[grammaticalCase]?[value] ?? "-"
+                    }
+                )
             }
         }
         .frame(maxWidth: .infinity)
@@ -68,34 +51,5 @@ struct NounInflectionTableView: View {
         #if os(iOS)
         .background(Color(UIColor.systemGray6).opacity(0.2))
         #endif
-        .cornerRadius(8)
-    }
-
-    private func inflectionRow(for grammaticalCase: GrammaticalCase) -> some View {
-        HStack(spacing: 0) {
-            Text(grammaticalCase.rawValue)
-                .frame(width: 120, height: 40, alignment: .leading)
-            
-            #if os(iOS)
-                .background(Color(UIColor.systemGray5))
-            #endif
-                .font(.subheadline.weight(.medium))
-                .foregroundColor(.primary)
-
-            Divider()
-
-            let singular = inflections[grammaticalCase]?[.singular] ?? "-"
-            let plural = inflections[grammaticalCase]?[.plural] ?? "-"
-
-            Text(singular)
-                .frame(maxWidth: .infinity, minHeight: 40)
-                .multilineTextAlignment(.center)
-
-            Divider()
-
-            Text(plural)
-                .frame(maxWidth: .infinity, minHeight: 40)
-                .multilineTextAlignment(.center)
-        }
     }
 }
