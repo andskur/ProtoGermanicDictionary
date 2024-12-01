@@ -59,15 +59,7 @@ struct GenderPronounTableView: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header for each grammatical number
-            Text(number.rawValue.capitalized)
-                .font(.subheadline)
-                .bold()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 6)
-                #if os(iOS)
-                .background(Color(UIColor.systemGray5))
-                #endif
-                .foregroundColor(.primary)
+            TableSectionHeader(header: number.rawValue)
 
             // Header Row
             TableHeaderRow(

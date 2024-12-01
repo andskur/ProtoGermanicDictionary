@@ -18,7 +18,7 @@ class WiktionaryParser {
     }
 
     static func parse(content: String) -> ParsedData {
-//        print(content)
+        print(content)
         
         var parsedData = ParsedData()
         var inProtoGermanicSection = false
@@ -100,6 +100,11 @@ class WiktionaryParser {
         let strongPattern = #"\{\{gem-conj-st\|class=(\w+)"#
         if let strongClass = line.captures(for: strongPattern).first {
             return (isStrong: true, verbClass: strongClass)
+        }
+        // Pattern to capture strong verbs with class, e.g., {{gem-conj-st|class=7e|...}}
+        let strongPatternJ = #"\{\{gem-conj-st-j\|class=(\w+)"#
+        if let strongClassJ = line.captures(for: strongPatternJ).first {
+            return (isStrong: true, verbClass: strongClassJ)
         }
 
         // Pattern to capture weak verbs with class, e.g., {{gem-conj-wk1|...}}
