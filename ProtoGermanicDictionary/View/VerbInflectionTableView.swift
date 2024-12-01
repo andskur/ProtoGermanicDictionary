@@ -18,13 +18,17 @@ struct VerbInflectionTableView: View {
 
             // Loop through all tenses
             ForEach(GrammaticalTense.allCases, id: \.self) { tense in
-                
-                // Mood Header Row
                 let filteredMoods = GrammaticalMood.allCases.filter { !(tense == .past && $0 == .imperative) }
-                
-                renderTenseBlock(
-                    tense: tense,
-                    filteredMoods: filteredMoods
+
+                TableSection(
+                    sectionTitle: "\(tense.rawValue.capitalized) Tense",
+                    rows: Conjugation.allCases, // Use Conjugation enum
+                    columns: filteredMoods,
+                    leadingColumnTitle: "Conjugation",
+                    valueForCell: { conjugation, mood in
+                        let (number, person) = conjugation.components
+                        return inflections[tense]?[mood]?[number]?[person] ?? "-"
+                    }
                 )
             }
         }
@@ -32,43 +36,5 @@ struct VerbInflectionTableView: View {
         .background(Color(UIColor.systemGray6).opacity(0.2))
         .cornerRadius(8)
         .shadow(radius: 2)
-    }
-
-    // Helper function to filter valid persons for a given grammatical number
-    private func filterPersons(for number: GrammaticalNumber) -> [GrammaticalPerson] {
-        GrammaticalPerson.allCases.filter {
-            $0 != .reflexive && !(number == .dual && $0 == .third)
-        }
-    }
-    
-    private func renderTenseBlock(
-        tense: GrammaticalTense,
-        filteredMoods: [GrammaticalMood]
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Tense Header
-            TableSectionHeader(header: tense.rawValue)
-
-            // Mood Header Row
-            let filteredMoods = GrammaticalMood.allCases.filter { !(tense == .past && $0 == .imperative) }
-            TableHeaderRow(headers: filteredMoods, leadingColumnTitle: "")
-
-            // Render table rows using TableRow
-            ForEach(GrammaticalNumber.allCases, id: \.self) { number in
-                ForEach(filterPersons(for: number), id: \.self) { person in
-                    let rowKey = "\(person.rawValue.capitalized) \(number.rawValue.lowercased())"
-                    let valueForCell: (GrammaticalMood) -> String = { mood in
-                        inflections[tense]?[mood]?[number]?[person] ?? "-"
-                    }
-
-                    TableRow(
-                        rowKey: rowKey,
-                        columns: filteredMoods,
-                        valueForCell: valueForCell
-                    )
-                }
-            }
-        }
-        .padding(.vertical, 4)
     }
 }

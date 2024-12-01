@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct TableRow<RowKeyType: Hashable, ColumnKeyType: Hashable>: View {
-    let rowKey: RowKeyType
+struct TableRow<ColumnKeyType: Hashable>: View {
+    let rowKey: String
     let columns: [ColumnKeyType]
     let valueForCell: (ColumnKeyType) -> String // Closure to fetch the cell value
 
     var body: some View {
         HStack(spacing: 0) {
             // Case Name (Gray Background for Left Column)
-            Text("\(rowKey)")
+            Text("\(rowKey.capitalized)")
                 .frame(width: 100, alignment: .leading)
                 .font(.body)
                 .padding(.vertical, 6)

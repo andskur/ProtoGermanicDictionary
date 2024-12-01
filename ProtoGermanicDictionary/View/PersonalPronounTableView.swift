@@ -34,11 +34,14 @@ struct PersonalPronounTableView: View {
                 }
                 
                 if !filteredCases.isEmpty {
-                    renderNumberBlock(
-                        number: number,
-                        filteredCases: filteredCases,
-                        filteredPersons: filteredPersons,
-                        inflections: inflections[number] ?? [:]
+                    TableSection(
+                        sectionTitle: number.rawValue.capitalized,
+                        rows: filteredCases,
+                        columns: filteredPersons,
+                        leadingColumnTitle: "Case",
+                        valueForCell: { grammaticalCase, person in
+                            inflections[number]?[grammaticalCase]?[person] ?? "-"
+                        }
                     )
                 }
             }
@@ -50,35 +53,5 @@ struct PersonalPronounTableView: View {
         #endif
         .cornerRadius(8)
         .shadow(radius: 2)
-    }
-    
-    private func renderNumberBlock(
-        number: GrammaticalNumber,
-        filteredCases: [GrammaticalCase],
-        filteredPersons: [GrammaticalPerson],
-        inflections: [GrammaticalCase: [GrammaticalPerson: String]]
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Header for each grammatical number
-            TableSectionHeader(header: number.rawValue)
-
-            // Header Row
-            TableHeaderRow(
-                headers: filteredPersons,
-                leadingColumnTitle: "Case"
-            )
-
-            // Rows for Grammatical Cases
-            ForEach(filteredCases, id: \.self) { grammaticalCase in
-                TableRow(
-                    rowKey: grammaticalCase.rawValue.capitalized,
-                    columns: filteredPersons,
-                    valueForCell: { person  in
-                        inflections[grammaticalCase]?[person] ?? "-"
-                    }
-                )
-            }
-        }
-        .padding(.vertical, 4)
     }
 }
