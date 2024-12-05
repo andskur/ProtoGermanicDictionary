@@ -16,8 +16,6 @@ struct WordListView: View {
     }
 }
 
-import SwiftUI
-
 struct LetterSidebar: View {
     @ObservedObject var viewModel: WordListViewModel
     @Binding var selectedLetter: String?

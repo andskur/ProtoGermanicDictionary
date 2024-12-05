@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct VerbInflectionTableView: View {
-    var inflections: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]
+    @StateObject private var viewModel: WordInflectionViewModel
+    private var inflections: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]
+  
+    init(word: Word) {
+        _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
+        inflections = word.generateVerbInflections()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Verb Inflection Table")
-                .font(.headline)
-                .padding(.bottom, 8)
-
             // Loop through all tenses
             ForEach(GrammaticalTense.allCases, id: \.self) { tense in
-                let filteredMoods = GrammaticalMood.allCases.filter { !(tense == .past && $0 == .imperative) }
-
                 TableSection(
                     sectionTitle: "\(tense.rawValue.capitalized) Tense",
                     rows: Conjugation.allCases, // Use Conjugation enum
-                    columns: filteredMoods,
+                    columns: viewModel.filterVerbMoods(tense: tense),
                     leadingColumnTitle: "Conjugation",
                     valueForCell: { conjugation, mood in
                         let (number, person) = conjugation.components

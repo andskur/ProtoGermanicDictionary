@@ -80,24 +80,14 @@ struct WordDetailView: View {
                 Spacer()
                 
                 if viewModel.wordType == .noun {
-                    let inflections = viewModel.word.generateNounInflections()
-                    NounInflectionTableView(inflections: inflections)
+                    NounInflectionTableView(word: viewModel.word)
                 } else if viewModel.wordType == .verb {
-                    let verbInflections = viewModel.word.generateVerbInflections()
-                    VerbInflectionTableView(inflections: verbInflections)
+                    VerbInflectionTableView(word: viewModel.word)
                 } else if viewModel.wordType == .pronoun {
                     if viewModel.word.isPersonalPronoun {
-                        let pronounInflections = viewModel.word.generatePersonalPronounInflections()
-                        
-                        if pronounInflections != [:] {
-                            PersonalPronounTableView(inflections: pronounInflections)
-                        }
+                        PersonalPronounTableView(word: viewModel.word)
                     } else {
-                        let pronounInflections = viewModel.word.generateGenderPronounInflections()
-                        
-                        if pronounInflections != [:] {
-                            GenderPronounTableView(inflections: pronounInflections)
-                        }
+                        GenderPronounTableView(word: viewModel.word)
                     }
                 }
             }

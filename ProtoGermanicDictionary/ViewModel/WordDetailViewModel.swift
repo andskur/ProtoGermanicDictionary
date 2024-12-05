@@ -23,9 +23,9 @@ class WordDetailViewModel: ObservableObject {
         loadExistingWordDetails()
         
         // Fetch details if they're missing
-//        if translations.isEmpty || word.wordType == nil {
+        if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
-//        }
+        }
     }
     
     private func loadExistingWordDetails() {
@@ -86,6 +86,18 @@ class WordDetailViewModel: ObservableObject {
         // Refresh the translations array from the updated Core Data
         if let updatedTranslationsSet = word.translations as? Set<Translation> {
             self.translations = Array(updatedTranslationsSet).sorted { ($0.text ?? "") < ($1.text ?? "") }
+        }
+    }
+    
+    // Generic filtering function for nested dictionaries
+    private func filterNestedDictionary<Key1: Hashable, Key2: Hashable, Value>(
+        _ dictionary: [Key1: [Key2: Value]],
+        valueFilter: (Value) -> Bool
+    ) -> [Key1: [Key2: Value]] {
+        dictionary.mapValues { nestedDict in
+            nestedDict.filter { _, value in valueFilter(value) }
+        }.filter { _, nestedDict in
+            !nestedDict.isEmpty
         }
     }
 }

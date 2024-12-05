@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct NounInflectionTableView: View {
-    var inflections: [GrammaticalCase: [GrammaticalNumber: String]]
+    @StateObject private var viewModel: WordInflectionViewModel
+    private var inflections: [GrammaticalCase: [GrammaticalNumber: String]]
+    
+    init(word: Word) {
+        _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
+        inflections = word.generateNounInflections()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Inflection Table")
-                .font(.headline)
-                .padding(.bottom, 5)
-
             // Header row
             HStack(spacing: 0) {
                 // Header Row
@@ -27,16 +29,8 @@ struct NounInflectionTableView: View {
             #if os(iOS)
             .background(Color(UIColor.systemGray5))
             #endif
-
-            // Filtered rows for each grammatical case
-            let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
-                // Check if at least one value is not "-"
-                let singular = inflections[grammaticalCase]?[.singular] ?? "-"
-                let plural = inflections[grammaticalCase]?[.plural] ?? "-"
-                return singular != "-" || plural != "-"
-            }
-
-            ForEach(filteredCases, id: \.self) { grammaticalCase in
+            
+            ForEach(viewModel.filterNounCases(), id: \.self) { grammaticalCase in
                 TableRow(
                     rowKey: grammaticalCase.rawValue.capitalized,
                     columns: [GrammaticalNumber.singular, GrammaticalNumber.plural],

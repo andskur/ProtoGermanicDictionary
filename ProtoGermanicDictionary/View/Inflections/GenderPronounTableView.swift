@@ -8,36 +8,25 @@
 import SwiftUI
 
 struct GenderPronounTableView: View {
-    var inflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]
+    @StateObject private var viewModel: WordInflectionViewModel
+    private var inflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]
+  
+    init(word: Word) {
+        _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
+        inflections = word.generateGenderPronounInflections()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Title
-            Text("Proto-Germanic Pronouns")
-                .font(.headline)
-                .padding(.bottom, 8)
-
             // Iterate over Grammatical Numbers (e.g., Singular, Dual, Plural)
             ForEach(GrammaticalNumber.allCases, id: \.self) { number in
-                // Filter cases for the current number
-                let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
-                    // Check if at least one person's value is not "-"
-                    inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
-                }
-                
-                // Filter persons for the current number and filtered cases
-                let filteredGenders = GrammaticalGender.allCases.filter { gender in
-                    let gendersValues = filteredCases.compactMap { grammaticalCase in
-                        inflections[number]?[grammaticalCase]?[gender]
-                    }
-                    return gendersValues.contains(where: { $0 != "-" && $0 != "" })
-                }
+                let filteredCases = viewModel.filterGenderPronounCases(number: number)
                 
                 if !filteredCases.isEmpty {
                     TableSection(
                         sectionTitle: number.rawValue.capitalized,
                         rows: filteredCases,
-                        columns: filteredGenders,
+                        columns: viewModel.filterPronounGenders(number: number),
                         leadingColumnTitle: "Case",
                         valueForCell: { grammaticalCase, gender in
                             inflections[number]?[grammaticalCase]?[gender] ?? "-"
