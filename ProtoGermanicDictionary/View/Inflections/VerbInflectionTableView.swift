@@ -33,7 +33,9 @@ struct VerbInflectionTableView: View {
             }
         }
         .frame(maxWidth: .infinity)
+        #if os(iOS)
         .background(Color(UIColor.systemGray6).opacity(0.2))
+        #endif
         .cornerRadius(8)
         .shadow(radius: 2)
     }
