@@ -13,7 +13,7 @@ struct GenderPronounTableView: View {
   
     init(word: Word) {
         _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
-        inflections = word.generateGenderPronounInflections()
+        inflections = InflectionService.generateGenderPronounInflections(for: word)
     }
 
     var body: some View {

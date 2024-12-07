@@ -13,7 +13,7 @@ struct NounInflectionTableView: View {
     
     init(word: Word) {
         _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
-        inflections = word.generateNounInflections()
+        inflections = InflectionService.generateNounInflections(for: word)
     }
 
     var body: some View {

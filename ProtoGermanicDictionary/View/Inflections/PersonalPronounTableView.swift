@@ -13,7 +13,7 @@ struct PersonalPronounTableView: View {
   
     init(word: Word) {
         _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
-        inflections = word.generatePersonalPronounInflections()
+        inflections = InflectionService.generatePersonalPronounInflections(for: word)
     }
 
     var body: some View {
@@ -21,6 +21,7 @@ struct PersonalPronounTableView: View {
             // Iterate over Grammatical Numbers (e.g., Singular, Dual, Plural)
             if !inflections.isEmpty {
                 ForEach(GrammaticalNumber.allCases, id: \.self) { number in
+                    Text(number.rawValue)
                     TableSection(
                         sectionTitle: number.rawValue.capitalized,
                         rows: viewModel.filterPersonalPronounCases(number: number),

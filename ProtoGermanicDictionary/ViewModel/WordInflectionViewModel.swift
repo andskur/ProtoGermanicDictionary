@@ -15,7 +15,7 @@ class WordInflectionViewModel: ObservableObject {
     }
     
     func filterNounCases() -> [GrammaticalCase] {
-        let inflections = word.generateNounInflections()
+        let inflections = InflectionService.generateNounInflections(for: word)
         
         // Filtered rows for each grammatical case
         let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
@@ -29,7 +29,7 @@ class WordInflectionViewModel: ObservableObject {
     }
     
     func filterPersonalPronounCases(number: GrammaticalNumber) -> [GrammaticalCase] {
-        let inflections = word.generatePersonalPronounInflections()
+        let inflections = InflectionService.generatePersonalPronounInflections(for: word)
         
         let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
             inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
@@ -39,7 +39,7 @@ class WordInflectionViewModel: ObservableObject {
     }
     
     func filterPronounPerson(number: GrammaticalNumber) -> [GrammaticalPerson] {
-        let inflections = word.generatePersonalPronounInflections()
+        let inflections = InflectionService.generatePersonalPronounInflections(for: word)
         
         let filteredPersons = GrammaticalPerson.allCases.filter { person in
             let personValues = filterPersonalPronounCases(number: number).compactMap { grammaticalCase in
@@ -52,7 +52,7 @@ class WordInflectionViewModel: ObservableObject {
     }
     
     func filterGenderPronounCases(number: GrammaticalNumber) -> [GrammaticalCase] {
-        let inflections = word.generateGenderPronounInflections()
+        let inflections = InflectionService.generateGenderPronounInflections(for: word)
         
         let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
             inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
@@ -62,7 +62,7 @@ class WordInflectionViewModel: ObservableObject {
     }
     
     func filterPronounGenders(number: GrammaticalNumber) -> [GrammaticalGender] {
-        let inflections = word.generateGenderPronounInflections()
+        let inflections = InflectionService.generateGenderPronounInflections(for: word)
         
         let filteredGenders = GrammaticalGender.allCases.filter { gender in
             let gendersValues = filterGenderPronounCases(number: number).compactMap { grammaticalCase in
