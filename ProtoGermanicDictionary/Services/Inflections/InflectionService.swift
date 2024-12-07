@@ -22,8 +22,9 @@ class InflectionService {
             var caseInflections: [GrammaticalNumber: String] = [:]
             
             for number in GrammaticalNumber.allCases {
-                caseInflections[number] = nounStem.inflection(
-                    for: grammaticalCase,
+                caseInflections[number] = NounInflectionService.inflect(
+                    nounStem: nounStem,
+                    grammaticalCase: grammaticalCase,
                     number: number,
                     gender: gender,
                     word: word.title ?? ""
