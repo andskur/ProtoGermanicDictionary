@@ -56,7 +56,8 @@ class InflectionService {
                     var personInflections = [GrammaticalPerson: String]()
                     
                     for person in GrammaticalPerson.allCases {
-                        personInflections[person] = verbClass.inflection(
+                        personInflections[person] = VerbInflectionService.inflect(
+                            verbClass: verbClass,
                             for: tense,
                             mood: mood,
                             number: number,

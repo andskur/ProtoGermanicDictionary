@@ -21,7 +21,6 @@ struct PersonalPronounTableView: View {
             // Iterate over Grammatical Numbers (e.g., Singular, Dual, Plural)
             if !inflections.isEmpty {
                 ForEach(GrammaticalNumber.allCases, id: \.self) { number in
-                    Text(number.rawValue)
                     TableSection(
                         sectionTitle: number.rawValue.capitalized,
                         rows: viewModel.filterPersonalPronounCases(number: number),
