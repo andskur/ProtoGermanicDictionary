@@ -15,6 +15,7 @@ class WiktionaryParser {
         var wordType: WordType = .unknown
         var gender: GrammaticalGender? = nil
         var verbClass: VerbClass?
+        var adjectiveStem: AdjectivesStem?
     }
 
     static func parse(content: String) -> ParsedData {
@@ -26,6 +27,7 @@ class WiktionaryParser {
         var inWordTypeSection = false
         
         var verbClassSelected = false
+        var adjectiveStemSelected = false
 
         // Split the content into lines
         let lines = content.components(separatedBy: .newlines)
@@ -71,6 +73,11 @@ class WiktionaryParser {
                     if let (isStrong, verbClass) = detectVerbClass(from: trimmedLine) {                        
                         parsedData.verbClass = VerbClass.detectVerbClass(isStrong: isStrong, verbClass: verbClass)
                         verbClassSelected = true
+                    }
+                } else if inWordTypeSection && parsedData.wordType == .adjective && !adjectiveStemSelected {
+                    if let stem = detectAdjectiveStem(from: trimmedLine) {
+                        parsedData.adjectiveStem = stem
+                        adjectiveStemSelected = true
                     }
                 }
                 
@@ -126,6 +133,36 @@ class WiktionaryParser {
         }
 
         // If no pattern is matched, return nil
+        return nil
+    }
+    
+    // Function to detect adjective stem
+    static func detectAdjectiveStem(from line: String) -> AdjectivesStem? {
+        let aPattern = #"\{\{gem-decl-adj-a\|.*\}\}"#
+        if line.range(of: aPattern, options: .regularExpression) != nil {
+            return AdjectivesStem.aStem
+        }
+        
+        let iPattern = #"\{\{gem-decl-adj-i\|.*\}\}"#
+        if line.range(of: iPattern, options: .regularExpression) != nil {
+            return AdjectivesStem.iStem
+        }
+
+        let uPattern =  #"\{\{gem-decl-adj-u\|.*\}\}"#
+        if line.range(of: uPattern, options: .regularExpression) != nil {
+            return AdjectivesStem.uStem
+        }
+
+        let nPattern =  #"\{\{gem-decl-adj-n\|.*\}\}"#
+        if line.range(of: nPattern, options: .regularExpression) != nil {
+            return AdjectivesStem.nStem
+        }
+
+        let inPattern =  #"\{\{gem-decl-adj-in\|.*\}\}"#
+        if line.range(of: inPattern, options: .regularExpression) != nil {
+            return AdjectivesStem.inStem
+        }
+
         return nil
     }
 

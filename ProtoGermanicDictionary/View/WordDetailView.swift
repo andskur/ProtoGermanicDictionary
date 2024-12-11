@@ -43,6 +43,11 @@ struct WordDetailView: View {
                             .font(.subheadline)
                     }
                     
+                    if viewModel.adjectiveStem != nil {
+                        Text("Stem: \(viewModel.adjectiveStem!.rawValue)")
+                            .font(.subheadline)
+                    }
+                    
                     if viewModel.verbClass != nil {
                         Text("Class: \(viewModel.verbClass!.rawValue)")
                             .font(.subheadline)

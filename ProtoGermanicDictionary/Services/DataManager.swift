@@ -115,6 +115,12 @@ class DataManager {
                         wordEntry.nounStem = NounStem.detectStemType(nominativeSingular: wordData.title, gender: wordData.gender ?? GrammaticalGender.neuter).rawValue
                     } else if wordData.wordType == .verb {
                         wordEntry.verbClass = wordData.verbClass?.rawValue
+                    } else if wordData.wordType == .adjective {
+                        if wordData.adjectiveStem == nil {
+                            wordEntry.adjectiveStem = AdjectivesStem.detectStemType(word: wordData.title).rawValue
+                        } else {
+                            wordEntry.adjectiveStem = wordData.adjectiveStem?.rawValue
+                        }
                     }
 
                     // Update translations
@@ -181,7 +187,6 @@ class DataManager {
         
         if wordType == .noun {
             word.nounGender = nounGender?.rawValue
-//            print (NounStem.detectStemType(nominativeSingular: word.title!, gender: nounGender!).rawValue)
             
             word.nounStem = nounStem?.rawValue
         } else if wordType == .verb {
