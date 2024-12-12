@@ -54,6 +54,11 @@ extension Word {
         return VerbClass(rawValue: verbClass)
     }
     
+    var adjective: AdjectivesStem? {
+        guard let adjectiveStem = adjectiveStem else { return nil }
+        return AdjectivesStem(rawValue: adjectiveStem)
+    }
+    
     /// Determines if the pronoun is personal (uses GrammaticalPerson) or non-personal (uses NounGender)
     var isPersonalPronoun: Bool {
         switch self.title?.lowercased().folding(options: .diacriticInsensitive, locale: .current) {

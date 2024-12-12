@@ -89,7 +89,7 @@ class WordDetailViewModel: ObservableObject {
     
     private func updateWordWithFetchedData(translationsTexts: [String]) {
         // Update word and translations in Core Data through DataManager
-        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender, nounStem: nounStem, verbClass: verbClass)
+        DataManager.shared.updateWord(word, with: translationsTexts, wordType: wordType, nounGender: nounGender, nounStem: nounStem, verbClass: verbClass, adjectiveStem: adjectiveStem)
         
         // Refresh the translations array from the updated Core Data
         if let updatedTranslationsSet = word.translations as? Set<Translation> {

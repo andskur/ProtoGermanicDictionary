@@ -12,6 +12,7 @@ class InflectionService {
     static func generateNounInflections(for word: Word) -> [GrammaticalCase: [GrammaticalNumber: String]] {
         guard let nounStem = word.stem,
               let gender = word.gender else {
+            
             return [:]
         }
         
@@ -94,5 +95,37 @@ class InflectionService {
         }
 
         return PronounInflectionData.personalPronouns
+    }
+    
+    /// Generates adjective inflections
+    static func generateAdjectivesflections(for word: Word) -> [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]] {
+        guard let adjectiveStem = word.adjective
+               else {
+            return [:]
+        }
+        
+        var inflections = [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]()
+        
+        for number in GrammaticalNumber.allCases {
+            var numberInflections: [GrammaticalCase: [GrammaticalGender: String]] = [:]
+            
+            for grammaticalCase in GrammaticalCase.allCases {
+                var caseInflections: [GrammaticalGender: String] = [:]
+                
+                for gender in GrammaticalGender.allCases {
+                    caseInflections[gender] = AdjectivesIflectionService.inflect(
+                        adjectiveStem: adjectiveStem,
+                        grammaticalCase: grammaticalCase,
+                        number: number,
+                        gender: gender,
+                        word: word.title ?? ""
+                    )
+                }
+                numberInflections[grammaticalCase] = caseInflections
+            }
+            inflections[number] = numberInflections
+        }
+        
+        return inflections
     }
 }

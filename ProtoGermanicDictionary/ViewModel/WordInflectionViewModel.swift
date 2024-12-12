@@ -28,6 +28,23 @@ class WordInflectionViewModel: ObservableObject {
         return filteredCases
     }
     
+    func filterAdjectivesCases() -> [GrammaticalCase] {
+        print("HEROTA")
+//        let inflections = InflectionService.generateAdjectivesflections(for: word)
+        
+        return GrammaticalCase.allCases
+        
+//        // Filtered rows for each grammatical case
+//        let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
+//            // Check if at least one value is not "-"
+//            let singular = inflections[grammaticalCase]?[.singular] ?? "-"
+//            let plural = inflections[grammaticalCase]?[.plural] ?? "-"
+//            return singular != "-" || plural != "-"
+//        }
+        
+//        return filteredCases
+    }
+    
     func filterPersonalPronounCases(number: GrammaticalNumber) -> [GrammaticalCase] {
         let inflections = InflectionService.generatePersonalPronounInflections(for: word)
         
@@ -72,6 +89,16 @@ class WordInflectionViewModel: ObservableObject {
         }
         
         return filteredGenders
+    }
+    
+    func filterAdjectivesCases(number: GrammaticalNumber) -> [GrammaticalCase] {
+        let inflections = InflectionService.generateAdjectivesflections(for: word)
+        
+        let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
+            inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
+        }
+        
+        return filteredCases
     }
     
     func filterVerbMoods(tense: GrammaticalTense) -> [GrammaticalMood] {

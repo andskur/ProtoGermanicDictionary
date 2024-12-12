@@ -166,7 +166,7 @@ class DataManager {
     }
 
     // Update translations and word type for a specific word
-    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: GrammaticalGender?, nounStem: NounStem?, verbClass: VerbClass?) {
+    func updateWord(_ word: Word, with translationsTexts: [String], wordType: WordType, nounGender: GrammaticalGender?, nounStem: NounStem?, verbClass: VerbClass?, adjectiveStem: AdjectivesStem?) {
         
         // Remove existing translations
         if let existingTranslations = word.translations as? Set<Translation> {
@@ -191,6 +191,8 @@ class DataManager {
             word.nounStem = nounStem?.rawValue
         } else if wordType == .verb {
             word.verbClass = verbClass?.rawValue
+        } else if wordType == .adjective {
+            word.adjectiveStem = adjectiveStem?.rawValue
         }
         
         saveContext()
