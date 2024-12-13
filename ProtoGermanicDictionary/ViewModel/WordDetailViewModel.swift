@@ -50,6 +50,10 @@ class WordDetailViewModel: ObservableObject {
         if let storedVerbClass = word.verbClass {
             self.verbClass = VerbClass(rawValue: storedVerbClass)   
         }
+        
+        if let storedAdjectiveStem = word.adjectiveStem {
+            self.adjectiveStem = AdjectivesStem(rawValue: storedAdjectiveStem)
+        }
     }
     
     func fetchWordDetails() {
