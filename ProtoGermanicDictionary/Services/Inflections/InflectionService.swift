@@ -98,32 +98,38 @@ class InflectionService {
     }
     
     /// Generates adjective inflections
-    static func generateAdjectivesflections(for word: Word) -> [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]] {
+    static func generateAdjectivesflections(for word: Word) -> [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]] {
         guard let adjectiveStem = word.adjective
                else {
             return [:]
         }
         
-        var inflections = [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]()
+        var inflections = [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]]()
         
-        for number in GrammaticalNumber.allCases {
-            var numberInflections: [GrammaticalCase: [GrammaticalGender: String]] = [:]
+        for decl in AdjectiveDeclension.allCases {
+            var declInflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]] = [:]
             
-            for grammaticalCase in GrammaticalCase.allCases {
-                var caseInflections: [GrammaticalGender: String] = [:]
+            for number in GrammaticalNumber.allCases {
+                var numberInflections: [GrammaticalCase: [GrammaticalGender: String]] = [:]
                 
-                for gender in GrammaticalGender.allCases {
-                    caseInflections[gender] = AdjectivesIflectionService.inflect(
-                        adjectiveStem: adjectiveStem,
-                        grammaticalCase: grammaticalCase,
-                        number: number,
-                        gender: gender,
-                        word: word.title ?? ""
-                    )
+                for grammaticalCase in GrammaticalCase.allCases {
+                    var caseInflections: [GrammaticalGender: String] = [:]
+                    
+                    for gender in GrammaticalGender.allCases {
+                        caseInflections[gender] = AdjectiveInflectionService.inflect(
+                            adjectiveStem: adjectiveStem,
+                            grammaticalCase: grammaticalCase,
+                            number: number,
+                            gender: gender,
+                            decl: decl,
+                            word: word.title ?? ""
+                        )
+                    }
+                    numberInflections[grammaticalCase] = caseInflections
                 }
-                numberInflections[grammaticalCase] = caseInflections
+                declInflections[number] = numberInflections
             }
-            inflections[number] = numberInflections
+            inflections[decl] = declInflections
         }
         
         return inflections

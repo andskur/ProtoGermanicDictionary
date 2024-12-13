@@ -24,9 +24,9 @@ class WordDetailViewModel: ObservableObject {
         loadExistingWordDetails()
         
         // Fetch details if they're missing
-//        if translations.isEmpty || word.wordType == nil {
+        if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
-//        }
+        }
     }
     
     private func loadExistingWordDetails() {

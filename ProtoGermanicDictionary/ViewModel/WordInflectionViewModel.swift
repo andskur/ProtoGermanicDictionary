@@ -91,11 +91,11 @@ class WordInflectionViewModel: ObservableObject {
         return filteredGenders
     }
     
-    func filterAdjectivesCases(number: GrammaticalNumber) -> [GrammaticalCase] {
+    func filterAdjectivesCases(number: GrammaticalNumber, decl: AdjectiveDeclension) -> [GrammaticalCase] {
         let inflections = InflectionService.generateAdjectivesflections(for: word)
         
         let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
-            inflections[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
+            inflections[decl]?[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
         }
         
         return filteredCases

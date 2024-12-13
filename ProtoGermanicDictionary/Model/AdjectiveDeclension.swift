@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum AdjectiveDeclension: String, CaseIterable {
+    case strong = "Strong"
+    case weak   = "Weak"
+}
