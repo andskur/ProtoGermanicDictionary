@@ -16,6 +16,8 @@ class WordDetailViewModel: ObservableObject {
     @Published var adjectiveStem: AdjectivesStem? = nil
     @Published var verbClass: VerbClass? = nil
     @Published var isLoading = false
+    @Published var comparative: String? = nil
+    @Published var superlative: String? = nil
     
     init(word: Word) {
         self.word = word
@@ -26,6 +28,11 @@ class WordDetailViewModel: ObservableObject {
         // Fetch details if they're missing
         if translations.isEmpty || word.wordType == nil {
             fetchWordDetails()
+        }
+        
+        if wordType == .adjective || wordType == .adverb {
+            comparative = ComparisonService.Comparative(word: word)
+            superlative = ComparisonService.Superlative(word: word)
         }
     }
     

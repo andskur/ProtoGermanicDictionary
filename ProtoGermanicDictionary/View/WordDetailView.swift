@@ -84,6 +84,24 @@ struct WordDetailView: View {
                 
                 Spacer()
                 
+                if viewModel.wordType == .adverb || viewModel.wordType == .adjective {
+                    HStack {
+                        VStack {
+                            Text("Comparative").bold()
+                            Divider()
+                            Text(viewModel.comparative ?? "-")
+                        }
+                        
+                        Divider()
+                        
+                        VStack {
+                            Text("Superlative").bold()
+                            Divider()
+                            Text(viewModel.superlative ?? "-")
+                        }
+                    }
+                }
+                
                 if viewModel.wordType == .noun {
                     NounInflectionTableView(word: viewModel.word)
                 } else if viewModel.wordType == .verb {
