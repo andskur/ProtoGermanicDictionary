@@ -78,7 +78,7 @@ class VerbClassTests: XCTestCase {
     
     func testStrongClass2VerbInflections() {
         let verbClass = VerbClass.strongClass2
-        let word = "k" // Example Strong Class II verb
+        let word = "kleubana" // Example Strong Class II verb
 
         // Present Indicative
         XCTAssertEqual(VerbInflectionService.inflect(verbClass: verbClass, for: .present, mood: .indicative, number: .singular, person: .first, word: word), "kleubō")

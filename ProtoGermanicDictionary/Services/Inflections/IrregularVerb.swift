@@ -10,6 +10,7 @@ import Foundation
 struct IrregularVerb {
     let baseForm: String
     let inflections: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]
+    let participles: [GrammaticalTense: String]
 }
 
 class IrregularVerbStore {
@@ -59,6 +60,10 @@ class IrregularVerbStore {
                         .plural: [.first: "dēdīm", .second: "dēdīd", .third: "dēdīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "dōndz",
+                .past: "dēnaz"
             ]
         )
         
@@ -89,6 +94,10 @@ class IrregularVerbStore {
                         .plural: [.first: "stōdīm", .second: "stōdīd", .third: "stōdīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "stāndz",
+                .past: "stadanaz"
             ]
         )
 
@@ -119,6 +128,10 @@ class IrregularVerbStore {
                         .plural: [.first: "ijjēdīm", .second: "ijjēdīd", .third: "ijjēdīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "gāndz",
+                .past: "gānaz"
             ]
         )
 
@@ -149,6 +162,10 @@ class IrregularVerbStore {
                         .plural: [.first: "aihtēdīm", .second: "aihtēdīd", .third: "aihtēdīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "aigandz",
+                .past: "aiganaz"
             ]
         )
 
@@ -174,6 +191,9 @@ class IrregularVerbStore {
                         .plural: [.first: "weldēdīm", .second: "weldēdīd", .third: "weldēdīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "wiljandz"
             ]
         )
         
@@ -209,6 +229,9 @@ class IrregularVerbStore {
                         .plural: [.first: "wēzīm", .second: "wēzīd", .third: "wēzīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "wesandz"
             ]
         )
         
@@ -244,6 +267,9 @@ class IrregularVerbStore {
                         .plural: [.first: "wēzīm", .second: "wēzīd", .third: "wēzīn"]
                     ]
                 ]
+            ],
+            participles: [
+                .present: "wesandz"
             ]
         )
     }

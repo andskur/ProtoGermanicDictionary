@@ -24,7 +24,6 @@ class ParticipleInflectionService {
             return "-"
         }
         
-        
         switch tense {
         case .present:
             return inflectPresent(
@@ -199,6 +198,12 @@ class ParticipleInflectionService {
         switch verbClass {
         case .strongClass1, .strongClass2, .strongClass3, .strongClass4, .strongClass5, .strongClass6, .strongClass7, .weakClass1, .weakClass2, .weakClass3, .weakClass4, .preteritePresent:
             return String(word.dropLast()) + "dz"
+        case .irregular:
+            guard let irregularVerb = IrregularVerbStore.shared.getVerb(baseForm: word) else {
+                return "-"
+            }
+            
+            return irregularVerb.participles[.present] ?? "-"
         default:
             return "-"
         }
@@ -234,6 +239,12 @@ class ParticipleInflectionService {
             return "-"
         case .preteritePresent:
             return pretitePersistentPastForm(word: word) + "az"
+        case .irregular:
+            guard let irregularVerb = IrregularVerbStore.shared.getVerb(baseForm: word) else {
+                return "-"
+            }
+            
+            return irregularVerb.participles[.past] ?? "-"
         default:
             return "-"
         }
