@@ -84,6 +84,17 @@ class WordInflectionViewModel: ObservableObject {
         return filteredCases
     }
     
+    
+    func filterParticipleCases(number: GrammaticalNumber, tense: GrammaticalTense, decl: AdjectiveDeclension) -> [GrammaticalCase] {
+        let inflections = InflectionService.generateParticiplelIflections(for: word)
+        
+        let filteredCases = GrammaticalCase.allCases.filter { grammaticalCase in
+            inflections[tense]?[decl]?[number]?[grammaticalCase]?.values.contains(where: { $0 != "-" }) == true
+        }
+        
+        return filteredCases
+    }
+    
     func filterVerbMoods(tense: GrammaticalTense) -> [GrammaticalMood] {
         return GrammaticalMood.allCases.filter { !(tense == .past && $0 == .imperative) }
     }

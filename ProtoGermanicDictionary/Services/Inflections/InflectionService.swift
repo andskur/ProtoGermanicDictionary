@@ -134,4 +134,48 @@ class InflectionService {
         
         return inflections
     }
+    
+    /// Generates adjective inflections
+    static func generateParticiplelIflections(for word: Word) -> [GrammaticalTense: [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]]] {
+        guard let verbClass = word.verb
+               else {
+            return [:]
+        }
+        
+        var inflections = [GrammaticalTense: [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]]]()
+        
+        for tense in GrammaticalTense.allCases {
+            var tenseInflections: [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]] = [:]
+            
+            for decl in AdjectiveDeclension.allCases {
+                var declInflections: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]] = [:]
+                
+                for number in GrammaticalNumber.allCases {
+                    var numberInflections: [GrammaticalCase: [GrammaticalGender: String]] = [:]
+                    
+                    for grammaticalCase in GrammaticalCase.allCases {
+                        var caseInflections: [GrammaticalGender: String] = [:]
+                        
+                        for gender in GrammaticalGender.allCases {
+                            caseInflections[gender] = ParticipleInflectionService.inflect(
+                                verbClass: verbClass,
+                                for: tense,
+                                number: number,
+                                grammaticalCase: grammaticalCase,
+                                gender: gender,
+                                decl: decl,
+                                word: word.title ?? ""
+                            )
+                        }
+                        numberInflections[grammaticalCase] = caseInflections
+                    }
+                    declInflections[number] = numberInflections
+                }
+                tenseInflections[decl] = declInflections
+            }
+            inflections[tense] = tenseInflections
+        }
+        
+        return inflections
+    }
 }

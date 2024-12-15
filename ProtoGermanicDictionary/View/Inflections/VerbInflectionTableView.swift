@@ -9,11 +9,15 @@ import SwiftUI
 
 struct VerbInflectionTableView: View {
     @StateObject private var viewModel: WordInflectionViewModel
-    private var inflections: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]
+    private var inflectionsVerb: [GrammaticalTense: [GrammaticalMood: [GrammaticalNumber: [GrammaticalPerson: String]]]]
+    private var inflectionsParticiplel: [GrammaticalTense: [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]]]
+    private var word: Word
   
     init(word: Word) {
+        self.word = word
         _viewModel = StateObject(wrappedValue: WordInflectionViewModel(word: word))
-        inflections = InflectionService.generateVerbInflections(for: word)
+        inflectionsVerb = InflectionService.generateVerbInflections(for: word)
+        inflectionsParticiplel = InflectionService.generateParticiplelIflections(for: word)
     }
 
     var body: some View {
@@ -27,9 +31,49 @@ struct VerbInflectionTableView: View {
                     leadingColumnTitle: "Conjugation",
                     valueForCell: { conjugation, mood in
                         let (number, person) = conjugation.components
-                        return inflections[tense]?[mood]?[number]?[person] ?? "-"
+                        return inflectionsVerb[tense]?[mood]?[number]?[person] ?? "-"
                     }
                 )
+            }
+            
+            Divider().padding()
+            
+            Text("Participle")
+            
+            HStack {
+                ForEach(GrammaticalTense.allCases, id: \.self) { tense in
+                    VStack {
+                        Text(tense.rawValue).bold()
+                        Divider()
+                        Text(ParticipleInflectionService.participleForm(tense: tense, verbClass: word.verb ?? .unknown, word: word.title ?? "-"))
+                    }
+                }
+            }
+            
+            
+            ForEach(GrammaticalTense.allCases, id: \.self) { tense in
+                Text(tense.rawValue).bold()
+                ForEach(AdjectiveDeclension.allCases, id: \.self) { decl in
+                    Text(decl.rawValue).bold()
+                    // Iterate over Grammatical Numbers (e.g., Singular, Dual, Plural)
+                    ForEach(GrammaticalNumber.allCases, id: \.self) { number in
+                        let filteredCases = viewModel.filterParticipleCases(number: number, tense: tense, decl: decl)
+                        
+                        if !filteredCases.isEmpty {
+                            TableSection(
+                                sectionTitle: number.rawValue.capitalized,
+                                rows: filteredCases,
+                                columns: GrammaticalGender.allCases,
+                                leadingColumnTitle: "Case",
+                                valueForCell: { grammaticalCase, gender in
+                                    inflectionsParticiplel[tense]?[decl]?[number]?[grammaticalCase]?[gender] ?? "-"
+                                }
+                            )
+                        }
+                    }
+                    Divider().padding()
+                }
+                Divider().padding()
             }
         }
         .frame(maxWidth: .infinity)

@@ -233,6 +233,27 @@ class VerbInflectionService {
             if stem.last == "h" && suffix.first == "d" {
                 suffix = "t" + suffix.dropFirst()
             }
+            
+            if tense == .past && (stem.last == "n" && stem.dropLast(1).last == "n") {
+               stem = stem.dropLast(1) + "þ"
+                suffix = String(suffix.dropFirst())
+            }
+            
+            if stem.last == "z" && stem.dropLast().last == "r" {
+                if tense == .present {
+                    if mood == .indicative && number == .singular {
+                        stem = stem.dropLast() + "s"
+                    }
+                } else if tense == .past {
+                    suffix = String(suffix.dropFirst())
+                    stem = stem.dropLast() + "st"
+                }
+            }
+            
+            if tense == .past && (stem.first == "m" && stem.last == "t") {
+                suffix = String(suffix.dropFirst())
+                stem = stem.dropLast() + "s"
+            }
         }
         
         return stem + suffix
