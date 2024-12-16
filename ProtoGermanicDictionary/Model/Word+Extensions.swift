@@ -55,6 +55,10 @@ extension Word {
     }
     
     var adjective: AdjectivesStem? {
+        if type == .determiner {
+            return AdjectivesStem.aStem
+        }
+        
         guard let adjectiveStem = adjectiveStem else { return nil }
         return AdjectivesStem(rawValue: adjectiveStem)
     }

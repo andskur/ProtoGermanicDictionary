@@ -99,6 +99,10 @@ class InflectionService {
     
     /// Generates adjective inflections
     static func generateAdjectivesflections(for word: Word) -> [AdjectiveDeclension: [GrammaticalNumber: [GrammaticalCase: [GrammaticalGender: String]]]] {
+        if let irregular = IrregularDeterminers.storage[word.title ?? "0"] {
+            return irregular
+        }
+        
         guard let adjectiveStem = word.adjective
                else {
             return [:]

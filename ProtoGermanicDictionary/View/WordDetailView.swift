@@ -112,7 +112,7 @@ struct WordDetailView: View {
                     } else {
                         GenderPronounTableView(word: viewModel.word)
                     }
-                } else if viewModel.wordType == .adjective {
+                } else if viewModel.wordType == .adjective || viewModel.wordType == .determiner {
                     AdjectivesTableView(word: viewModel.word)
                 }
             }

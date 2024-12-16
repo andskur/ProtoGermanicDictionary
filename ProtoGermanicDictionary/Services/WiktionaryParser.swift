@@ -44,16 +44,18 @@ class WiktionaryParser {
                 continue
             }
 
+            
             if inProtoGermanicSection {
                 // Check for etymology section header (===Etymology=== or ===Etymology 1===)
                 if isEtymologySectionHeader(line: trimmedLine) {
                     inEtymologySection = true
                     inWordTypeSection = false
+
                     continue
                 }
                 
                 // Check for word type section header (===Noun=== or ====Noun====)
-                if inEtymologySection && isWordTypeHeader(line: trimmedLine) {
+                if isWordTypeHeader(line: trimmedLine) {
                     let header = extractWordType(from: trimmedLine)
 
                     // Attempt to map the extracted header to a WordType
@@ -82,7 +84,7 @@ class WiktionaryParser {
                 }
                 
                 // Collect translations under word type sections
-                if inEtymologySection && inWordTypeSection && trimmedLine.hasPrefix("#") && !trimmedLine.hasSuffix("#:"){
+                if inWordTypeSection && trimmedLine.hasPrefix("#") && !trimmedLine.hasSuffix("#:"){
                     var translationLine = trimmedLine
                     // Remove leading '#' characters and whitespace
                     translationLine = translationLine.replacingOccurrences(of: "^#+\\s*", with: "", options: .regularExpression)
