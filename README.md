@@ -7,7 +7,7 @@ Welcome to the Proto-Germanic Dictionary app repository! This application is ava
 
 ## Features ✨
 
-- **Extensive Word Collection**: Discover a large selection of Proto-Germanic wgit@github.com:andskur/ProtoGermanicDictionary.gitords with detailed English translations.
+- **Extensive Word Collection**: Discover a large selection of Proto-Germanic words with English translations.
 - **Flexible Search & Filter**: Search by Proto-Germanic word or translation, and filter by word type (noun, verb, adjective, etc.).
 - **Detailed Word Information**: Each word includes translations, grammatical type, and other details.
 - **Cross-platform**: Available on macOS, iOS, and iPadOS.
@@ -50,12 +50,6 @@ ProtoGermanicDictionary
 ├── ProtoGermanicDictionaryApp.swift      # Main entry point of the application
 │
 ├── Model                                 # Contains Core Data models
-│   ├── Translation+CoreDataClass.swift    # Core Data class for Translation entity
-│   ├── Translation+CoreDataProperties.swift # Properties for Translation entity
-│   ├── Word+CoreDataClass.swift           # Core Data class for Word entity
-│   ├── Word+CoreDataProperties.swift      # Properties for Word entity
-│   ├── Word-Extensions.swift              # Extensions for Word model
-│   └── WordType.swift                     # Enum for word types (noun, verb, adjective, etc.)
 │
 ├── Services                              # Contains networking and data management services
 │   ├── DataManager.swift                  # Handles Core Data persistence and fetching logic
@@ -63,28 +57,17 @@ ProtoGermanicDictionary
 │   └── WiktionaryParser.swift             # Parses detailed word information from Wiktionary
 │
 ├── View                                  # SwiftUI views for the app's interface
-│   ├── ContentView.swift                  # Main content view that initializes the app
-│   ├── WordDetailView.swift               # View displaying word details
-│   └── WordListView.swift                 # Main view displaying the list of words
-│
+|
 ├── ViewModel                             # ViewModel layer for managing view data
-│   ├── WordDetailViewModel.swift          # ViewModel for managing word details
-│   └── WordListViewModel.swift            # ViewModel for managing word list and search/filter functionality
 │
 ├── Resources
 │   └── ProtoGermanicDictionary.xcdatamodeld # Core Data model file
 │
 ├── Assets
-│   ├── Assets.xcassets                    # Contains image and color assets for the app
-│   └── Preview Content
-│       └── Preview Assets.xcassets        # Assets for SwiftUI previews
 │
-├── ProtoGermanicDictionaryTests           # Unit test targets
-│   └── WiktionaryParserTests.swift        # Test cases for WiktionaryParser
+├── ProtoGermanicDictionaryTests           # Unit test targetsr
 │
 └── ProtoGermanicDictionaryUITests         # UI test targets
-    ├── ProtoGermanicDictionaryUITests.swift
-    └── ProtoGermanicDictionaryUITestsLaunchTests.swift
 
 ```
 
